@@ -1,0 +1,13 @@
+<script>
+  logged_in = <%= signed_in? %>;
+  dataLayer = [
+    { 'pageType': '<%= @page_type %>' },
+    { 'env': '<%= Rails.env %>' }
+  ];
+  <% google_analytics_events.each do |event_name| %>
+    dataLayer.push({'event': 'ga-event', 'eventCategory': 'goal', 'eventAction': '<%= event_name %>' })
+  <% end %>
+  if(logged_in){
+    dataLayer.push({'user_id': '<%= current_user.try(:id) %>'});
+  }
+</script>

@@ -16,7 +16,8 @@ class AgreementsController < ApplicationController
   def create
     voter = find_or_create_voter!
     agreement = cast_vote(voter)
-    LogMailer.log_email("@#{current_user.try(:twitter)}, email: #{params[:email]}, ip: #{request.remote_ip} added #{voter.name} (@#{voter.try(:twitter)}) to '#{@statement.content}'", params.except(:authenticity_token)).deliver
+    notify('new_agreement', agreement_id: agreement.id)
+    notify('new_opinion', agreement_id: agreement.id) if agreement.reason.present?
     expire_fragment "brexit_board" if @statement.brexit?
     session[:added_voter] = voter.hashed_id if voter.twitter.present?
     redirect_to new_agreement_path(s: @statement.to_param), notice: "The opinion has been added"
@@ -27,7 +28,8 @@ class AgreementsController < ApplicationController
       upvote.destroy
       flash[:notice] = "Upvote removed!"
     else
-      Upvote.create(agreement: @agreement, individual: current_user)
+      upvote = Upvote.create(agreement: @agreement, individual: current_user)
+      notify('upvote', upvote_id: upvote.id)
       flash[:notice] = "Upvoted!"
     end
     @agreement.update_attribute(:upvotes_count, @agreement.upvotes.count)
@@ -36,6 +38,7 @@ class AgreementsController < ApplicationController
 
   def update
     if @agreement.individual == current_user || admin?
+      notify('new_opinion', agreement_id: @agreement.id) if @agreement.reason.blank? && params[:agreement][:reason].present?
       @agreement.update_attributes(params[:agreement].permit(:reason, :url, :hashed_id, :reason_category_id ))
       respond_to do |format|
         format.html { redirect_to(get_and_delete_back_url || statement_path(@agreement.statement)) }

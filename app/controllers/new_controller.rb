@@ -19,7 +19,9 @@ class NewController < ApplicationController
         individual_id: current_user.id,
         extent: params[:vote] == "agree" ? 100 : 0)
     end
-    agreement.save
+    if agreement.save
+      notify("new_agreement")
+    end
     redirect_to edit_reason_path(agreement) || new_path
   end
 
