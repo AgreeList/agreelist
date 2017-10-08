@@ -4,8 +4,12 @@ feature 'spam filter' do
   let(:statement) { create(:statement) }
   let(:individual) { create(:individual) }
 
+  before do
+    create(:agreement, statement: statement, extent: 100)
+  end
+
   scenario 'should filter names without surname' do
-    # real people have name and surname separated by a space
+    # real people tend to have name and surname separated by a space
     visit statement_path(statement)
     click_link "add more?"
     fill_in 'name', with: "Spammer"
