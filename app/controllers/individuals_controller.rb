@@ -12,12 +12,14 @@ class IndividualsController < ApplicationController
   def create
     @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
     if @individual.save
-      LogMailer.log_email("#{@individual.name} (#{@individual.email}) just #{params[:subscribed] ? 'subscribed' : 'signed up'}").deliver
+      notify("new_user")
+      notify("subscribe") if params[:subscribed]
       @individual.send_activation_email
       session[:user_id] = @individual.id
       if params[:task] == "follow"
         statement_to_follow = Statement.find(params[:statement_id])
         @individual.follow(statement_to_follow)
+        notify("follow", statement_id: statement_to_follow.id)
       end
       if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
         upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))

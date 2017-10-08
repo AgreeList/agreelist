@@ -1,9 +1,18 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user, :signed_in?, :admin?, :can_delete_statements?, :has_admin_category_rights?, :main_statement, :has_profession_rights?, :has_update_individual_rights?, :board?, :back_url
+  helper_method :current_user, :signed_in?, :admin?, :can_delete_statements?, :has_admin_category_rights?, :main_statement, :has_profession_rights?, :has_update_individual_rights?, :board?, :back_url, :google_analytics_events
   before_action :set_page_type
 
+  attr_reader :google_analytics_events
+
   private
+
+  def notify(event, args = {})
+    session[:ga_events] = [] if session[:ga_events].nil?
+    session[:ga_events] << event # we use the session in case we redirect
+    arguments = { event: event, current_user_id: current_user.try(:id), ip: request.try(:remote_ip) }.merge(args)
+    EventNotifier.new(arguments).notify
+  end
 
   def current_user
     @current_user ||= Individual.find(session[:user_id]) if session[:user_id]
@@ -92,5 +101,11 @@ class ApplicationController < ActionController::Base
 
   def set_page_type
     @page_type = "#{params[:controller]}-#{params[:action]}"
+  end
+
+  def google_analytics_events
+    # We delete it because we only want to send it once to google analytics
+    # We use the session for those actions which redirect users
+    session.delete(:ga_events).try(:uniq) || []
   end
 end

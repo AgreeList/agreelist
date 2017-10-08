@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
       redirect_to login_path, notice: "Email sent with instructions to set your password - as you have never set it"
     elsif individual.try(:authenticate, params[:password])
       session[:user_id] = individual.id
-      EventNotifier.new(event: :login, individual_id: individual.id, ip: request.remote_ip).notify
+      notify("login")
+      notify("login_email", current_user_id: individual.id)
       if params["task"] == "upvote"
         upvote(redirect_to: get_and_delete_back_url, agreement_id: params[:agreement_id])
       else
@@ -24,10 +25,17 @@ class SessionsController < ApplicationController
 
   def create_with_twitter
     auth = request.env["omniauth.auth"]
-    user = Individual.find_by_twitter(auth["info"]["nickname"].downcase) || Individual.create_with_omniauth(auth)
+    user = Individual.find_by_twitter(auth["info"]["nickname"].downcase)
+    if user
+      notify("login", current_user_id: user.id)
+      notify("login_twitter", current_user_id: user.id)
+    else
+      user = Individual.create_with_omniauth(auth)
+      notify("new_user", current_user_id: user.id)
+      notify("new_user_twitter", current_user_id: user.id)
+    end
     session[:user_id] = user.id
-    EventNotifier.new(event: :login, individual_id: user.id, ip: request.remote_ip).notify
-
+    session[:ga_events] = ["login", "login_twitter"]
     if params["task"] == "voting"
       vote(user)
     elsif params["task"] == "post"

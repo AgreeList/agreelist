@@ -19,7 +19,7 @@ class StatementsController < ApplicationController
       else
         Individual.find_or_create(email: params[:email])
       end
-      LogMailer.log_email("@#{params[:email]} has created '#{@statement.content}'").deliver
+      notify("new_statement", statement_id: @statement.id)
       redirect_to @statement
     else
       flash[:error] = @statement.errors.messages[:content].first
@@ -29,14 +29,17 @@ class StatementsController < ApplicationController
 
   def create_and_vote # from new_question_path & from user profiles
     @statement = find_statement_by_content || Statement.new(content: params[:content], individual: current_user)
-    LogMailer.log_email("@#{current_user.try(:visible_name)} has created '#{@statement.content}' and voted from profile").deliver
+    new_record = @statement.id.nil?
     if @statement.save
-      Agreement.create(
+      notify("new_statement", statement_id: @statement.id) if new_record
+      agreement = Agreement.create(
         statement: @statement,
         individual_id: params[:individual_id] || current_user.id,
         reason: params[:reason],
         url: params[:url],
         extent: ((params[:commit] == "She/he agrees") ? 100 : 0))
+      notify("new_agreement", agreement_id: agreement.id)
+      notify("new_opinion", agreement_id: agreement.id) if agreement.reason.present?
       redirect_to(get_and_delete_back_url || new_path)
     else
       flash[:error] = @statement.errors.full_messages.first
@@ -118,7 +121,7 @@ class StatementsController < ApplicationController
     @statement = Statement.new(params.require(:statement).permit(:content))
 
     if @statement.save
-      LogMailer.log_email("New statement: #{@statement.content} created by @#{current_user.try(:twitter)}, email: #{current_user.try(:email)}, ip: #{request.remote_ip}").deliver
+      notify("new_statement", statement_id: @statement.id)
       redirect_to @statement, notice: 'Statement was successfully created'
     else
       render action: "new"

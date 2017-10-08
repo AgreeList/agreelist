@@ -7,6 +7,7 @@ module DelayedUpvote
       redirect_to(args[:redirect_to] || root_path, notice: "Already was upvoted!")
     else
       Upvote.create(individual: current_user, agreement: agreement)
+      notify("upvote")
       agreement.update_attribute(:upvotes_count, agreement.upvotes.count)
       redirect_to(args[:redirect_to] || root_path, notice: "Upvoted!")
     end
