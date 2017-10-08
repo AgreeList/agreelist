@@ -31,8 +31,8 @@ class SessionsController < ApplicationController
       notify("login_twitter", current_user_id: user.id)
     else
       user = Individual.create_with_omniauth(auth)
-      notify("new_user", current_user_id: user.id)
-      notify("new_user_twitter", current_user_id: user.id)
+      notify("sign_up", current_user_id: user.id)
+      notify("sign_up_twitter", current_user_id: user.id)
     end
     session[:user_id] = user.id
     session[:ga_events] = ["login", "login_twitter"]
