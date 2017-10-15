@@ -142,6 +142,9 @@ GEM
       json (>= 1.4.6)
       rest-client (>= 1.6.7)
       trollop (>= 1.16.2)
+    graphiql-rails (1.4.5)
+      rails
+    graphql (1.7.4)
     haml (5.0.1)
       temple (>= 0.8.0)
       tilt
@@ -402,6 +405,8 @@ DEPENDENCIES
   faker
   fakeredis
   google_url_shortener
+  graphiql-rails
+  graphql
   haml-rails
   jquery-rails
   kaminari

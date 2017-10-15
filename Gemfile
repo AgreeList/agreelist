@@ -59,3 +59,6 @@ gem "acts_as_follower"
 gem "chart"
 gem 'newrelic_rpm'
 gem 'sidekiq'
+gem 'graphql'
+
+gem 'graphiql-rails', group: :development
