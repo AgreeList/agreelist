@@ -1,7 +1,9 @@
 require 'sidekiq/web'
 require 'sidekiq_web_constraint'
 Al::Application.routes.draw do
-  mount GraphiQL::Rails::Engine, at: "/api", graphql_path: "/graphql"
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/api", graphql_path: "/graphql"
+  end
 
   post "/graphql", to: "graphql#execute"
   extend SidekiqWebContraint
