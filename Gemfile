@@ -60,4 +60,5 @@ gem "chart"
 gem 'newrelic_rpm'
 gem 'sidekiq'
 gem 'graphql'
-gem 'graphiql-rails'
+
+gem 'graphiql-rails', group: :development
