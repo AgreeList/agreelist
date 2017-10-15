@@ -49,12 +49,6 @@ Contribute:
 
 6. Wait for comments from maintainers or code merge
 
-Developers:
--------
-Hector Perez ([@arpahector](https://twitter.com/arpahector))
-
-Feel free to add yourself if you make a pull request
-
 License:
 -------
 AGPLv3
