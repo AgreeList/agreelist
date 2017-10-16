@@ -5,10 +5,6 @@ AgreeList
 Tracking influencers' opinions
 http://www.agreelist.org
 
-API
--------
-
-
 Prerequisites:
 -------
 ```bash
@@ -39,6 +35,30 @@ redis-server
 bundle exec sidekiq
 rails s
 ```
+
+API
+-------
+GraphQL API http://www.agreelist.org/api/v1
+
+Example of use:
+http://www.agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,extent,individual{name,twitter,wikipedia},statement{content}}}
+
+```
+{
+  agreements(after: 8800, limit: 3) {
+    id
+    reason
+    extent
+    individual {
+      name
+    }
+    statement {
+      content
+    }
+  }
+}
+```
+
 Contribute:
 --------
 1. Find or create an issue
