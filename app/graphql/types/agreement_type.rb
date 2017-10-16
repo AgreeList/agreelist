@@ -3,7 +3,7 @@ Types::AgreementType = GraphQL::ObjectType.define do
 
   field :id, !types.ID
   field :reason, types.String
-  field :extent, !types.Int
+  field :extent, types.Int
   field :url, types.String
   field :statement, Types::StatementType do
     resolve -> (obj, args, ctx) { obj.statement }
