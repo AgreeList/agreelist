@@ -58,6 +58,24 @@ http://www.agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,
   }
 }
 ```
+1. agreements (limit: Int = 10, after: Int = 1) - Votes from individuals on statements
+- id: Integer
+- individual: Individual
+- statement: Statement
+- extent: Int (agree: 100, disagree: 0)
+- reason: String
+- url: String
+
+2. individuals (limit: Int = 10, after: Int = 1) - Person or organization who agrees or disagrees statements
+- id: Integer
+- name: String
+- twitter: String
+- wikidata: String
+- wikipedia: String
+
+3. statements (limit: Int = 10, after: Int = 1) - Topic or statement which can be agreed or disagreed
+- id: Integer
+- content: String (title or content of the statement)
 
 Contribute:
 --------
