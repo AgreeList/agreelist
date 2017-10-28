@@ -2,6 +2,9 @@ class StaticPagesController < ApplicationController
   before_action :set_back_url_to_current_page, only: [:about]
   before_action :statements_to_vote, only: :advice_for_entrepreneurs
 
+  def donors
+  end
+
   def contact
     if current_user && params[:body] =~ /donate\ \$100/
       statement = Statement.find_by_hashed_id(params['statement'])
