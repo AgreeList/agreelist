@@ -91,6 +91,11 @@ Contribute:
 
 6. Wait for comments from maintainers or code merge
 
+Get in touch
+-------
+- Twitter: [@arpahector](https://twitter.com/arpahector)
+- Email: hector@agreelist.org
+
 License:
 -------
 AGPLv3
