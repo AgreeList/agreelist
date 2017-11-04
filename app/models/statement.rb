@@ -1,6 +1,17 @@
 class Statement < ActiveRecord::Base
   MAXIMUM_LENGTH = 500
   acts_as_followable
+
+  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", :default_url => 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', styles: {
+    mini: "50x50#",
+    thumb: '100x100#',
+    square: '200x200#',
+    medium: '300x300>'
+  }
+
+  validates_attachment_content_type :picture, :content_type => /\Aimage\/.*\Z/
+  validates :content, presence: true, length: { maximum: MAXIMUM_LENGTH }
+
   has_many :agreements, dependent: :destroy
   has_many :individuals, :through => :agreements
   has_many :comments
@@ -8,10 +19,10 @@ class Statement < ActiveRecord::Base
 
   acts_as_taggable
 
-  validates :content, presence: true, length: { maximum: MAXIMUM_LENGTH }
   before_create :generate_hashed_id, :set_none_tag
   before_create :set_url, if: :blank_url?
   before_update :store_old_url_if_changed
+
 
   def to_s
     content
@@ -65,6 +76,14 @@ class Statement < ActiveRecord::Base
 
   def generate_url
     content.split(" ")[0..9].join("-").gsub(/[^0-9a-z-]/i, '').downcase
+  end
+
+  def picture_from_url=(url)
+    self.picture = open(url) if url.present?
+  end
+
+  def picture_from_url
+    ""
   end
 
   private

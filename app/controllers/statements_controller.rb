@@ -72,8 +72,16 @@ class StatementsController < ApplicationController
   # GET /statements/1
   # GET /statements/1.json
   def show
-    set_meta_tags title: @statement.content,
-                  description: "List of who does and who does not agree"
+    meta_tags = {
+      title: @statement.content,
+      description: "List of who does and who does not agree",
+      og: {
+        title: @statement.content,
+        description: "List of who does and who does not agree"
+      }
+    }
+    meta_tags[:og] = meta_tags[:og].merge(image: @statement.picture(:square)) if @statement.picture?
+    set_meta_tags meta_tags
     if params[:c] == "Others"
       @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
       @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
@@ -134,7 +142,7 @@ class StatementsController < ApplicationController
   # PUT /statements/1.json
   def update
     respond_to do |format|
-      if @statement.update_attributes(params.require(:statement).permit(:content, :url, :tag_list))
+      if @statement.update_attributes(params.require(:statement).permit(:content, :url, :tag_list, :picture_from_url))
         format.html { redirect_to(get_and_delete_back_url || statements_path, notice: 'Statement was successfully updated.') }
         format.json { head :no_content }
       else

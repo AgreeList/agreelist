@@ -9,6 +9,7 @@
   - else
     %h4
       = render partial: "content"
+  = image_tag @statement.picture.url(:thumb) if @statement.picture?
   %span.small= link_to "See Board", brexit_board_path if board?
   %br
   - if @agreements_count > 0
