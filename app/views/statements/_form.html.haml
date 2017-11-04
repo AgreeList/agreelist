@@ -17,6 +17,9 @@
     agreelist.org/a/
     = f.text_field :url, class: "form-control"
   .field
+    Current image:
+    = image_tag @statement.picture(:original)
+  .field
     New image (url)
     = f.text_field :picture_from_url, class: "form-control"
   .actions
