@@ -2,6 +2,9 @@ class NewController < ApplicationController
   before_action :set_back_url_to_current_page, only: :index
   before_action :replace_page_type, only: :index
   def index
+    set_meta_tags title: "Agreelist - Tracking influencers' opinions",
+          description: "Non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues",
+          keywords: "opinions, debates, decision making, non-profit, influencers"
     @agreements = Agreement.joins("left join individuals on individuals.id=agreements.individual_id").where("individuals.wikipedia is not null and individuals.wikipedia != ''").order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
     @statement = Statement.new
     @influencers = Individual.where("lower(twitter) in (?)", %w(barackobama stephenhawking8 hillaryclinton pontifex billgates oprah elonmusk)).order(ranking: :desc, followers_count: :desc)

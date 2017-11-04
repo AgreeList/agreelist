@@ -73,9 +73,7 @@ class StatementsController < ApplicationController
   # GET /statements/1.json
   def show
     set_meta_tags title: @statement.content,
-              description: "List of who does and who does not agree",
-              keywords: @statement.content.split(" ").map(&:downcase)
-
+                  description: "List of who does and who does not agree"
     if params[:c] == "Others"
       @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
       @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
