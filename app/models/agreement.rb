@@ -36,6 +36,12 @@ class Agreement < ActiveRecord::Base
     self.hashed_id
   end
 
+  def self.context(context_name, context_value)
+    joins("left join taggings on taggings.taggable_id=agreements.individual_id left join tags on tags.id=taggings.tag_id").
+    where(taggings: {taggable_type: "Individual", context: context_name}).
+    where("lower(tags.name) = ?", context_value)
+  end
+
   private
 
   def update_counters
