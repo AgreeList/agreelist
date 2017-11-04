@@ -62,3 +62,4 @@ gem 'sidekiq'
 gem 'graphql'
 
 gem 'graphiql-rails', group: :development
+gem 'meta-tags'
