@@ -119,9 +119,19 @@ class ApplicationController < ActionController::Base
         description: args[:description],
         url: request.url,
         type: "website"
+      },
+      twitter: {
+        site: "@agreelist",
+        card: "summary",
+        title: args[:title],
+        description: args[:description],
+        domain: request.base_url
       }
     }
-    meta_tags[:og] = meta_tags[:og].merge(image: args[:picture_object].picture(:square)) if args[:picture_object].try(:picture?)
+    if args[:picture_object].try(:picture?)
+      meta_tags[:og] = meta_tags[:og].merge(image: args[:picture_object].picture(:square))
+      meta_tags[:twitter] = meta_tags[:twitter].merge(image: {src: args[:picture_object].picture(:square)})
+    end
     set_meta_tags meta_tags
   end
 end
