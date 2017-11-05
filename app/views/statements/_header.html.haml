@@ -3,12 +3,7 @@
     %span.alert.alert-warning
       Biased? Please
       = link_to "add more opinions", new_agreement_path(s: @statement.to_param), class: "underline"
-  - if @statement.content.size < 100
-    %h1
-      = render partial: "content"
-  - else
-    %h4
-      = render partial: "content"
+  %h1= render partial: "content"
   = image_tag @statement.picture.url(:thumb) if @statement.picture?
   %span.small= link_to "See Board", brexit_board_path if board?
   %br
