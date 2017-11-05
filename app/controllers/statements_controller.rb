@@ -77,7 +77,9 @@ class StatementsController < ApplicationController
       description: "List of who does and who does not agree",
       og: {
         title: @statement.content,
-        description: "List of who does and who does not agree"
+        description: "List of who does and who does not agree",
+        url: request.url,
+        type: "website"
       }
     }
     meta_tags[:og] = meta_tags[:og].merge(image: @statement.picture(:square)) if @statement.picture?
