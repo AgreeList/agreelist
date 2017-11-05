@@ -5,7 +5,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     field field_name, types[type_class] do
       description desc
       argument :limit, types.Int, default_value: 10, prepare: -> (limit) { [limit, 100].min }
-      argument :after, types.Int, default_value: 1, prepare: -> (after) { after }
+      argument :after, types.Int, default_value: 0, prepare: -> (after) { after }
       resolve ->(obj, args, ctx) {
         class_name.where(["id > ?", args[:after]]).order(id: :asc).limit(args[:limit])
       }
