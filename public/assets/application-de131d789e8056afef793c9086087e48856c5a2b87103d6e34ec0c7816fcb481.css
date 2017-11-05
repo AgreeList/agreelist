@@ -236,6 +236,7 @@ span.medium{
 
 .footer-line{
   padding-top: 15px;
+  background:rgba(150,150,150,0.2);
 }
 
 .profile-agreement-container{
@@ -286,7 +287,6 @@ span.medium{
   }
 }
 
-
 .footer-line{
   padding-bottom: 20px;
 }
@@ -295,6 +295,9 @@ span.medium{
   padding-top: 20px;
 }
 
+.social-media-icons{
+  font-size: 40px;
+}
 #statements {
   padding-top: 10px;
   background-color: orange; }
