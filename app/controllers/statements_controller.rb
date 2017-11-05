@@ -75,6 +75,7 @@ class StatementsController < ApplicationController
     meta_tags = {
       title: @statement.content,
       description: "List of who does and who does not agree",
+      fb: { app_id: ENV["FB_APP_ID"] },
       og: {
         title: @statement.content,
         description: "List of who does and who does not agree",

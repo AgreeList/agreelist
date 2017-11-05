@@ -47,6 +47,7 @@ class IndividualsController < ApplicationController
     meta_tags = {
       title: @individual.name,
       description: "Opinions from #{@individual.name} and lists of who does and who does not agree",
+      fb: { app_id: ENV["FB_APP_ID"] },
       og: {
         title: @individual.name,
         description: "Opinions from #{@individual.name} and lists of who does and who does not agree",
