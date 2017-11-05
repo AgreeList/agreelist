@@ -14,6 +14,13 @@ feature "follow_statement", js: true do
     expect(page).to have_content "Follow"
   end
 
+  scenario "should update follows page" do
+    visit statement_path(@statement)
+    click_link "Follow"
+    visit follows_path
+    expect(page).to have_content(@statement.content)
+  end
+
   def seed_data
     @statement = create(:statement)
   end

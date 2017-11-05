@@ -14,6 +14,13 @@ feature "follow_individual", js: true do
     expect(page).to have_content "Follow"
   end
 
+  scenario "should update follows page" do
+    visit individual_path(@individual)
+    click_link "Follow"
+    visit follows_path
+    expect(page).to have_content(@individual.name)
+  end
+
   def seed_data
     create(:statement)
     @individual = create(:individual)

@@ -1,1 +1,18 @@
-index.html.haml
+.container
+  %h1 Follows
+  %h2 Statements
+  - @followed_statements.each do |statement, individuals|
+    %p
+      .b= link_to(statement.content, statement_path(statement))
+      = "#{individuals.size}: "
+      - individuals.each do |individual|
+        = link_to(individual.name, individual_path(individual))
+        ,
+  %h2 Individuals
+  - @followed_individuals.each do |individual, individuals|
+    %p
+      .b= link_to(individual.name, individual_path(individual))
+      = "#{individuals.size}: "
+      - individuals.each do |individual|
+        = link_to(individual.name, individual_path(individual))
+        ,
