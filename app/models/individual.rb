@@ -142,13 +142,13 @@ class Individual < ActiveRecord::Base
   end
 
   def agrees
-    # agreements.select{ |a| a.extent == 100 && a.statement.tag_list.include?("entrepreneurship") }.map{ |i| i.statement }
-    agreements.select{ |a| a.extent == 100 }.map{ |i| i.statement }
+    statement_ids = agreements.where(extent: 100).pluck(:statement_id)
+    Statement.where(id: statement_ids)
   end
 
   def disagrees
-    # agreements.select{ |a| a.extent == 0 && a.statement.tag_list.include?("entrepreneurship") }.map{ |i| i.statement }
-    agreements.select{ |a| a.extent == 0 }.map{ |i| i.statement }
+    statement_ids = agreements.where(extent: 0).pluck(:statement_id)
+    Statement.where(id: statement_ids)
   end
 
   def self.search(search)
