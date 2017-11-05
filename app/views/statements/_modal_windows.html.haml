@@ -6,7 +6,7 @@
       .modal-body.text-center
         = link_to image_tag("twitter-login.png"), "/auth/twitter?task=voting&vote=agree&statement_id=#{@statement.id}", id: "vote-twitter-login"
         %h3 No Twitter?
-        = link_to "Log in with your email", login_path(back_url: request.original_url), class: "btn btn-primary"
+        = link_to "Log in with your email", login_path(task: "voting", vote: "agree", statement_id: @statement.id), class: "btn btn-primary"
         |
         = link_to "Back", "#", "data-dismiss" => "modal"
 #disagreeModal.modal.fade{role: "dialog"}
@@ -17,7 +17,7 @@
       .modal-body.text-center
         = link_to image_tag("twitter-login.png"), "/auth/twitter?task=voting&vote=disagree&statement_id=#{@statement.id}", id: "vote-twitter-login"
         %h3 No Twitter?
-        = link_to "Log in with your email", login_path(back_url: request.original_url), class: "btn btn-primary"
+        = link_to "Log in with your email", login_path(task: "voting", vote: "disagree", statement_id: @statement.id), class: "btn btn-primary"
         |
         = link_to "Back", "#", "data-dismiss" => "modal"
 #upvoteModal.modal.fade{role: "dialog"}
@@ -29,5 +29,16 @@
         = link_to image_tag("twitter-login.png"), "/auth/twitter", id: "upvote-twitter-login"
         %h3 No Twitter?
         = link_to "Log in with your email", login_path, class: "btn btn-primary", id: "upvote-email-login"
+        |
+        = link_to "Back", "#", "data-dismiss" => "modal"
+#followModal.modal.fade{role: "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3 Log in to follow
+      .modal-body.text-center
+        = link_to image_tag("twitter-login.png"), "/auth/twitter?task=follow&statement_id=#{@statement.id}", id: "follow-twitter-login"
+        %h3 No Twitter?
+        = link_to "Log in with your email", login_path(task: "follow", statement_id: @statement.id), class: "btn btn-primary", id: "follow-email-login"
         |
         = link_to "Back", "#", "data-dismiss" => "modal"

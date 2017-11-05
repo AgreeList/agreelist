@@ -18,6 +18,8 @@
       = password_field_tag :password, "", class: "form-control"
       = hidden_field_tag :task, params[:task]
       = hidden_field_tag :agreement_id, params[:agreement_id]
+      = hidden_field_tag :statement_id, params[:statement_id]
+      = hidden_field_tag :vote, params[:vote]
     %p
       .actions
         = submit_tag "Log in", class: "btn btn-primary"

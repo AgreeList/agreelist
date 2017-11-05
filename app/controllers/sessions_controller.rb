@@ -12,8 +12,14 @@ class SessionsController < ApplicationController
       session[:user_id] = individual.id
       notify("login")
       notify("login_email", current_user_id: individual.id)
-      if params["task"] == "upvote"
+      if params["task"] == "voting"
+        vote(individual)
+      elsif params["task"] == "upvote"
         upvote(redirect_to: get_and_delete_back_url, agreement_id: params[:agreement_id])
+      elsif params["task"] == "follow"
+        object = params[:statement_id].present? ? Statement.find(params[:statement_id]) : Individual.find(params[:individual_id])
+        individual.follow(object)
+        redirect_to(get_and_delete_back_url || root_url, :notice => "Followed!")
       else
         redirect_to(get_and_delete_back_url || root_url, :notice => "Logged in!")
       end
@@ -42,6 +48,10 @@ class SessionsController < ApplicationController
       create_statement_and_agree(user)
     elsif params["task"] == "upvote"
       upvote(redirect_to: get_and_delete_back_url, agreement_id: params[:agreement_id])
+    elsif params["task"] == "follow"
+      object = params[:statement_id].present? ? Statement.find(params[:statement_id]) : Individual.find(params[:individual_id])
+      user.follow(object)
+      redirect_to(get_and_delete_back_url || root_path, notice: "Followed!")
     else
       redirect_to(get_and_delete_back_url || root_path, notice: "Signed in!")
     end

@@ -39,26 +39,75 @@ feature 'voting', js: true do
       visit statement_path(statement)
     end
 
-    scenario "agree" do
-      click_link "You?"
-      click_link "I agree"
-      click_link "vote-twitter-login"
-      fill_in :agreement_reason, with: "because..."
-      click_button "Save"
-      expect(page).to have_content("Hector Perez")
-      expect(page).to have_content("Agree 100%")
-      expect(page).to have_content("2 influencers")
+    context "twitter login" do
+      scenario "agree" do
+        click_link "You?"
+        click_link "I agree"
+        click_link "vote-twitter-login"
+        fill_in :agreement_reason, with: "because..."
+        click_button "Save"
+        expect(page).to have_content("Hector Perez")
+        expect(page).to have_content("Agree 100%")
+        expect(page).to have_content("2 influencers")
+      end
+
+      scenario "disagree" do
+        click_link "You?"
+        click_link "I disagree"
+        click_link "vote-twitter-login"
+        fill_in :agreement_reason, with: "because..."
+        click_button "Save"
+        expect(page).to have_content("Hector Perez")
+        expect(page).to have_content("Agree 50%")
+        expect(page).to have_content("2 influencers")
+      end
     end
 
-    scenario "disagree" do
-      click_link "You?"
-      click_link "I disagree"
-      click_link "vote-twitter-login"
-      fill_in :agreement_reason, with: "because..."
-      click_button "Save"
-      expect(page).to have_content("Hector Perez")
-      expect(page).to have_content("Agree 50%")
-      expect(page).to have_content("2 influencers")
+    context "email login" do
+      before do
+        Individual.create(email: "bla@bla.com", password: "blabla", name: "bla")
+      end
+
+      scenario "agree" do
+        click_link "You?"
+        click_link "I agree"
+        click_link "Log in with your email"
+        fill_in :email, with: "bla@bla.com"
+        fill_in :password, with: "blabla"
+        click_button "Log in"
+        fill_in :agreement_reason, with: "because..."
+        click_button "Save"
+        expect(page).to have_content("bla (1)")
+        expect(page).to have_content("2 influencers")
+      end
+
+      scenario "agree" do
+        click_link "You?"
+        click_link "I agree"
+        click_link "Log in with your email"
+        fill_in :email, with: "bla@bla.com"
+        fill_in :password, with: "blabla"
+        click_button "Log in"
+        fill_in :agreement_reason, with: "because..."
+        click_button "Save"
+        expect(page).to have_content("bla (1)")
+        expect(page).to have_content("2 influencers")
+        expect(page).to have_content("Agree 100%")
+      end
+
+      scenario "disagree" do
+        click_link "You?"
+        click_link "I disagree"
+        click_link "Log in with your email"
+        fill_in :email, with: "bla@bla.com"
+        fill_in :password, with: "blabla"
+        click_button "Log in"
+        fill_in :agreement_reason, with: "because..."
+        click_button "Save"
+        expect(page).to have_content("bla (1)")
+        expect(page).to have_content("2 influencers")
+        expect(page).to have_content("Agree 50%")
+      end
     end
   end
 
