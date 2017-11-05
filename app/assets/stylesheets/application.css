@@ -165,8 +165,12 @@ span.medium{
     width: 20%;
   }
 
-  .fb-icon{
+  .facebook-icon{
     margin-left: 10px;
+  }
+
+  .twitter-icon{
+    margin-left: -10px;
   }
 }
 
@@ -300,4 +304,8 @@ span.medium{
 
 .social-media-icons{
   font-size: 40px;
+}
+
+.social-media-links{
+  padding-bottom: 20px;
 }
