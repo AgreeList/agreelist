@@ -1,4 +1,18 @@
 .text-center
+  .social-media-links
+    Follow us:
+    .row
+      .col-xs-4
+      .col-xs-2
+        = link_to "https://www.facebook.com/AgreeList" do
+          %i.ion.ion-social-facebook.social-media-icons
+      .col-xs-2
+        = link_to "https://www.twitter.com/arpahector" do
+          %i.ion.ion-social-twitter.social-media-icons
+    .row
+      .col-xs-4
+      .col-xs-2= link_to "Facebook", "https://www.facebook.com/AgreeList"
+      .col-xs-2= link_to "Twitter", "https://www.twitter.com/arpahector"
   .footer-line
     = link_to "Open Source", "https://github.com/hectorperez/agreelist"
     ·

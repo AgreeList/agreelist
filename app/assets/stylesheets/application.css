@@ -235,6 +235,7 @@ span.medium{
 
 .footer-line{
   padding-top: 15px;
+  background:rgba(150,150,150,0.2);
 }
 
 .profile-agreement-container{
@@ -294,3 +295,10 @@ span.medium{
   padding-top: 20px;
 }
 
+.social-media-icons{
+  font-size: 40px;
+}
+
+.social-media-links{
+  margin-top: -15px;
+}
