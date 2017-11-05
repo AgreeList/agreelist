@@ -44,12 +44,12 @@ class IndividualsController < ApplicationController
   end
 
   def show
-    add_meta_tags({
-      title: @individual.name,
-      description: "Opinions from #{@individual.name} and lists of who does and who does not agree",
-      picture_object: @individual
-    })
     if @individual
+      add_meta_tags({
+        title: @individual.name,
+        description: "Opinions from #{@individual.name} and lists of who does and who does not agree",
+        picture_object: @individual
+      })
       @school_list = @individual.school_list
       @occupation_list = @individual.occupation_list
       @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc")
