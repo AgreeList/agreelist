@@ -1,6 +1,7 @@
 AgreeList
 =============
 [![Code Climate](https://codeclimate.com/github/hectorperez/agreelist/badges/gpa.svg)](https://codeclimate.com/github/hectorperez/agreelist)
+[![Build Status](https://travis-ci.org/hectorperez/agreelist.svg?branch=master)](https://travis-ci.org/hectorperez/agreelist)
 
 Tracking influencers' opinions
 http://www.agreelist.org
