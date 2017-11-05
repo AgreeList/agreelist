@@ -22,5 +22,5 @@
       %p Search people, topics, opinions, etc.
       .form-inline
         = form_tag search_path do
-          = text_field_tag :search, "", class: "form-control", placeholder: "e.g. Basic Income"
+          = text_field_tag :search, "", class: "form-control", placeholder: "e.g. Basic Income", autofocus: true
           = submit_tag "Search", class: "btn btn-primary"
