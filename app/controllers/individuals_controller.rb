@@ -44,19 +44,11 @@ class IndividualsController < ApplicationController
   end
 
   def show
-    meta_tags = {
+    add_meta_tags({
       title: @individual.name,
       description: "Opinions from #{@individual.name} and lists of who does and who does not agree",
-      fb: { app_id: ENV["FB_APP_ID"] },
-      og: {
-        title: @individual.name,
-        description: "Opinions from #{@individual.name} and lists of who does and who does not agree",
-        url: request.url,
-        type: "website"
-      }
-    }
-    meta_tags[:og] = meta_tags[:og].merge(image: @individual.picture(:square)) if @individual.picture?
-    set_meta_tags meta_tags
+      picture_object: @individual
+    })
     if @individual
       @school_list = @individual.school_list
       @occupation_list = @individual.occupation_list

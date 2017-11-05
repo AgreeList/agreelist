@@ -72,19 +72,11 @@ class StatementsController < ApplicationController
   # GET /statements/1
   # GET /statements/1.json
   def show
-    meta_tags = {
+    add_meta_tags({
       title: @statement.content,
       description: "List of who does and who does not agree",
-      fb: { app_id: ENV["FB_APP_ID"] },
-      og: {
-        title: @statement.content,
-        description: "List of who does and who does not agree",
-        url: request.url,
-        type: "website"
-      }
-    }
-    meta_tags[:og] = meta_tags[:og].merge(image: @statement.picture(:square)) if @statement.picture?
-    set_meta_tags meta_tags
+      picture_object: @statement
+    })
     if params[:c] == "Others"
       @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
       @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])

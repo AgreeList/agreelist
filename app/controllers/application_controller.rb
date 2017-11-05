@@ -108,4 +108,20 @@ class ApplicationController < ActionController::Base
     # We use the session for those actions which redirect users
     session.delete(:ga_events).try(:uniq) || []
   end
+
+  def add_meta_tags(args)
+    meta_tags = {
+      title: args[:title],
+      description: args[:description],
+      fb: { app_id: ENV["FB_APP_ID"] },
+      og: {
+        title: args[:title],
+        description: args[:description],
+        url: request.url,
+        type: "website"
+      }
+    }
+    meta_tags[:og] = meta_tags[:og].merge(image: args[:picture_object].picture(:square)) if args[:picture_object].try(:picture?)
+    set_meta_tags meta_tags
+  end
 end
