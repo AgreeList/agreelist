@@ -98,6 +98,7 @@ Get in touch
 -------
 - Twitter: [@arpahector](https://twitter.com/arpahector)
 - Email: hector@agreelist.org
+- [![Slack Status](http://slack.agreelist.org/badge.svg)](https://slack.agreelist.org)
 
 License:
 -------
