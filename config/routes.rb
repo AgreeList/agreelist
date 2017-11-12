@@ -7,6 +7,7 @@ Al::Application.routes.draw do
 
   get "/api/v1", to: "graphql#execute"
   post "/api/v1", to: "graphql#execute"
+  get "/api" => redirect("https://github.com/hectorperez/agreelist/#api")
   extend SidekiqWebContraint
 
   constraints sidekiq_web_constraint do
