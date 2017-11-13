@@ -16,7 +16,7 @@ class Voter
     voter = find_or_build_voter
     voter.name = name if name.present?
     voter.profession_id = profession_id if profession_id.present?
-    voter.wikipedia = wikipedia if wikipedia.present?
+    voter = set_wikipedia_or_bio_link(voter)
     voter.bio = bio if bio.present?
     voter.picture_from_url = picture if picture.present?
     voter.save!
@@ -24,6 +24,17 @@ class Voter
   end
 
   private
+
+  def set_wikipedia_or_bio_link(voter)
+    if wikipedia.present?
+      if wikipedia.scan(/\Ahttps:\/\/\s+\.wikipedia\.org.*\Z/).any?
+        voter.wikipedia = wikipedia
+      else
+        voter.bio_link = wikipedia
+      end
+    end
+    voter
+  end
 
   def find_or_build_voter
     twitter ? find_or_build_twitter_user : (find_user_on_wikipedia || build_user)
