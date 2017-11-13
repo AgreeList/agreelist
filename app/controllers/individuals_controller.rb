@@ -66,7 +66,7 @@ class IndividualsController < ApplicationController
     if @individual == current_user || admin?
       params[:individual][:name] = nil if params[:individual][:name] == ""
       whitelisted_params = [:name, :bio, :picture_from_url, :profession_id, :wikipedia]
-      whitelisted_params = whitelisted_params + [:twitter, :email, :ranking] if admin?
+      whitelisted_params = whitelisted_params + [:twitter, :email, :ranking, :bio_link] if admin?
       whitelisted_params = whitelisted_params + [:password, :password_confirmation] if @individual.password_digest.blank? && @individual == current_user
       result = @individual.update_attributes(params.require(:individual).permit(*whitelisted_params))
       if result
