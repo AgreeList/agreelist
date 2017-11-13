@@ -1,10 +1,8 @@
 .container
   #home-header.text-center
-    = link_to "new topic or opinion", new_statement_path
-    ·
     = link_to "search", new_search_path
     ·
-    = link_to "list of topics", all_path
+    = link_to "topics", all_path
   = render partial: "common/opinions", locals: { agreements: @agreements }
   = render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
   = render partial: "common/subscribe", locals: { statement_id: nil } unless current_user

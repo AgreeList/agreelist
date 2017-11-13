@@ -5,7 +5,7 @@ feature "new" do
     scenario "loads" do
       create(:statement)
       visit "/auth/twitter"
-      expect(page).to have_content("new topic or opinion")
+      expect(page).to have_content("+")
     end
   end
 
@@ -13,7 +13,7 @@ feature "new" do
     scenario "loads" do
       create(:statement)
       visit "/"
-      expect(page).to have_content("new topic or opinion")
+      expect(page).to have_content("+")
     end
   end
 end

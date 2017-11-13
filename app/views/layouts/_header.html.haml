@@ -10,8 +10,11 @@
         #logo-div
           = link_to "AgreeList", root_path, id: "logo"
         %span#logo-subtitle Tracking influencers' opinions
-      .collapse.navbar-collapse#navbar-collapse
-        %ul.nav.navbar-nav.pull-right
+      .pull-right
+        %ul.nav.navbar-nav
+          %li= link_to "+", new_statement_path, id: "new_statement_plus"
+
+        %ul.nav.navbar-nav.collapse.navbar-collapse#navbar-collapse
           %li= link_to "Sign in", login_path unless current_user
           %li= link_to "#{current_user.visible_name} (#{current_user.karma})", "/#{current_user.to_param}" if current_user
           %li= link_to "About", "/about"

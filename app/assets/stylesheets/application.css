@@ -284,6 +284,11 @@ span.medium{
   padding: 5px;
 }
 
+#new_statement_plus{
+  font-size: 150%;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 767px){
   .sign_in{
     padding-top: 25px;
@@ -291,6 +296,12 @@ span.medium{
 
   #stats{
     margin-left: -50px;
+  }
+
+  #new_statement_plus{
+    margin-top: -5px;
+    margin-right: 25px;
+    font-size: 200%;
   }
 }
 
@@ -307,5 +318,7 @@ span.medium{
 }
 
 .social-media-links{
+  padding-top: 20px;
   padding-bottom: 20px;
 }
+

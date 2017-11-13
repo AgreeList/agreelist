@@ -308,7 +308,13 @@ span.medium{
 }
 
 .social-media-links{
+  padding-top: 20px;
   padding-bottom: 20px;
+}
+
+#new_statement{
+  font-size: 150%;
+  font-weight: bold;
 }
 #statements {
   padding-top: 10px;
