@@ -1,5 +1,5 @@
 .container
-  %h3 Occupations on AgreeList:
+  %h3 Occupations on Agreelist:
   - @occupations.each do |occupation|
     %p= link_to "#{occupation.name.titleize} (#{occupation.taggings_count})", occupation_path(occupation.name.downcase.gsub(" ", "-"))
   = render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
