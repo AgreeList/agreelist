@@ -12,7 +12,7 @@
     /[if lt IE 9]
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
-    = javascript_include_tag "https://www.gstatic.com/charts/loader.js", async: true
+    = javascript_include_tag "https://www.gstatic.com/charts/loader.js" #, async: true - In order to load it asynchronously, we need to load the pie charts after loader.js is loaded (use callback?). Otherwise we get ReferenceError: google is not defined
   %body
     = render partial: 'layouts/gtm_body'
     %section.main-container
