@@ -1,5 +1,6 @@
 .container
   #gather.jumbotron.textcenter
+    = react_component('HelloMessage', name: 'Hec')
     .small
       Topic or statement:
       = link_to @statement.content, statement_path(@statement)

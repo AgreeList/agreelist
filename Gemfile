@@ -64,3 +64,4 @@ gem 'graphql'
 gem 'graphiql-rails', group: :development
 gem 'meta-tags'
 gem 'ionicons-rails'
+gem 'react-rails'
