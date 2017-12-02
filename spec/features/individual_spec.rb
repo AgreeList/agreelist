@@ -32,7 +32,7 @@ feature 'create statement from individual profile' do
   context "non-existent individual" do
     scenario "should return an error page" do
       visit "/non-existent-page"
-      expect(page).to have_content("AgreeList does not have a page for non-existent-page")
+      expect(page).to have_content("Agreelist does not have a page for non-existent-page")
     end
   end
 end
