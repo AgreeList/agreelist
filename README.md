@@ -10,6 +10,7 @@ http://www.agreelist.org - Tracking influencers' opinions
 
 Example of topic:
 -------
+![topic example](https://s3-eu-west-1.amazonaws.com/agreelist/basic+income+for+github.png)
 
 API
 -------
