@@ -8,6 +8,10 @@ Agreelist is a non-profit aiming to fight misinformation and improve the quality
 
 http://www.agreelist.org - Tracking influencers' opinions
 
+Example of topic:
+-------
+![sss](https://s3-eu-west-1.amazonaws.com/agreelist/topic+example+for+github.png)
+
 API
 -------
 GraphQL API http://www.agreelist.org/api/v1
