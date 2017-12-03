@@ -57,8 +57,6 @@
         = "#{100 - @percentage_in_favor}%" if @percentage_in_favor
         Disagree
   - else
-    %p There are no opinions on this topic yet.
-    %p
-      = link_to "Add opinions from influencers", new_agreement_path(s: @statement.to_param), class: "btn btn-primary"
-      or
-      = link_to "Donate $100 and we'll find 50 influencers", donate_path(@statement), class: "btn btn-primary"
+    %p There are no opinions on this topic yet. You can:
+    %p= link_to "- Add opinions from influencers", new_agreement_path(s: @statement.to_param)
+    %p= link_to "- Donate and we'll find 50 influencers", donate_path

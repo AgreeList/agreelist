@@ -8,7 +8,7 @@
       - if (@statement.agreements.size) < 50
         %span.small
           or
-          = link_to "donate $100 and we'll find 50 influencers", donate_path(@statement)
+          = link_to "donate and we'll find 50 influencers", donate_path
     - unless current_user
       = link_to "Log in", login_path(back_url: request.url)
       first if you want karma! - optional

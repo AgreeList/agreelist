@@ -6,7 +6,7 @@ class StaticPagesController < ApplicationController
   end
 
   def contact
-    if current_user && params[:body] =~ /donate\ \$100/
+    if current_user && params[:body] =~ /donate/
       statement = Statement.find_by_hashed_id(params['statement'])
       notify("clicked_on_donate_100_for_topic", statement_content: statement.try(:content))
     end

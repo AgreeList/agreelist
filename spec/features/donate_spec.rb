@@ -15,16 +15,14 @@ feature 'donations' do
     scenario "button donate should go and fill form" do
       visit statement_path(@statement)
       click_link "add more?"
-      click_link "donate $100 and we'll find 50 influencers"
-      expect(page).to have_content("I'd like to donate $100 so you can help me to find 50 influencers for the topic or statement: #{@statement.content}")
+      click_link "donate and we'll find 50 influencers"
     end
   end
 
   context "with no opinions" do
     it "button donate should go and fill form" do
       visit statement_path(@statement)
-      click_link "Donate $100 and we'll find 50 influencers"
-      expect(page).to have_content("I'd like to donate $100 so you can help me to find 50 influencers for the topic or statement: #{@statement.content}")
+      click_link "Donate and we'll find 50 influencers"
     end
   end
 
