@@ -14,7 +14,7 @@ Example of topic:
 
 Donations
 -------
-You can contribute, sponsor new topics or donate any one-time or monthly fee on our [Open Collective](https://opencollective.com/democracyearth) page. Thanks!
+You can contribute, sponsor new topics or donate any one-time or monthly fee on our [Open Collective](https://opencollective.com/agreelist) page. Thanks!
 
 API
 -------
