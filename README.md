@@ -12,6 +12,10 @@ Example of topic:
 -------
 ![topic example](https://s3-eu-west-1.amazonaws.com/agreelist/basic+income+for+github.png)
 
+Donations
+-------
+You can contribute, sponsor new topics or donate any one-time or monthly fee on our [Open Collective](https://opencollective.com/democracyearth) page. Thanks!
+
 API
 -------
 GraphQL API http://www.agreelist.org/api/v1
