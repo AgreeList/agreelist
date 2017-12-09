@@ -27,7 +27,7 @@ class Voter
 
   def set_wikipedia_or_bio_link(voter)
     if wikipedia.present?
-      if wikipedia.scan(/\Ahttps:\/\/\s+\.wikipedia\.org.*\Z/).any?
+      if wikipedia.scan(/\Ahttps:\/\/\w+\.wikipedia\.org.*\Z/).any?
         voter.wikipedia = wikipedia
       else
         voter.bio_link = wikipedia
