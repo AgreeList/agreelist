@@ -50,7 +50,7 @@ http://www.agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,
 - id: Integer
 - name: String
 - twitter: String
-- wikidata: String
+- wikidata_id: String
 - wikipedia: String
 
 3. statements (limit: Int = 10, after: Int = 1) - Topic or statement which can be agreed or disagreed
