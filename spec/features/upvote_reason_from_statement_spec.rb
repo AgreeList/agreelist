@@ -30,6 +30,7 @@ feature 'upvote', js: true do
       before_counter = Agreement.last.upvotes_count
       click_upvote
       after_counter = Agreement.last.upvotes_count
+      screenshot_and_save_page
       expect(after_counter).to eq before_counter + 1
     end
 
@@ -75,7 +76,7 @@ feature 'upvote', js: true do
   private
 
   def click_upvote
-    first(:link, "upvote").click # click_link "upvote" seems to find two links, wtf?
+    find(:xpath, "(//a[text()='upvote'])[2]").click # second upvote link, as we have two agreements (one from seed data plus the one in each spec)
   end
 
   def seed_data
