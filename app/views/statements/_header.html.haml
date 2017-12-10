@@ -60,5 +60,6 @@
         Disagree
   - else
     %p There are no opinions on this topic yet. You can:
-    %p= link_to "- Add opinions from influencers", new_agreement_path(s: @statement.to_param)
-    %p= link_to "- Donate and we'll find 50 influencers", donate_path
+    %p= link_to "Add opinions from influencers", new_agreement_path(s: @statement.to_param), class: "btn btn-primary"
+    or
+    %p= link_to "Donate and we'll find 50 influencers", donate_path
