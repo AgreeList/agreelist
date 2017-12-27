@@ -58,11 +58,6 @@ class StaticPagesController < ApplicationController
     end
     @contents = contents
   end
-
-  def cert
-    render plain: (ENV["CERT"] || ""), layout: false
-  end
-
   private
 
   def statements_to_vote

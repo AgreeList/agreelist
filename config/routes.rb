@@ -82,5 +82,4 @@ Al::Application.routes.draw do
   get "/terms" => "static_pages#terms", as: :terms
   get "/privacy" => "static_pages#privacy", as: :privacy
   get '/:id' => 'individuals#show', :as => :profile
-  get "/.well-known/acme-challenge/:id", to: "static_pages#cert"
 end
