@@ -6,7 +6,7 @@ AgreeList
 
 Agreelist is a non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues.
 
-http://www.agreelist.org - Tracking influencers' opinions
+https://agreelist.org - Tracking influencers' opinions
 
 Example of topic:
 -------
@@ -18,10 +18,10 @@ You can contribute, sponsor new topics or donate any one-time or monthly fee on 
 
 API
 -------
-GraphQL API http://www.agreelist.org/api/v1
+GraphQL API https://agreelist.org/api/v1
 
 Example of use:
-http://www.agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,extent,individual{name,twitter,wikipedia},statement{content}}}
+https://agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,extent,individual{name,twitter,wikipedia},statement{content}}}
 
 ```
 {
