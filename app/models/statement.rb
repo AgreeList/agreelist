@@ -2,7 +2,7 @@ class Statement < ActiveRecord::Base
   MAXIMUM_LENGTH = 500
   acts_as_followable
 
-  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", :default_url => 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', styles: {
+  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", :default_url => 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', s3_protocol: 'https', styles: {
     mini: "50x50#",
     thumb: '100x100#',
     square: '200x200#',
