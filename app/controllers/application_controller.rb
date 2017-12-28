@@ -2,10 +2,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_user, :signed_in?, :admin?, :can_delete_statements?, :has_admin_category_rights?, :main_statement, :has_profession_rights?, :has_update_individual_rights?, :board?, :back_url, :google_analytics_events
   before_action :set_page_type
+  before_action :redirect_www
 
   attr_reader :google_analytics_events
 
   private
+
+  def redirect_www
+    if request.host == 'www.agreelist.org'
+      redirect_to 'https://agreelist.org' + request.fullpath, status: 301
+    end
+  end
 
   def notify(event, args = {})
     session[:ga_events] = [] if session[:ga_events].nil?
