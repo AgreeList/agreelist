@@ -187,6 +187,14 @@ class Individual < ActiveRecord::Base
     agreements.size + agreements_added_from_others_without_reason.size * 2 + agreements_added_from_others_with_reason.size * 3
   end
 
+  def follows_people
+    follows.where(followable_type: "Individual")
+  end
+
+  def follows_people_ids
+    follows_people.map{|i| i.followable_id}
+  end
+
   private
 
   def agreements_added_from_others_with_reason

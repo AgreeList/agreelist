@@ -3,25 +3,25 @@
   - statement = agreement.statement
   - reporter = agreement.added_by
   .home-page-agreement-container
-    - if current_user.present? && reporter.present?
+    - if current_user.present? && reporter.present? && @follows_people_ids.include?(reporter.id)
       .small
         = link_to "#{reporter.name}", individual_path(reporter)
-        = "added #{time_ago_in_words(agreement.created_at)} ago:"
+        = "added:"
     .home-page-agreement
       .media
         .media-left
           = image_tag(individual.picture.url(:mini), class: "picture media-object")
         .media-body
           %h4.media-heading
-            %span.name= link_to(statement.content, statement_path(statement))
-            %span.small
+            %span.small= link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
+            %span.small>= ", #{individual.bio} · #{agreement.created_at.strftime('%d %b %Y')}"
+          .statement
+            %span
               - if agreement.agree?
-                %span.green agreed
+                %span.green Agrees:
               - else
-                %span.red disagreed
-              by
-            = link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
-            %span.small>= ", #{individual.bio}"
+                %span.red Disagrees:
+              = link_to(statement.content, statement_path(statement))
           %span.reason
             = render partial: "common/reason", locals: { agreement: agreement }
           %span.small

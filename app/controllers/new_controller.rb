@@ -7,8 +7,8 @@ class NewController < ApplicationController
       description: "Non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues",
     })
     if current_user.present?
-      follows_people_ids = current_user.follows.where(followable_type: "Individual").map{|i| i.followable_id}
-      @agreements = Agreement.where(added_by_id: follows_people_ids).or(Agreement.where(individual_id: follows_people_ids)).order(created_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
+      load_follows_people_ids
+      @agreements = Agreement.where(added_by_id: @follows_people_ids).or(Agreement.where(individual_id: @follows_people_ids)).order(created_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
     else
       @agreements = Agreement.joins("left join individuals on individuals.id=agreements.individual_id").where("individuals.wikipedia is not null and individuals.wikipedia != ''").order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
       @new_user = Individual.new

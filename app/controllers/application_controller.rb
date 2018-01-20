@@ -141,4 +141,8 @@ class ApplicationController < ActionController::Base
     end
     set_meta_tags meta_tags
   end
+
+  def load_follows_people_ids
+    @follows_people_ids = current_user.follows_people_ids if current_user
+  end
 end
