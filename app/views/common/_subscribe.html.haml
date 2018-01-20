@@ -4,14 +4,16 @@
     .col-sm-4
       = form_for @new_user do |f|
         .form-inline
-          %p Receive new opinions by email:
-          = f.text_field :email, placeholder: "your@email.com", class: "text-center form-control"
-          = hidden_field_tag :subscribed, true
-          = f.hidden_field :is_user, value: true
-          - if statement_id
-            = hidden_field_tag :task, "follow"
-            = hidden_field_tag :statement_id, statement_id
-          = f.submit "Subscribe", class: "btn btn-primary"
+          %p.left Receive new opinions by email:
+          .subscribe
+            = f.text_field :email, placeholder: "your@email.com", class: "text-center form-control"
+            = hidden_field_tag :subscribed, true
+            = f.hidden_field :is_user, value: true
+            - if statement_id
+              = hidden_field_tag :task, "follow"
+              = hidden_field_tag :statement_id, statement_id
+          %div
+            = invisible_recaptcha_tags text: 'Subscribe', class: "btn btn-primary"
     .col-sm-4
       .sign_in
         %p= link_to "Sign in with email", signup_path
