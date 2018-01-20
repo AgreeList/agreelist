@@ -2,6 +2,8 @@
   - individual = agreement.individual
   - statement = agreement.statement
   .home-page-agreement-container
+    .small= "Added by #{agreement.added_by.name}" if current_user.present? && agreement.added_by.present?
+
     .home-page-agreement
       .media
         .media-left

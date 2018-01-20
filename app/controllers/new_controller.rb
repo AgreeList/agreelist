@@ -6,10 +6,14 @@ class NewController < ApplicationController
       title: "Tracking influencers' opinions",
       description: "Non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues",
     })
-    @agreements = Agreement.joins("left join individuals on individuals.id=agreements.individual_id").where("individuals.wikipedia is not null and individuals.wikipedia != ''").order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
+    if current_user.present?
+      follows_people_ids = current_user.follows.where(followable_type: "Individual").map{|i| i.followable_id}
+      @agreements = Agreement.where(added_by_id: follows_people_ids).order(created_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual).includes(:individual)
+    else
+      @agreements = Agreement.joins("left join individuals on individuals.id=agreements.individual_id").where("individuals.wikipedia is not null and individuals.wikipedia != ''").order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
+      @new_user = Individual.new
+    end
     @statement = Statement.new
-    @influencers = Individual.where("lower(twitter) in (?)", %w(barackobama stephenhawking8 hillaryclinton pontifex billgates oprah elonmusk)).order(ranking: :desc, followers_count: :desc)
-    @new_user = Individual.new unless current_user
     load_occupations_and_schools(number: 7, min_count: 50)
   end
 
