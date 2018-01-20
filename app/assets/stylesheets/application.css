@@ -322,3 +322,11 @@ span.medium{
   padding-bottom: 20px;
 }
 
+.subscribe{
+  float: left;
+  width: 40%;
+}
+
+.left{
+  text-align: left;
+}

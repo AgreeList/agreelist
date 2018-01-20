@@ -11,7 +11,7 @@ class IndividualsController < ApplicationController
 
   def create
     @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
-    if @individual.save
+    if verify_recaptcha(model: @individual) && @individual.save
       notify("sign_up", current_user_id: @individual.id)
       notify("subscribe") if params[:subscribed]
       @individual.send_activation_email

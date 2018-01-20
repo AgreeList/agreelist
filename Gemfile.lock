@@ -281,6 +281,8 @@ GEM
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
     rb-readline (0.5.5)
+    recaptcha (4.6.3)
+      json
     redis (3.3.3)
     redis-actionpack (5.0.2)
       actionpack (>= 4.0, < 6)
@@ -427,6 +429,7 @@ DEPENDENCIES
   rack_session_access
   rails (>= 5.1.1)
   rb-readline
+  recaptcha
   redis-rails (~> 5.0.2)
   redis-store (~> 1.4.0)
   rspec-rails
