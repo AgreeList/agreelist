@@ -8,7 +8,7 @@ class NewController < ApplicationController
     })
     if current_user.present?
       load_follows_people_ids
-      @agreements = Agreement.where(added_by_id: @follows_people_ids).or(Agreement.where(individual_id: @follows_people_ids)).order(created_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
+      @agreements = Agreement.where(individual_id: @follows_people_ids).order(created_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
     else
       @agreements = Agreement.joins("left join individuals on individuals.id=agreements.individual_id").where("individuals.wikipedia is not null and individuals.wikipedia != ''").order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
       @new_user = Individual.new
