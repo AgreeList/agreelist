@@ -1,5 +1,5 @@
 class StatementsController < ApplicationController
-  before_action :login_required, only: [:index, :new, :create, :create_and_vote]
+  before_action :login_required, only: [:new, :create, :create_and_vote]
   before_action :admin_required, only: [:edit, :update, :destroy]
   before_action :find_statement, only: [:show, :destroy, :update, :edit, :occupations, :educated_at]
   before_action :find_related_statements, only: :show
