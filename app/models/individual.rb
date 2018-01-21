@@ -32,7 +32,7 @@ class Individual < ActiveRecord::Base
   validates_uniqueness_of :email, if: :is_user
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, if: :is_user
 
-  acts_as_taggable_on :occupations, :schools
+  acts_as_taggable_on :occupations, :schools, :countries
 
   before_create :generate_hashed_id, :generate_activation_digest
 
@@ -245,8 +245,10 @@ class Individual < ActiveRecord::Base
 
   def update_occupations_and_schools_from_wikidata
     if wikidata_id
-      self.occupation_list = WikidataPerson.new(wikidata_id: wikidata_id).occupations
-      self.school_list = WikidataPerson.new(wikidata_id: wikidata_id).educated_at
+      wikidata_person = WikidataPerson.new(wikidata_id: wikidata_id)
+      self.occupation_list = wikidata_person.occupations
+      self.school_list = wikidata_person.educated_at
+      self.countries_list = wikidata_person.countries
     end
   end
 end

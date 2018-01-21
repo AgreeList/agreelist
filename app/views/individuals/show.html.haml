@@ -38,6 +38,13 @@
           - @occupation_list.each_with_index do |occupation, index|
             = link_to occupation.titleize, occupation_path(occupation.downcase.gsub(" ", "-"))
             = "·" unless index == @occupation_list.size - 1
+      - if @countries_list.any?
+        - if @countries_list.size == 1
+          Country:
+        - else
+          Countries:
+        = @countries_list.join(", ")
+
   %br
 
   - @agreements.each do |agreement|

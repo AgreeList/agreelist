@@ -49,16 +49,37 @@ class Agreement < ActiveRecord::Base
     where("lower(tags2.name) = ?", context_value2.downcase)
   end
 
+  def self.three_contexts(context_name1, context_value1, context_name2, context_value2, context_name3, context_value3)
+    two_contexts(context_name1, context_value1, context_name2, context_value2).
+    joins("left join taggings as taggings3 on taggings3.taggable_id=agreements.individual_id left join tags as tags3 on tags3.id=taggings3.tag_id").
+    where(taggings3: {taggable_type: "Individual", context: context_name3}).
+    where("lower(tags3.name) = ?", context_value3.downcase)
+  end
+
   def self.filter(filters)
     agreements = self.where("reason is not null and reason != ''")
-    if filters[:occupation].present?
-      if filters[:school].present?
-        agreements = agreements.two_contexts("occupations", filters[:occupation], "schools", filters[:school])
+    if filters[:country].present?
+      if filters[:occupation].present?
+        if filters[:school].present?
+          agreements = agreements.three_contexts("countries", filters[:country], "occupations", filters[:occupation], "schools", filters[:school])
+        else
+          agreements = agreements.two_contexts("countries", filters[:country], "occupations", filters[:occupation])
+        end
+      elsif filters[:school].present?
+        agreements = agreements.two_contexts("countries", filters[:country], "schools", filters[:school])
       else
-        agreements = agreements.context("occupations", filters[:occupation])
+        agreements = agreements.context("countries", filters[:country])
       end
-    elsif filters[:school].present?
-      agreements = agreements.context("schools", filters[:school])
+    else
+      if filters[:occupation].present?
+        if filters[:school].present?
+          agreements = agreements.two_contexts("occupations", filters[:occupation], "schools", filters[:school])
+        else
+          agreements = agreements.context("occupations", filters[:occupation])
+        end
+      elsif filters[:school].present?
+        agreements = agreements.context("schools", filters[:school])
+      end
     end
 
     agreements = agreements.joins("left join individuals on individuals.id=agreements.individual_id")
@@ -74,6 +95,7 @@ class Agreement < ActiveRecord::Base
       s = Statement.find_by_content(filters[:statement])
       agreements = agreements.where(statement_id: s.id) if s
     end
+
     agreements
   end
 

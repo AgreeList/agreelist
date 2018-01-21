@@ -3,7 +3,8 @@ class WikidataPerson
   PROPERTIES = {
     educated_at: "P69",
     occupations: "P106",
-    part_of: "P361"
+    part_of: "P361",
+    countries: "P27"
   }
 
   def initialize(args)
@@ -16,6 +17,10 @@ class WikidataPerson
 
   def occupations
     fetch(PROPERTIES[:occupations]).map{|occupation| id(occupation).label}
+  end
+
+  def countries
+    fetch(PROPERTIES[:countries]).map{|country| id(country).label}
   end
 
   def educated_at
