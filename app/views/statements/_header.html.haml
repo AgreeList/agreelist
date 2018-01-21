@@ -14,7 +14,9 @@
     - if occupations_cache_count && occupations_cache_count >= 3
       .div-inline.dropdown
         Opinions from
-        = link_to(pluralize(@agreements_count, params["occupation"] || "influencer"), "", class: "dropdown-toggle underline", id: "occupationMenu", :"data-toggle" => "dropdown", :"aria-haspopup" => "true", :"aria-expanded" => "true")
+        = link_to("", class: "dropdown-toggle underline", id: "occupationMenu", :"data-toggle" => "dropdown", :"aria-haspopup" => "true", :"aria-expanded" => "true") do
+          = pluralize(@agreements_count, params["occupation"] || "influencer")
+          %b.caret
         %ul.dropdown-menu{:"aria-labelledby" => "occupationMenu"}
           %li= link_to "all (#{@statement.agreements.where("reason is not null and reason != ''").count})", statement_path(@statement)
           - @dropdown_occupations.each do |occupation|
