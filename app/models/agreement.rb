@@ -50,7 +50,7 @@ class Agreement < ActiveRecord::Base
   end
 
   def self.filter(filters)
-    agreements = self
+    agreements = self.where("reason is not null and reason != ''")
     if filters[:occupation].present?
       if filters[:school].present?
         agreements = agreements.two_contexts("occupations", filters[:occupation], "schools", filters[:school])
@@ -68,6 +68,10 @@ class Agreement < ActiveRecord::Base
       agreements = agreements.where("individuals.wikipedia is null or individuals.wikipedia = ''")
     end
 
+    if filters[:statement].present?
+      s = Statement.find_by_content(filters[:statement])
+      agreements = agreements.where(statement_id: s.id) if s
+    end
     agreements
   end
 

@@ -12,6 +12,8 @@ class NewController < ApplicationController
     @filters[:school] = params[:school] == "any" ? nil : params[:school]
     @filters[:occupation] = params[:occupation] == "any" ? nil : params[:occupation]
     @filters[:min_count] = params[:min_count] == default_min_count.to_s ? nil : params[:min_count]
+    @filters[:statement] = params[:statement] == "any" ? nil : params[:statement]
+    @statement_filters = Statement.order(opinions_count: :desc).limit(10)
     load_occupations_and_schools(number: 7, min_count: @filters[:min_count] || default_min_count)
     @agreements = Agreement.filter(@filters).order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
     @new_user = Individual.new unless current_user
