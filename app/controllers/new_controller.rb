@@ -6,12 +6,13 @@ class NewController < ApplicationController
       title: "Tracking influencers' opinions",
       description: "Non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues",
     })
+    default_min_count = 50
     @filters = {}
     @filters[:type] = params[:type] == "influencers" ? nil : params[:type]
     @filters[:school] = params[:school] == "any" ? nil : params[:school]
     @filters[:occupation] = params[:occupation] == "any" ? nil : params[:occupation]
-    @filters[:min_count] = params[:min_count] || 50
-    load_occupations_and_schools(number: 7, min_count: @filters[:min_count])
+    @filters[:min_count] = params[:min_count] == default_min_count.to_s ? nil : params[:min_count]
+    load_occupations_and_schools(number: 7, min_count: @filters[:min_count] || default_min_count)
     @agreements = Agreement.filter(@filters).order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
     @new_user = Individual.new unless current_user
     @statement = Statement.new
