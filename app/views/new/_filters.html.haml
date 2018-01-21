@@ -1,5 +1,5 @@
 .home-page-agreement-container
-  %span.dropdown.home-filter
+  %span#type-filter.dropdown.home-filter
     Opinions from
     = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
       = @filters[:type].present? ? @filters[:type] : "influencers"
