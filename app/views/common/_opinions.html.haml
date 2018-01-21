@@ -8,15 +8,15 @@
           = image_tag(individual.picture.url(:mini), class: "picture media-object")
         .media-body
           %h4.media-heading
-            %span.name= link_to(statement.content, statement_path(statement))
-            %span.small
-              - if agreement.agree?
-                %span.green agreed
-              - else
-                %span.red disagreed
-              by
-            = link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
+            %span= link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
             %span.small>= ", #{individual.bio}"
+          .statement
+            %span
+              - if agreement.agree?
+                %span.green agrees
+              - else
+                %span.red disagrees
+            = link_to(statement.content, statement_path(statement))
           %span.reason
             = render partial: "common/reason", locals: { agreement: agreement }
           %span.small

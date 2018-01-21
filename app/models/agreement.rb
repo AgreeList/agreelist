@@ -6,7 +6,7 @@ class Agreement < ActiveRecord::Base
   belongs_to :statement
   belongs_to :individual
   belongs_to :reason_category, optional: true
-  belongs_to :added_by, optional: true
+  belongs_to :added_by, optional: true, class_name: "Individual"
   has_many :agreement_comments
   has_many :upvotes
 
@@ -39,7 +39,36 @@ class Agreement < ActiveRecord::Base
   def self.context(context_name, context_value)
     joins("left join taggings on taggings.taggable_id=agreements.individual_id left join tags on tags.id=taggings.tag_id").
     where(taggings: {taggable_type: "Individual", context: context_name}).
-    where("lower(tags.name) = ?", context_value)
+    where("lower(tags.name) = ?", context_value.downcase)
+  end
+
+  def self.two_contexts(context_name1, context_value1, context_name2, context_value2)
+    context(context_name1, context_value1).
+    joins("left join taggings as taggings2 on taggings2.taggable_id=agreements.individual_id left join tags as tags2 on tags2.id=taggings2.tag_id").
+    where(taggings2: {taggable_type: "Individual", context: context_name2}).
+    where("lower(tags2.name) = ?", context_value2.downcase)
+  end
+
+  def self.filter(filters)
+    agreements = self
+    if filters[:occupation].present?
+      if filters[:school].present?
+        agreements = agreements.two_contexts("occupations", filters[:occupation], "schools", filters[:school])
+      else
+        agreements = agreements.context("occupations", filters[:occupation])
+      end
+    elsif filters[:school].present?
+      agreements = agreements.context("schools", filters[:school])
+    end
+
+    agreements = agreements.joins("left join individuals on individuals.id=agreements.individual_id")
+    if filters[:type].nil?
+      agreements = agreements.where("individuals.wikipedia is not null and individuals.wikipedia != ''")
+    elsif filters[:type] == "people"
+      agreements = agreements.where("individuals.wikipedia is null or individuals.wikipedia = ''")
+    end
+
+    agreements
   end
 
   private

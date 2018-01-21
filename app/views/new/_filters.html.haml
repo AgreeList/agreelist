@@ -1,0 +1,30 @@
+.home-page-agreement-container
+  %span.dropdown.home-filter
+    Opinions from
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:type].present? ? @filters[:type] : "influencers"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "all", root_path(@filters.merge(type: "all"))
+        %li= link_to "influencers with Wikipedia page", root_path(@filters.merge(type: "influencers"))
+        %li= link_to "people with no Wikipedia page", root_path(@filters.merge(type: "people"))
+  %span#occupation-filter.dropdown.home-filter
+    occupation
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:occupation] || "any"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "any", root_path(@filters.merge(occupation: "any"))
+        - @occupations_count.map(&:first).each do |occupation|
+          %li= link_to occupation, root_path(@filters.merge(occupation: occupation))
+        %li= link_to "...", occupations_path
+  %span#school-filter.dropdown.home-filter
+    alma mater
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:school] || "any"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "any", root_path(@filters.merge(school: "any"))
+        - @schools_count.map(&:first).each do |school|
+          %li= link_to school, root_path(@filters.merge(school: school))
+        %li= link_to "...", schools_path
