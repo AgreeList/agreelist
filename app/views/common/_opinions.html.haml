@@ -29,5 +29,8 @@
               = link_to("delete", agreement_path(agreement), method: :delete, data: { confirm: "You sure?" })
               ·
               = link_to("promote", touch_path(agreement), method: :post)
+- if agreements.empty?
+  .jumbotron
+    No opinions yet
 .text-center
   = paginate agreements
