@@ -1,9 +1,6 @@
 .container
   #home-header.text-center
     %p= render partial: "common/back_or_sponsor_us_button"
-    = link_to "search", new_search_path
-    ·
-    = link_to "topics", all_path
 
   = render partial: "filters"
   = render partial: "common/opinions", locals: { agreements: @agreements }
