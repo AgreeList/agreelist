@@ -31,6 +31,7 @@
               = link_to("promote", touch_path(agreement), method: :post)
 - if agreements.empty?
   .jumbotron
-    No opinions yet
+    No opinions yet. Try
+    = link_to "removing filters", root_path
 .text-center
   = paginate agreements
