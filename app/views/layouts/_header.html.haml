@@ -13,6 +13,9 @@
       .pull-right
         %ul.nav.navbar-nav
           %li= link_to "+", new_statement_path, id: "new_statement_plus"
+          %li
+            = link_to search_path, id: "header-search-icon" do
+              %i.icon.ion-search
 
         %ul.nav.navbar-nav.collapse.navbar-collapse#navbar-collapse
           %li= link_to "Sign in", login_path unless current_user
