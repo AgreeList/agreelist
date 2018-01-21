@@ -13,7 +13,6 @@ class IndividualsController < ApplicationController
     @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
     if verify_recaptcha(model: @individual) && @individual.save
       notify("sign_up", current_user_id: @individual.id)
-      notify("subscribe") if params[:subscribed]
       @individual.send_activation_email
       session[:user_id] = @individual.id
       if params[:task] == "follow"
@@ -24,7 +23,7 @@ class IndividualsController < ApplicationController
       if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
         upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))
       else
-        redirect_to edit_individual_path(@individual), notice: (params[:subscribed] ? "Subscribed" : nil)
+        redirect_to edit_individual_path(@individual)
       end
     else
       flash[:error] = @individual.errors.full_messages.join(". ")

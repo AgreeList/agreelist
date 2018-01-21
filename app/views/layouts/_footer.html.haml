@@ -1,5 +1,10 @@
 .text-center
+  = link_to image_tag("https://s3-eu-west-1.amazonaws.com/agreelist/sign-in-with-twitter-gray.png"), "/auth/twitter", id: "twitter-login"
   = render partial: "common/back_or_sponsor_us_button"
+
+  .sign_in.footer
+    = link_to "Sign in with email", signup_path
+
   .social-media-links
     Follow us:
     .row

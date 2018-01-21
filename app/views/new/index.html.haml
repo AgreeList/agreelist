@@ -8,7 +8,6 @@
   = render partial: "filters"
   = render partial: "common/opinions", locals: { agreements: @agreements }
   = render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
-  = render partial: "common/subscribe", locals: { statement_id: nil } unless current_user
 #myModal.modal.fade{role: "dialog"}
   .modal-dialog
     .modal-content

@@ -16,7 +16,9 @@ feature 'signup' do
 
   scenario 'should log in with twitter from login page' do
     visit '/login'
-    click_link "twitter-login"
+    within ".container" do
+      click_link "twitter-login"
+    end
     expect(page).to have_content("Sign Out")
   end
 

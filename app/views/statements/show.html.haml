@@ -12,7 +12,5 @@
     - if @comments.size > 0 && @statement.id != 7 # brexit
       %h3 Comments:
       = render template: "comments/index"
-      -#= render template: "comments/new"
-  = render partial: "common/subscribe", locals: { statement_id: @statement.id } unless current_user
   = render partial: "related_statements"
 = render partial: "modal_windows"
