@@ -110,7 +110,7 @@ class Individual < ActiveRecord::Base
         self.description = user.description
         self.followers_count = user.followers_count
         url = user.profile_image_url_https(:original)
-        self.picture = open(url) if self.update_picture
+        self.picture = open(url) if self.update_picture && (!self.picture_file_name_changed? || self.picture.blank?)
       rescue => e
         if e.message.scan(/User has been suspended/).any?
           LogMailer.log_email("twitter @#{self.twitter} has been suspended").deliver
