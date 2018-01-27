@@ -10,7 +10,8 @@
           %h4.media-heading
             %span= link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
             %span.small>= ", #{individual.bio}"
-            %span.small= " · #{agreement.updated_at.strftime('%d %b %Y')}"
+            %span.small= " · "
+            %span.small= link_to(agreement.updated_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
           .statement
             %span
               - if agreement.agree?
