@@ -5,18 +5,6 @@ GIT
     acts-as-taggable-on (4.0.0)
       activerecord (>= 4.0)
 
-GIT
-  remote: https://github.com/thoughtbot/paperclip
-  revision: 523bd46c768226893f23889079a7aa9c73b57d68
-  ref: 523bd46c768226893f23889079a7aa9c73b57d68
-  specs:
-    paperclip (4.3.1)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      cocaine (~> 0.5.5)
-      mime-types
-      mimemagic (= 0.3.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -740,7 +728,7 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mimemagic (0.3.0)
+    mimemagic (0.3.2)
     mini_portile2 (2.3.0)
     minitest (5.10.2)
     multi_xml (0.6.0)
@@ -764,6 +752,12 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    paperclip (5.0.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      cocaine (~> 0.5.5)
+      mime-types
+      mimemagic (~> 0.3.0)
     pg (0.20.0)
     poltergeist (1.15.0)
       capybara (~> 2.1)
@@ -953,7 +947,7 @@ DEPENDENCIES
   nilify_blanks (~> 1.2.1)
   nokogiri (~> 1.8.1)
   omniauth-twitter (~> 1.4.0)
-  paperclip!
+  paperclip (~> 5.0.0)
   pg (~> 0.20.0)
   poltergeist (~> 1.15.0)
   pry
