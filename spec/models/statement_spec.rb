@@ -44,4 +44,10 @@ describe Statement do
       expect(s.shortened_content(7)).to eq "0123..."
     end
   end
+
+  it "creator should follow topic after create" do
+    individual = create(:individual)
+    statement = Statement.create(content: "blabla", individual: individual)
+    expect(individual.following?(statement)).to eq true
+  end
 end

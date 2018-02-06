@@ -21,6 +21,7 @@ class Statement < ActiveRecord::Base
 
   before_create :generate_hashed_id, :set_none_tag
   before_create :set_url, if: :blank_url?
+  after_create :follow_topic
   before_update :store_old_url_if_changed
 
 
@@ -87,6 +88,10 @@ class Statement < ActiveRecord::Base
   end
 
   private
+
+  def follow_topic
+    individual.follow(self) if individual
+  end
 
   def filtered_agreements_count(agree_or_disagree, args)
     a = agreements.where(extent: (agree_or_disagree == :agree ? 100 : 0)).where("reason is not null and reason != ''")

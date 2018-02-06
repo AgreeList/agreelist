@@ -125,7 +125,7 @@ class StatementsController < ApplicationController
   # POST /statements
   # POST /statements.json
   def create
-    @statement = Statement.new(params.require(:statement).permit(:content))
+    @statement = Statement.new(params.require(:statement).permit(:content).merge(individual_id: current_user.id))
 
     if @statement.save
       notify("new_statement", statement_id: @statement.id)
