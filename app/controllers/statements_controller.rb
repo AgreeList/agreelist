@@ -52,7 +52,9 @@ class StatementsController < ApplicationController
   def index
     @statements = Statement.select("statements.id, statements.content, statements.url, count(agreements.id) as agreements_count").where("agreements.reason is not null and agreements.reason != ''").joins("left join agreements on statements.id=agreements.statement_id").group("statements.id").order("agreements_count DESC, statements.created_at ASC")
     @statements = @statements + Statement.select("id, content, url, 0 as agreements_count").where("id not in (select distinct statement_id from agreements)")
-
+    if params[:order] == "followers"
+      @statements = @statements.sort_by{|s| - s.followers.size}
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @statements }

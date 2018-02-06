@@ -10,7 +10,8 @@ feature 'statements' do
   context "non logged user" do
     scenario "should list opinions" do
       visit statements_path
-      expect(page).to have_content("Login required for this page")
+      expect(page).to have_content("#{@statement.content}")
+      expect(page).to have_content("2")
     end
   end
 
@@ -21,7 +22,8 @@ feature 'statements' do
     end
 
     scenario "should list opinions" do
-      expect(page).to have_content("#{@statement.content} (2 opinions)")
+      expect(page).to have_content("#{@statement.content}")
+      expect(page).to have_content("2")
     end
 
     scenario "should allow to destroy statement" do

@@ -3,14 +3,28 @@
     Topics and statements
     = link_to 'New', new_statement_path(back_url: request.path), class: "btn btn-primary"
 
-  %ul
-    - @statements.each do |statement|
-      %li
-        = link_to statement.content, statement
-        = "(#{pluralize(statement.agreements_count, 'opinion')})"
-        - if current_user
-          ·
-          - if current_user.following?(statement)
-            = link_to "Following", follow_path(1, statement_id: statement.id), method: :delete
-          - else
-            = link_to "Follow", follows_path(statement_id: statement.id), method: :post
+  %table.table
+    %thead
+      %tr
+        %th Topic
+        %th= link_to("Opinions", statements_path)
+        %th= link_to("Followers", statements_path(order: "followers"))
+        %th
+    %tbody
+      - @statements.each do |statement|
+        %tr
+          %th= link_to(statement.content, statement)
+          %th= statement.agreements_count
+          %th
+            - if params[:list]
+              - statement.followers.each do |follower|
+                = link_to(follower.name, individual_path(follower))
+                ·
+            - else
+              = statement.followers.size
+          %th
+            - if current_user
+              - if current_user.following?(statement)
+                = link_to "Following", follow_path(1, statement_id: statement.id), method: :delete
+              - else
+                = link_to "Follow", follows_path(statement_id: statement.id), method: :post
