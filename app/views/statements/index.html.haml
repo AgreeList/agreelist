@@ -9,7 +9,7 @@
         %th Topic
         %th= link_to("Opinions", statements_path)
         %th= link_to("Followers", statements_path(order: "followers"))
-        %th
+        %th Action
     %tbody
       - @statements.each do |statement|
         %tr
@@ -28,3 +28,5 @@
                 = link_to "Following", follow_path(1, statement_id: statement.id), method: :delete
               - else
                 = link_to "Follow", follows_path(statement_id: statement.id), method: :post
+            - else
+              = link_to "Follow", login_path
