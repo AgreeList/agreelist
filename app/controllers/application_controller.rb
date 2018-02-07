@@ -30,11 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin?
-    %w(arpahector emilie_esposito).include?(current_user.try(:twitter).try(:downcase)) || eloise?
-  end
-
-  def eloise?
-    current_user.try(:id) == 9346
+    current_user.try(:admin)
   end
 
   def can_delete_statements?
