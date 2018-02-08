@@ -8,20 +8,22 @@
       %tr
         %th Topic
         %th= link_to("Opinions", statements_path)
-        %th= link_to("Followers", statements_path(order: "followers"))
+        - if admin?
+          %th= link_to("Followers", statements_path(order: "followers"))
         %th Action
     %tbody
       - @statements.each do |statement|
         %tr
           %th= link_to(statement.content, statement)
           %th= statement.agreements_count
-          %th
-            - if params[:list]
-              - statement.followers.each do |follower|
-                = link_to(follower.name, individual_path(follower))
-                ·
-            - else
-              = statement.followers.size
+          - if admin?
+            %th
+              - if params[:list]
+                - statement.followers.each do |follower|
+                  = link_to(follower.name, individual_path(follower))
+                  ·
+              - else
+                = statement.followers.size
           %th
             - if current_user
               - if current_user.following?(statement)
