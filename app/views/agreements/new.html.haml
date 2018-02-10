@@ -40,8 +40,9 @@
               = link_to "Edit professions", professions_path
           Picture url:
           %p= text_field_tag(:picture_from_url, @individual.picture? ? @individual.picture.url : "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
-          Your email:
-          %p= text_field_tag(:email, "", class: "form-control", placeholder: "whatever@whatever.com") unless current_user.try(:email)
+          - unless current_user.try(:email)
+            Your email:
+            %p= text_field_tag(:email, "", class: "form-control", placeholder: "whatever@whatever.com")
         %p
           = submit_tag("She/he agrees", class: "btn btn-primary")
           = submit_tag("She/he disagrees", class: "btn btn-primary")
