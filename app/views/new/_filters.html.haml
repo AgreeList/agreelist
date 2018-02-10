@@ -39,3 +39,11 @@
         - @statement_filters.each do |statement|
           %li= link_to statement.content, root_path(@filters.merge(statement: statement.content))
         %li= link_to "...", statements_path
+  %span#agree-disagree-filter.dropdown.home-filter
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:v] || "agree & disagree"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "agree & disagree", root_path(@filters.merge(v: "agree & disagree"))
+        %li= link_to "agree", root_path(@filters.merge(v: "agree"))
+        %li= link_to "disagree", root_path(@filters.merge(v: "disagree"))

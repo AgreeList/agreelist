@@ -74,6 +74,14 @@ class Agreement < ActiveRecord::Base
       s = Statement.find_by_content(filters[:statement])
       agreements = agreements.where(statement_id: s.id) if s
     end
+
+    if filters[:v].present?
+      if filters[:v] == "agree"
+        agreements = agreements.where(extent: 100)
+      elsif filters[:v] == "disagree"
+        agreements = agreements.where(extent: 0)
+      end
+    end
     agreements
   end
 
