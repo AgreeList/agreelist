@@ -39,7 +39,7 @@
               = select_tag :profession_id, options_from_collection_for_select(Profession.all, "id", "name"), include_blank: true
               = link_to "Edit professions", professions_path
           Picture url:
-          %p= text_field_tag(:picture_from_url, @individual.picture? ? @individual.picture_url : "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
+          %p= text_field_tag(:picture_from_url, @individual.picture? ? @individual.picture.url : "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
           %p= text_field_tag(:email, "", class: "form-control", placeholder: "Your email") unless current_user.try(:email)
         %p
           = submit_tag("She/he agrees", class: "btn btn-primary")
