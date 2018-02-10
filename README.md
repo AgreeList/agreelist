@@ -12,9 +12,12 @@ Example of topic:
 -------
 ![topic example](https://s3-eu-west-1.amazonaws.com/agreelist/basic+income+for+github.png)
 
-Donations
--------
-You can contribute, sponsor new topics or donate any one-time or monthly fee on our [Open Collective](https://opencollective.com/agreelist) page. Thanks!
+Donate or become a member:
+--------
+You can donate or become a member on our [Open Collective](https://opencollective.com/agreelist) page:
+
+<a href="https://opencollective.com/agreelist"><img src="https://opencollective.com/agreelist/tiers/membership.svg?avatarHeight=36"></a>
+
 
 API
 -------
