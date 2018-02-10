@@ -3,44 +3,52 @@
     .small
       Topic or statement:
       = link_to @statement.content, statement_path(@statement)
-    %h3
-      Add an opinion leader
-      - if (@statement.agreements.size) < 50
-        %span.small
-          or
-          = link_to "donate and we'll find 50 influencers", donate_path
     - unless current_user
       = link_to "Log in", login_path(back_url: request.url)
       first if you want karma! - optional
-    = form_tag(agreements_path, :method => "post") do
-      .supporter_fields
-        %p= text_field_tag(:name,"", class: "form-control", placeholder: "Name or @twitter. E.g. @barackobama")
-        %p= text_field_tag(:wikipedia,"", class: "form-control", placeholder: "Wikipedia page of her/him")
-        %p= hidden_field_tag :agg, 'someone_else'
-        %p= text_field_tag(:comment, "", class: "form-control", placeholder: "Quote or reason why the person you are adding agrees/disagrees (optional)", maxlength: 1000)
-        #source_box
-          %p= text_field_tag(:source, "", class: "form-control", placeholder: "URL/source where the opinion comes from (mandatory)")
-        = hidden_field_tag(:statement_id, @statement.id)
-        - if board? && has_admin_category_rights?
-          %p
-            Category:
-            = select_tag :reason_category_id, options_from_collection_for_select(ReasonCategory.all, "id", "name"), include_blank: true
-            = link_to "Edit categories", reason_categories_path
-        %p= text_field_tag(:biography, "", class: "form-control", placeholder: "Short biography (taken from Twitter if used)", maxlength: 100)
-        - if board? && has_profession_rights?
-          %p
-            Profession:
-            = select_tag :profession_id, options_from_collection_for_select(Profession.all, "id", "name"), include_blank: true
-            = link_to "Edit professions", professions_path
-        %p= text_field_tag(:picture_from_url, "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
-        %p= text_field_tag(:email, "", class: "form-control", placeholder: "Your email") unless current_user.try(:email)
-      %p
-        = submit_tag("She/he agrees", class: "btn btn-primary")
-        = submit_tag("She/he disagrees", class: "btn btn-primary")
-        %span.medium
-          or
-          = link_to "back", statement_path(@statement)
+    - if @step == 2
+      = form_tag("/ag", :method => "post") do
+        .supporter_fields
+          Opinion:
+          %p= text_area_tag(:comment, @opinion, class: "form-control", placeholder: "Quote or reason why the person you are adding agrees/disagrees (optional)", maxlength: 1000)
+          #source_box
+            Source:
+            %p= text_field_tag(:source, @source, class: "form-control", placeholder: "URL/source where the opinion comes from (mandatory)")
+          Name:
+          %p= text_field_tag(:name,@individual.name, class: "form-control", placeholder: "Name or @twitter. E.g. @barackobama")
 
+          Wikipedia url:
+          %p= text_field_tag(:wikipedia,@individual.wikipedia, class: "form-control", placeholder: "Wikipedia page of her/him")
+
+          Twitter username:
+          %p= text_field_tag(:twitter,@individual.twitter, class: "form-control", placeholder: "E.g. @barackobama")
+
+          %p= hidden_field_tag :agg, 'someone_else'
+
+          = hidden_field_tag(:statement_id, @statement.id)
+          - if board? && has_admin_category_rights?
+            %p
+              Category:
+              = select_tag :reason_category_id, options_from_collection_for_select(ReasonCategory.all, "id", "name"), include_blank: true
+              = link_to "Edit categories", reason_categories_path
+          Bio:
+          %p= text_field_tag(:biography, @individual.bio, class: "form-control", placeholder: "Short biography", maxlength: 100)
+          - if board? && has_profession_rights?
+            %p
+              Profession:
+              = select_tag :profession_id, options_from_collection_for_select(Profession.all, "id", "name"), include_blank: true
+              = link_to "Edit professions", professions_path
+          Picture url:
+          %p= text_field_tag(:picture_from_url, @individual.picture? ? @individual.picture_url : "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
+          %p= text_field_tag(:email, "", class: "form-control", placeholder: "Your email") unless current_user.try(:email)
+        %p
+          = submit_tag("She/he agrees", class: "btn btn-primary")
+          = submit_tag("She/he disagrees", class: "btn btn-primary")
+          %span.medium
+            or
+            = link_to "back", statement_path(@statement)
+    - else
+      = render partial: "common/add_opinion"
 - if session[:added_voter]
   #tweetModal.modal.fade{role: "dialog"}
     .modal-dialog

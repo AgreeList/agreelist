@@ -18,6 +18,7 @@ feature 'statements' do
   context "logged in as hector" do
     before do
       visit "/auth/twitter"
+      Individual.last.update_attributes(admin: true)
       visit statements_path
     end
 

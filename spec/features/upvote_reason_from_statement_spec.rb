@@ -16,6 +16,7 @@ feature 'upvote', js: true do
       click_link "You?"
       click_link "I agree"
       click_link "vote-twitter-login"
+      Individual.last.update_attributes(admin: true)
       click_button "Save"
       expect(page).not_to have_content("upvoted! (1)")
       expect{ click_upvote }.to change{ Upvote.count }.by(1)
@@ -39,6 +40,7 @@ feature 'upvote', js: true do
         click_link "You?"
         click_link "I agree"
         click_link "vote-twitter-login"
+        Individual.last.update_attributes(admin: true)
         click_button "Save"
         click_upvote
         expect{ click_link "upvoted! (1)" }.to change{ Upvote.count }.by(-1)
@@ -55,7 +57,7 @@ feature 'upvote', js: true do
       scenario "upvote" do
         click_link "upvote"
         click_link "upvote-twitter-login"
-        expect(page).to have_content("upvoted! (1)")
+        expect(page).to have_content("upvoted!")
       end
     end
 

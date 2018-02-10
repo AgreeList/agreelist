@@ -15,14 +15,14 @@ feature 'donations' do
     scenario "button donate should go and fill form" do
       visit statement_path(@statement)
       click_link "add more?"
-      click_link "donate and we'll find 50 influencers"
+      click_link "donate £50 and we'll find 30 influencers on the topic you choose"
     end
   end
 
   context "with no opinions" do
     it "button donate should go and fill form" do
       visit statement_path(@statement)
-      click_link "Donate and we'll find 50 influencers"
+      click_link "donate £50 and we'll find 30 influencers on the topic you choose"
     end
   end
 

@@ -1,0 +1,117 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=en&sites=enwiki&titles=https://en.wikipedia.org/Muhammad_Yunus
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 301
+      message: TLS Redirect
+    headers:
+      Date:
+      - Sat, 10 Feb 2018 15:44:01 GMT
+      Server:
+      - Varnish
+      X-Varnish:
+      - '774331903'
+      X-Cache:
+      - cp3032 int
+      X-Cache-Status:
+      - int-front
+      Set-Cookie:
+      - WMF-Last-Access-Global=10-Feb-2018;Path=/;Domain=.wikidata.org;HttpOnly;secure;Expires=Wed,
+        14 Mar 2018 12:00:00 GMT
+      - WMF-Last-Access=10-Feb-2018;Path=/;HttpOnly;secure;Expires=Wed, 14 Mar 2018
+        12:00:00 GMT
+      X-Client-Ip:
+      - 82.39.110.46
+      Location:
+      - https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&titles=https%3A%2F%2Fen.wikipedia.org%2FMuhammad_Yunus
+      Content-Length:
+      - '0'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 10 Feb 2018 15:44:01 GMT
+- request:
+    method: get
+    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=en&sites=enwiki&titles=https://en.wikipedia.org/Muhammad_Yunus
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Cookie:
+      - WMF-Last-Access=10-Feb-2018;Path=/;HttpOnly;secure;Expires=Wed, 14 Mar 2018
+        12:00:00 GMT; WMF-Last-Access-Global=10-Feb-2018;Path=/;Domain=.wikidata.org;HttpOnly;secure;Expires=Wed,
+        14 Mar 2018 12:00:00 GMT
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 10 Feb 2018 15:44:01 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '112'
+      Connection:
+      - keep-alive
+      Server:
+      - mw1286.eqiad.wmnet
+      X-Powered-By:
+      - HHVM/3.18.6-dev
+      X-Content-Type-Options:
+      - nosniff
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      P3p:
+      - CP="This is not a P3P policy! See https://www.wikidata.org/wiki/Special:CentralAutoLogin/P3P
+        for more info."
+      X-Frame-Options:
+      - DENY
+      Content-Disposition:
+      - inline; filename="api-result.json"
+      Vary:
+      - Accept-Encoding,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization
+      Backend-Timing:
+      - D=48152 t=1518277441239114
+      X-Varnish:
+      - 842339787, 103438502, 774745295
+      Via:
+      - 1.1 varnish-v4, 1.1 varnish-v4, 1.1 varnish-v4
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      X-Cache:
+      - cp1065 pass, cp3043 pass, cp3032 pass
+      X-Cache-Status:
+      - pass
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      X-Analytics:
+      - ns=-1;special=Badtitle;WMF-Last-Access=10-Feb-2018;WMF-Last-Access-Global=10-Feb-2018;https=1
+      X-Client-Ip:
+      - 82.39.110.46
+      Set-Cookie:
+      - GeoIP=GB:ENG:Hornsey:51.58:-0.12:v4; Path=/; secure; Domain=.wikidata.org
+    body:
+      encoding: UTF-8
+      string: '{"entities":{"-1":{"site":"enwiki","title":"https://en.wikipedia.org/Muhammad_Yunus","missing":""}},"success":1}'
+    http_version: 
+  recorded_at: Sat, 10 Feb 2018 15:44:01 GMT
+recorded_with: VCR 3.0.3
