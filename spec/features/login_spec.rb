@@ -24,6 +24,7 @@ feature 'signup' do
 
   scenario 'should log in with twitter from home page' do
     visit '/'
+    click_link "Sign in"
     click_link "twitter-login"
     expect(page).to have_content("Sign Out")
   end

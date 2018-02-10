@@ -3,17 +3,25 @@ class AgreementsController < ApplicationController
   before_action :find_agreement, only: [:upvote, :update, :touch, :destroy]
   before_action :set_back_url_to_current_page, only: :show
   before_action :check_if_spam, only: :create
-  before_action :find_statement, only: :create
 
   def new
-    @statement = Statement.where(url: params[:s]).first
-    @shortened_url_without_params = Rails.env.test? ? request.url : Shortener.new(full_url: request.base_url + statement_path(@statement), object: @statement).get
-    if session[:added_voter].present?
-      @just_added_voter = Individual.find_by_hashed_id(session[:added_voter])
+    @statement = Statement.find_by_url(params[:s])
+    if params[:opinion] || params[:name]
+      @step = 2
+      @individual = Individual.where(name: params[:name]).first || Individual.new(name: params[:name].strip)
+      @opinion, @source = params[:opinion].scan(/\A(.*)(http[^\ ]*\Z)/).first || [params[:opinion].strip, nil]
+      notify('pre_new_opinion', statement: @statement.content, name: params[:name], opinion: params[:opinion])
+    else
+      @step = 1 # sometimes we skip step 1 because we come from the statements page
+      if session[:added_voter].present?
+        @just_added_voter = Individual.find_by_hashed_id(session[:added_voter])
+      end
+      @shortened_url_without_params = Rails.env.test? ? request.url : Shortener.new(full_url: request.base_url + statement_path(@statement), object: @statement).get
     end
   end
 
   def create
+    @statement = Statement.find(params[:statement_id])
     voter = find_or_create_voter!
     agreement = cast_vote(voter)
     notify('new_agreement', agreement_id: agreement.id)
@@ -69,8 +77,8 @@ class AgreementsController < ApplicationController
 
   def find_or_create_voter!
     Voter.new(
-      name: twitter ? nil : params[:name].try(:strip),
-      twitter: twitter.try(:downcase).try(:strip),
+      name: params[:name].try(:strip),
+      twitter: params[:twitter].try(:downcase).try(:strip).gsub(/\A@/, ''),
       profession_id: params[:profession_id],
       current_user: current_user,
       wikipedia: params[:wikipedia],
@@ -91,10 +99,6 @@ class AgreementsController < ApplicationController
     )
   end
 
-  def find_statement
-    @statement = Statement.find(params[:statement_id])
-  end
-
   def twitter
     @twitter ||=
       if twitter?
@@ -111,7 +115,7 @@ class AgreementsController < ApplicationController
   def check_if_spam
     if spam?
       render status: 401, plain: "Your message has to be approved because it seemed spam. Sorry for the inconvenience."
-      LogMailer.log_email("spam? params: #{params.inspect}").deliver unless statement_used_by_spammers?
+      LogMailer.log_email("spam? params: #{params.inspect}").deliver #unless statement_used_by_spammers?
     end
   end
 

@@ -35,6 +35,7 @@ group :assets do
 end
 
 gem 'jquery-rails', '~> 4.3.1'
+gem 'jquery-ui-rails', '~> 6.0.1'
 
 group :test do
   gem 'capybara', '~> 2.14.0'

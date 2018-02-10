@@ -9,6 +9,10 @@ class IndividualsController < ApplicationController
     @individual = Individual.new
   end
 
+  def search
+    render json: Individual.where("name ILIKE ?", "%#{params[:term]}%").order(followers_count: :desc).select(:id, :name, :bio).limit(10).to_json(methods: [:picture_url])
+  end
+
   def create
     @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
     if verify_recaptcha(model: @individual) && @individual.save

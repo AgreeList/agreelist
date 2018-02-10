@@ -13,6 +13,7 @@ feature 'spam filter' do
     visit statement_path(statement)
     click_link "add more?"
     fill_in 'name', with: "Spammer"
+    click_button "Add opinion"
     click_button "She/he agrees"
     expect(page).to have_text "Your message has to be approved because it seemed spam."
   end

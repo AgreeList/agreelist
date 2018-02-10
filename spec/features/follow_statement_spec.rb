@@ -9,6 +9,7 @@ feature "follow_statement", js: true do
   context "twitter login" do
     before do
       visit "/auth/twitter"
+      Individual.last.update_attributes(admin: true)
     end
 
     scenario "should change button to following and back again" do

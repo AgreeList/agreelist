@@ -1,0 +1,35 @@
+#add
+  .ui-widget
+    %h3
+      Add an opinion leader
+      %span.small
+        or
+        = link_to "donate £50 and we'll find 30 influencers on the topic you choose", donate_path
+    = form_tag "/ag/new" do
+      = text_field_tag :name, "", id: "name-field", class: "form-control"
+      = text_area_tag :opinion, "", class: "form-control", placeholder: "Opinion - please add link to source at the end"
+      = hidden_field_tag :s, @statement.to_param
+      %p
+        = submit_tag "Add opinion", class: "btn btn-primary"
+        - if params[:s]
+          or
+          = link_to "back", statement_path(@statement)
+
+:javascript
+  var options = {
+    url: function(term) {
+      return "/individuals/search?term=" + term + "&format=json";
+    },
+
+    getValue: "name",
+
+    template: {
+      type: "iconLeft",
+      fields: {
+        iconSrc: "picture_url"
+      }
+    },
+
+    placeholder: "Name e.g. Barack Obama"
+  }
+  $("#name-field").easyAutocomplete(options);

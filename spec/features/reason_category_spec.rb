@@ -28,5 +28,6 @@ feature "reason categories", js: true do
 
   def login
     visit "/auth/twitter"
+    Individual.last.update_attributes(admin: true)
   end
 end

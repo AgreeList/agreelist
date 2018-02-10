@@ -1,7 +1,6 @@
 .container
   #home-header.text-center
     %p= render partial: "common/back_or_sponsor_us_button"
-
   = render partial: "filters"
   = render partial: "common/opinions", locals: { agreements: @agreements }
   = render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
@@ -27,5 +26,3 @@
         = link_to "Log in with your email", login_path, class: "btn btn-primary"
         or
         = link_to "Back", "#", "data-dismiss" => "modal"
-:javascript
-  var logged_in = #{signed_in?};

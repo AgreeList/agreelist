@@ -2,7 +2,7 @@
   - if @agreements_count > 0
     %span.alert.alert-warning
       Biased? Please
-      = link_to "add more opinions", new_agreement_path(s: @statement.to_param), class: "underline"
+      = link_to "add more opinions", "#add", class: "underline"
       or
       = link_to "donate", donate_path, class: "underline"
   %h1= render partial: "content"
@@ -27,7 +27,7 @@
       Opinions from
       = pluralize(@agreements_count, params["occupation"] || "influencer")
     = succeed ")" do
-      = succeed link_to "add more?", new_agreement_path(s: @statement.to_param), class: "underline" do
+      = succeed link_to "add more?", "#add", class: "underline" do
         = "("
     of which:
     %br
@@ -61,7 +61,4 @@
         = "#{100 - @percentage_in_favor}%" if @percentage_in_favor
         Disagree
   - else
-    %p There are no opinions on this topic yet. You can:
-    %p= link_to "Add opinions from influencers", new_agreement_path(s: @statement.to_param), class: "btn btn-primary"
-    or
-    %p= link_to "Donate and we'll find 50 influencers", donate_path
+    %p There are no opinions on this topic yet

@@ -9,6 +9,7 @@ feature 'reason', js: true do
   context "as admin" do
     before do
       visit "/auth/twitter"
+      Individual.last.update_attributes(admin: true)
       Agreement.create(individual: @individual, statement: @statement, extent: 100)
     end
 

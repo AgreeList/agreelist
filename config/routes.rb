@@ -52,6 +52,7 @@ Al::Application.routes.draw do
   resources :individuals, only: [:edit, :update, :destroy, :create], path: "" do
     member do
       get :activation
+      get :search
     end
   end
   get 'signup', to: 'individuals#new', as: :signup
@@ -71,6 +72,10 @@ Al::Application.routes.draw do
   resources :agreements, path: "ag", only: [:new, :show, :create, :update, :destroy] do
     member do
       post 'upvote'
+    end
+
+    collection do
+      post 'new'
     end
   end
   get '/test' => 'static_pages#polar'
