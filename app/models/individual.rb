@@ -188,7 +188,7 @@ class Individual < ActiveRecord::Base
   end
 
   def picture_mini
-    picture(:mini)
+    self.picture(:mini)
   end
 
   private
