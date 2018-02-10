@@ -10,7 +10,7 @@ class IndividualsController < ApplicationController
   end
 
   def search
-    render json: Individual.where("name ILIKE ?", "%#{params[:term]}%").order(followers_count: :desc).select(:id, :name, :bio).limit(10).to_json(methods: [:picture_url])
+    render json: Individual.where("name ILIKE ?", "%#{params[:term]}%").order(followers_count: :desc).select(:id, :name, :bio).limit(10).to_json(methods: [:picture_mini])
   end
 
   def create
