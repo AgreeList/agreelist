@@ -80,6 +80,7 @@ class StatementsController < ApplicationController
     })
 
     @filters = {}
+    @filters[:include] = params[:include] || "opinions"
     @filters[:type] = params[:type] == "influencers" ? nil : params[:type]
     if params[:type] == nil && @statement.agreements.filter(@filters).size == 0
       @filters[:type] = "all"

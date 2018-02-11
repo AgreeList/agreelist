@@ -50,7 +50,13 @@ class Agreement < ActiveRecord::Base
   end
 
   def self.filter(filters)
-    agreements = self.where("reason is not null and reason != ''")
+    if filters[:include] == "opinions and votes"
+      agreements = self
+    elsif filters[:include] == "opinions" || filters[:include].nil?
+      agreements = self.where("reason is not null and reason != ''")
+    elsif filters[:include] == "votes"
+      agreements = self.where("reason is null or reason = ''")
+    end
     if filters[:occupation].present?
       if filters[:school].present?
         agreements = agreements.two_contexts("occupations", filters[:occupation], "schools", filters[:school])
