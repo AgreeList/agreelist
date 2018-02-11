@@ -161,7 +161,7 @@ class StatementsController < ApplicationController
   # PUT /statements/1.json
   def update
     respond_to do |format|
-      if @statement.update_attributes(params.require(:statement).permit(:content, :url, :tag_list, :picture_from_url))
+      if @statement.update_attributes(params.require(:statement).permit(:content, :description, :url, :tag_list, :picture_from_url))
         format.html { redirect_to(get_and_delete_back_url || statements_path, notice: 'Statement was successfully updated.') }
         format.json { head :no_content }
       else

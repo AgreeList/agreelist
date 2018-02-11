@@ -6,7 +6,6 @@
       or
       = link_to "donate", donate_path, class: "underline"
   = render partial: "content"
-  = image_tag @statement.picture.url(:thumb) if @statement.picture?
   %br
   = render partial: "filters"
   - if @agreements_count > 0

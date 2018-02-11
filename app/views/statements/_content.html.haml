@@ -1,6 +1,8 @@
 %h1
   %span#topic-filter.dropdown.home-filter
     = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle black" do
+      = image_tag @statement.picture.url(:mini) if @statement.picture?
+
       = @statement.content
       %b.caret
       %ul{class: "dropdown-menu"}
@@ -16,3 +18,8 @@
         = link_to "Follow", follows_path(statement_id: @statement.id), method: :post
     - else
       = link_to "Follow", "#", "data-toggle" => "modal", "data-target" => "#followModal", statement_id: @statement.id, class: "follow"
+- if @statement.description
+  .row
+    .col-sm-3
+    .col-sm-6
+      = @statement.description

@@ -10,6 +10,9 @@
     Title
     = f.text_field :content, class: "form-control"
   .field
+    Description
+    = f.text_area :description, class: "form-control"
+  .field
     Tags (comma separated):
     = f.text_field :tag_list, class: "form-control"
   URL (avoid to change this because external links might break):

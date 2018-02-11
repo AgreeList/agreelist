@@ -11,6 +11,7 @@ class Statement < ActiveRecord::Base
 
   validates_attachment_content_type :picture, :content_type => /\Aimage\/.*\Z/
   validates :content, presence: true, length: { maximum: MAXIMUM_LENGTH }
+  validates :description, length: { maximum: 300}
 
   has_many :agreements, dependent: :destroy
   has_many :individuals, :through => :agreements
