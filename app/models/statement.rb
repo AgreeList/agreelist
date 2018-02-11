@@ -114,7 +114,7 @@ class Statement < ActiveRecord::Base
     else
       a = a.order("agreements.upvotes_count DESC")
       a = a.order("case when (agreements.reason is not null and agreements.reason != '') THEN 1 END ASC, case when agreements.reason is null THEN 0 END ASC")
-      a = a.order("case when individuals.wikipedia is not null THEN 1 END ASC, case when individuals.wikipedia is null THEN 0 END ASC")
+      a = a.order("case when individuals.wikipedia is not null and left(individuals.wikipedia, 11) = 'https://en.' THEN 1 END ASC, case when individuals.wikipedia is null THEN 0 END ASC")
       a = a.order("individuals.followers_count DESC")
     end
   end
