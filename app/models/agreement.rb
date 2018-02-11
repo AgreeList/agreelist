@@ -64,7 +64,7 @@ class Agreement < ActiveRecord::Base
     agreements = agreements.joins("left join individuals on individuals.id=agreements.individual_id")
     if filters[:type] == "nobel laureates"
       agreements = agreements.where("individuals.nobel_laureate = true")
-    elsif filters[:type].nil?
+    elsif filters[:type].nil? || filters[:type] == "influencers"
       agreements = agreements.where("individuals.wikipedia is not null and individuals.wikipedia != ''")
     elsif filters[:type] == "people"
       agreements = agreements.where("individuals.wikipedia is null or individuals.wikipedia = ''")

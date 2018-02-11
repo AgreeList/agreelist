@@ -10,3 +10,9 @@
         #disagree.hide_for_mobile
           %h3 Disagree:
         = render partial: "whoagree", locals: { agreements: @agreements_against, side: :right }
+- if @agreements_count == 0
+  .jumbotron
+    No opinions yet.
+    - if any_filter?
+      Try
+      = link_to "removing filters", statement_path(@statement)

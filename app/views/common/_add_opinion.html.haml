@@ -9,7 +9,7 @@
       = text_field_tag :name, "", id: "name-field", class: "form-control"
       = text_area_tag :opinion, "", class: "form-control", placeholder: "Opinion - please add link to source at the end"
       = hidden_field_tag :s, @statement.to_param
-      %p
+      %span
         = submit_tag "Add opinion", class: "btn btn-primary"
         - if params[:s]
           or

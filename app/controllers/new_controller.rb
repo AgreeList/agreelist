@@ -13,6 +13,10 @@ class NewController < ApplicationController
     @filters[:occupation] = params[:occupation] == "any" ? nil : params[:occupation]
     @filters[:min_count] = params[:min_count] == default_min_count.to_s ? nil : params[:min_count]
     @filters[:statement] = params[:statement] == "any" ? nil : params[:statement]
+    if @filters[:statement]
+      s = Statement.find_by_content(@filters[:statement])
+      redirect_to statement_path(s)
+    end
     @filters[:v] = params[:v] == "agree & disagree" || params[:v] == "agree+%26+disagree" ? nil : params[:v]
     @statement_filters = Statement.order(opinions_count: :desc).limit(12)
     load_occupations_and_schools(number: 7, min_count: @filters[:min_count] || default_min_count)

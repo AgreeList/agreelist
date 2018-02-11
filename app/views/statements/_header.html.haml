@@ -5,32 +5,12 @@
       = link_to "add more opinions", "#add", class: "underline"
       or
       = link_to "donate", donate_path, class: "underline"
-  %h1= render partial: "content"
+  = render partial: "content"
   = image_tag @statement.picture.url(:thumb) if @statement.picture?
-  %span.small= link_to "See Board", brexit_board_path if board?
   %br
+  = render partial: "filters"
   - if @agreements_count > 0
     - occupations_cache_count = @dropdown_occupations.try(:size)
-    - if occupations_cache_count && occupations_cache_count >= 3
-      .div-inline.dropdown
-        Opinions from
-        = link_to("", class: "dropdown-toggle underline", id: "occupationMenu", :"data-toggle" => "dropdown", :"aria-haspopup" => "true", :"aria-expanded" => "true") do
-          = pluralize(@agreements_count, params["occupation"] || "influencer")
-          %b.caret
-        %ul.dropdown-menu{:"aria-labelledby" => "occupationMenu"}
-          %li= link_to "all (#{@statement.agreements.where("reason is not null and reason != ''").count})", statement_path(@statement)
-          - @dropdown_occupations.each do |occupation|
-            - name = occupation[0]
-            - count = occupation[1]
-            %li= link_to "#{name.pluralize} (#{count})", statement_path(@statement, occupation: name)
-    - else
-      Opinions from
-      = pluralize(@agreements_count, params["occupation"] || "influencer")
-    = succeed ")" do
-      = succeed link_to "add more?", "#add", class: "underline" do
-        = "("
-    of which:
-    %br
     %br
     - if @percentage_in_favor
       .percentages
@@ -60,5 +40,3 @@
       .percentage-bar.statement-percentage.text-left
         = "#{100 - @percentage_in_favor}%" if @percentage_in_favor
         Disagree
-  - else
-    %p There are no opinions on this topic yet

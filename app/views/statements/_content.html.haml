@@ -1,9 +1,18 @@
-= @statement.content
-%span.small
-  - if current_user
-    - if current_user.following?(@statement)
-      = link_to "Following", follow_path(1, statement_id: @statement.id), method: :delete
+%h1
+  %span#topic-filter.dropdown.home-filter
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle black" do
+      = @statement.content
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "Any", root_path
+        - @statement_filters.each do |statement|
+          %li= link_to statement.content, statement_path(statement)
+        %li= link_to "...", statements_path
+  %span.small
+    - if current_user
+      - if current_user.following?(@statement)
+        = link_to "Following", follow_path(1, statement_id: @statement.id), method: :delete
+      - else
+        = link_to "Follow", follows_path(statement_id: @statement.id), method: :post
     - else
-      = link_to "Follow", follows_path(statement_id: @statement.id), method: :post
-  - else
-    = link_to "Follow", "#", "data-toggle" => "modal", "data-target" => "#followModal", statement_id: @statement.id, class: "follow"
+      = link_to "Follow", "#", "data-toggle" => "modal", "data-target" => "#followModal", statement_id: @statement.id, class: "follow"

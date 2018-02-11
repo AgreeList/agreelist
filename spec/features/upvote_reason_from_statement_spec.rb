@@ -1,15 +1,14 @@
 require 'spec_helper'
 
 feature 'upvote', js: true do
-  attr_reader :statement
-
   before do
-    seed_data
+    @statement = create(:statement)
+    @agreement = create(:agreement, statement: @statement, individual: create(:individual), extent: 100)
   end
 
   context 'logged user' do
     before do
-      visit statement_path(statement)
+      visit statement_path(@statement)
     end
 
     scenario "should change text to upvoted! (1)" do
@@ -17,6 +16,7 @@ feature 'upvote', js: true do
       click_link "I agree"
       click_link "vote-twitter-login"
       Individual.last.update_attributes(admin: true)
+      fill_in "agreement_reason", with: "hmmm..."
       click_button "Save"
       expect(page).not_to have_content("upvoted! (1)")
       expect{ click_upvote }.to change{ Upvote.count }.by(1)
@@ -27,11 +27,11 @@ feature 'upvote', js: true do
       click_link "You?"
       click_link "I agree"
       click_link "vote-twitter-login"
+      fill_in "agreement_reason", with: "hmmm..."
       click_button "Save"
       before_counter = Agreement.last.upvotes_count
       click_upvote
       after_counter = Agreement.last.upvotes_count
-      screenshot_and_save_page
       expect(after_counter).to eq before_counter + 1
     end
 
@@ -41,6 +41,7 @@ feature 'upvote', js: true do
         click_link "I agree"
         click_link "vote-twitter-login"
         Individual.last.update_attributes(admin: true)
+        fill_in "agreement_reason", with: "hmmm..."
         click_button "Save"
         click_upvote
         expect{ click_link "upvoted! (1)" }.to change{ Upvote.count }.by(-1)
@@ -50,7 +51,7 @@ feature 'upvote', js: true do
 
   context 'non logged user' do
     before do
-      visit statement_path(statement)
+      visit statement_path(@statement)
     end
 
     context 'sign in with twitter' do
@@ -78,11 +79,6 @@ feature 'upvote', js: true do
   private
 
   def click_upvote
-    find(:xpath, "(//a[text()='upvote'])[2]").click # second upvote link, as we have two agreements (one from seed data plus the one in each spec)
-  end
-
-  def seed_data
-    @statement = create(:statement)
-    @agreement = create(:agreement, statement: @statement, individual: create(:individual), extent: 100)
+    find(:xpath, "(//a[text()='upvote'])[1]").click
   end
 end

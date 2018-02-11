@@ -11,7 +11,6 @@ feature 'add opinion from influencer', js: true do
     before do
       login
       visit statement_path(statement)
-      click_link "add more opinions"
     end
 
     scenario 'adds reason category' do
@@ -85,11 +84,13 @@ feature 'add opinion from influencer', js: true do
     end
 
     scenario 'bio' do
-      fill_in 'name', with: "Hector Perez"
+      fill_in 'name', with: "Barack Obama"
+      fill_in 'opinion', with: "My opinion is..."
       click_button "Add opinion"
       fill_in 'biography', with: "bla"
-      click_button "She/he agrees"
+      expect{ click_button "She/he agrees" }.to change{ Agreement.count }.by(1)
       click_link "back"
+      expect(page).to have_text("Barack Obama")
       expect(page).to have_text('bla')
     end
 
@@ -126,7 +127,7 @@ feature 'add opinion from influencer', js: true do
       fill_in 'name', with: "Hector Perez"
       click_button "Add opinion"
       click_button "She/he agrees"
-      expect(Individual.all.order(:twitter).map(&:twitter)).to eq %w(arpahector seed)
+      expect(Individual.all.order(:twitter).map(&:twitter)).to eq %w(arpahector whatever_seed)
     end
 
   end
@@ -135,7 +136,7 @@ feature 'add opinion from influencer', js: true do
 
   def seed_data
     @statement = create(:statement)
-    create(:agreement, statement: @statement, individual: create(:individual, twitter: "seed"), extent: 100)
+    create(:agreement, statement: @statement, individual: create(:individual, twitter: "whatever_seed"), extent: 100)
     create(:reason_category, name: "Politics")
     create(:profession, name: "Politician")
   end

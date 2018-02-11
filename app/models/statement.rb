@@ -95,22 +95,7 @@ class Statement < ActiveRecord::Base
 
   def filtered_agreements_count(agree_or_disagree, args)
     a = agreements.where(extent: (agree_or_disagree == :agree ? 100 : 0)).where("reason is not null and reason != ''")
-    a = a.joins("left outer join individuals on agreements.individual_id = individuals.id").joins("left outer join professions p on p.id = individuals.profession_id").where("p.name = ?", args[:profession]) if args[:profession]
-    a = tag_filters(a, args)
     a.count
-  end
-
-  def tag_filters(a, args)
-    tag = args[:occupation] || args[:educated_at]
-    if tag
-      context = args[:occupation] ? 'occupations' : 'schools'
-      a = tag_joins(a)
-      a = a.where("taggings.taggable_type = 'Individual'")
-      a = a.where(tags: { name: tag })
-      a = a.where(taggings: { context: context })
-    else
-      a
-    end
   end
 
   def tag_joins(a)
@@ -123,15 +108,7 @@ class Statement < ActiveRecord::Base
     a = agreements.where(extent: (agree_or_disagree == :agree ? 100 : 0)).includes(:individual).includes(:upvotes)
     a = a.where(reason_category_id: args[:category_id]) if args[:category_id]
     a = a.where(reason_category_id: nil) if args[:filter_by] == :non_categorized
-    a = a.joins("left outer join individuals on agreements.individual_id = individuals.id").joins("left outer join professions p on p.id = individuals.profession_id").where("p.name = ?", args[:profession]) if args[:profession]
-    a = tag_filters(a, args)
     a = a.includes(:agreement_comments)
-    # if args[:order] == "date"
-    #   a.sort_by{ |a| - a.created_at.to_i }
-    # else
-    #   a.sort_by{ |a| [- a.upvotes.size, a.individual.email.present? ? 1 : 0, a.reason.present? ? 0 : 1, - ranking(a)] }
-    # end
-    # a = a.order("count(select upvotes.id from upvotes where agreement_id=agreements.id)")
     if args[:order ] == "date"
       a = a.order("created_at DESC")
     else

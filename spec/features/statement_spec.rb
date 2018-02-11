@@ -7,14 +7,6 @@ feature 'statement' do
     seed_data
   end
 
-  scenario "filter per profession" do
-    create(:agreement, statement: @statement, individual: create(:individual), extent: 100)
-    create(:agreement, statement: @statement, individual: create(:individual, profession: @profession), extent: 100)
-    visit statement_path(@statement) + "?profession=#{@profession.name}"
-    expect(page).to have_content("100%")
-    expect(page).to have_content("1 influencer")
-  end
-
   scenario "new issue or statement" do
     visit root_path
     click_link "+"

@@ -11,7 +11,6 @@ feature 'spam filter' do
   scenario 'should filter names without surname' do
     # real people tend to have name and surname separated by a space
     visit statement_path(statement)
-    click_link "add more?"
     fill_in 'name', with: "Spammer"
     click_button "Add opinion"
     click_button "She/he agrees"

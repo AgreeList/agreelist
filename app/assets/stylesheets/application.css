@@ -13,6 +13,9 @@
  *= require jquery-ui
  */
 
+a.black{
+  color: black;
+}
 .picture {
   padding-right: 5px
 }

@@ -2,10 +2,7 @@
   - cache "brexit_board" do
     .text-center
       %h1 Brexit - Do you agree?
-      %p
-        = render partial: "occupations"
-        |
-        = link_to "All", statement_path(@statement)
+      %p= link_to "See all opinions", statement_path(@statement)
       = link_to "Add an opinion leader", "#gather", class: "btn btn-primary"
     .row
       .col-sm-6

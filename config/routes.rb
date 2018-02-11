@@ -28,7 +28,7 @@ Al::Application.routes.draw do
     end
     member do
       get 'occupations'
-      get 'educated_at'
+      get 'schools'
     end
   end
   get "/contact" => "static_pages#contact"

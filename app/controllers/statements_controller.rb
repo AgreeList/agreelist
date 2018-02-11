@@ -1,9 +1,8 @@
 class StatementsController < ApplicationController
   before_action :login_required, only: [:new, :create, :create_and_vote]
   before_action :admin_required, only: [:edit, :update, :destroy]
-  before_action :find_statement, only: [:show, :destroy, :update, :edit, :occupations, :educated_at]
+  before_action :find_statement, only: [:show, :destroy, :update, :edit, :occupations, :schools]
   before_action :find_related_statements, only: :show
-  before_action :set_percentage_and_count, only: [:show, :occupations, :educated_at]
   before_action :redirect_to_statement_url, only: :show
   before_action :set_back_url_to_current_page, only: [:show, :index]
 
@@ -79,14 +78,37 @@ class StatementsController < ApplicationController
       description: "List of who does and who does not agree",
       picture_object: @statement
     })
+
+    @filters = {}
+    @filters[:type] = params[:type] == "influencers" ? nil : params[:type]
+    if params[:type] == nil && @statement.agreements.filter(@filters).size == 0
+      @filters[:type] = "all"
+    end
+    @filters[:school] = params[:school] == "any" ? nil : params[:school]
+    @filters[:occupation] = params[:occupation] == "any" ? nil : params[:occupation]
+    if params[:v] == "agree & disagree" || params[:v] == "agree+%26+disagree"
+      @filters[:v] = nil
+    else
+      @filters[:v] = params[:v]
+    end
+    @statement_filters = Statement.order(opinions_count: :desc).limit(12)
+
     if params[:c] == "Others"
-      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
-      @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
+      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, page: params[:page])
+      @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, page: params[:page])
     else
       category_id = ReasonCategory.find_by_name(params[:c]).try(:id)
-      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
-      @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
+      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id, page: params[:page])
+      @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id, page: params[:page])
     end
+    @agreements_in_favor = @agreements_in_favor.filter(@filters)
+    @agreements_against = @agreements_against.filter(@filters)
+    supporters_count = @agreements_in_favor.size
+    detractors_count = @agreements_against.size
+    @agreements_count = supporters_count + detractors_count
+    @percentage_in_favor = (supporters_count * 100.0 / @agreements_count).round if @agreements_count > 0
+
+
     @comment = Comment.new
     @comments = {}
     @statement.comments.each{|comment| @comments[comment.individual.id] = comment}
@@ -165,7 +187,7 @@ class StatementsController < ApplicationController
     @occupations_count = OccupationsTable.new(statement: @statement, min_count: @min_count).table
   end
 
-  def educated_at
+  def schools
     @min_count = (params[:min] || 1).to_i
     @schools_count = SchoolsTable.new(statement: @statement, min_count: @min_count).table
   end
@@ -179,13 +201,6 @@ class StatementsController < ApplicationController
 
   def redirect_to_statement_url
     redirect_to statement_path(@statement) if params[:id] != @statement.to_param
-  end
-
-  def set_percentage_and_count
-    supporters_count = @statement.supporters_count(profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at])
-    detractors_count = @statement.detractors_count(profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at])
-    @agreements_count = supporters_count + detractors_count
-    @percentage_in_favor = (supporters_count * 100.0 / @agreements_count).round if @agreements_count > 0
   end
 
   def find_related_statements
