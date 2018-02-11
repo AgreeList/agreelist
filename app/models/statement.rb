@@ -117,7 +117,6 @@ class Statement < ActiveRecord::Base
       a = a.order("case when individuals.wikipedia is not null THEN 1 END ASC, case when individuals.wikipedia is null THEN 0 END ASC")
       a = a.order("individuals.followers_count DESC")
     end
-    a = a.page(args[:page]).per(30)
   end
 
   def ranking(agreement)

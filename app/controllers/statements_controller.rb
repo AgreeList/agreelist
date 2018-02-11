@@ -94,12 +94,12 @@ class StatementsController < ApplicationController
     @statement_filters = Statement.order(opinions_count: :desc).limit(12)
 
     if params[:c] == "Others"
-      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, page: params[:page])
-      @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, page: params[:page])
+      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized)
+      @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized)
     else
       category_id = ReasonCategory.find_by_name(params[:c]).try(:id)
-      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id, page: params[:page])
-      @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id, page: params[:page])
+      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id)
+      @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id)
     end
     @agreements_in_favor = @agreements_in_favor.filter(@filters)
     @agreements_against = @agreements_against.filter(@filters)
@@ -107,6 +107,9 @@ class StatementsController < ApplicationController
     detractors_count = @agreements_against.size
     @agreements_count = supporters_count + detractors_count
     @percentage_in_favor = (supporters_count * 100.0 / @agreements_count).round if @agreements_count > 0
+
+    @agreements_in_favor = @agreements_in_favor.page(params[:page]).per(30)
+    @agreements_against = @agreements_against.page(params[:page] || 1).per(30)
 
 
     @comment = Comment.new
