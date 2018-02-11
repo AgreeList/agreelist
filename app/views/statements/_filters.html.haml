@@ -9,7 +9,8 @@
 .home-page-agreement-container
   - if @agreements_count > 0 || any_filter?
     %span#type-filter.dropdown.home-filter
-      Opinions from
+      = pluralize(@agreements_count, "opinion")
+      from
       = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
         = @filters[:type].present? ? @filters[:type] : "influencers"
         %b.caret
