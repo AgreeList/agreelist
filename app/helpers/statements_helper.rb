@@ -5,6 +5,6 @@ module StatementsHelper
   end
 
   def any_filter?
-    params[:type] == "nobel laureates" || params[:type] == "people" || params[:type] == "influencers" || params[:occupation].present? || params[:school].present? || params[:v] == "agree" || params[:v] == "disagree"
+    params[:type] == "nobel laureates" || params[:type] == "people" || params[:type] == "influencers" || params[:type] == "people I follow" || params[:include] == "votes" || params[:occupation].present? || params[:school].present? || params[:v] == "agree" || params[:v] == "disagree"
   end
 end
