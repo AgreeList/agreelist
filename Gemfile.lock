@@ -227,7 +227,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    paperclip (5.0.0)
+    paperclip (5.2.1)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
       cocaine (~> 0.5.5)
@@ -423,7 +423,7 @@ DEPENDENCIES
   nilify_blanks (~> 1.2.1)
   nokogiri (~> 1.8.1)
   omniauth-twitter (~> 1.4.0)
-  paperclip (~> 5.0.0)
+  paperclip (~> 5.2.0)
   pg (~> 0.20.0)
   poltergeist (~> 1.15.0)
   pry
