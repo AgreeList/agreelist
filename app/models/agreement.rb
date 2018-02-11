@@ -74,7 +74,7 @@ class Agreement < ActiveRecord::Base
       agreements = agreements.where("individuals.wikipedia is not null and individuals.wikipedia != ''")
     elsif filters[:type] == "people"
       agreements = agreements.where("individuals.wikipedia is null or individuals.wikipedia = ''")
-    elsif filters[:type] == "people I follow"
+    elsif filters[:type] == "people I follow" && user.present?
       follow_ids = user.follows_by_type("Individual").map{|f| f.followable_id}
       agreements = agreements.where(individual_id: follow_ids)
     end

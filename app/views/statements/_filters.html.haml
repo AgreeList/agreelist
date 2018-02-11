@@ -29,7 +29,10 @@
           %li= link_to "nobel laureates", statement_path(@statement, @filters.merge(type: "nobel laureates"))
           %li= link_to "influencers with Wikipedia page", statement_path(@statement, @filters.merge(type: "influencers"))
           %li= link_to "people with no Wikipedia page", statement_path(@statement, @filters.merge(type: "people"))
-          %li= link_to "people I follow", statement_path(@statement, @filters.merge(type: "people I follow"))
+          - if current_user
+            %li= link_to "people I follow", statement_path(@statement, @filters.merge(type: "people I follow"))
+          - else
+            %li= link_to "people I follow", login_path
     - if @occupations_count.any?
       %span#occupation-filter.dropdown.home-filter
         occupation
