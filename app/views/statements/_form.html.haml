@@ -21,7 +21,7 @@
     = f.text_field :url, class: "form-control"
   .field
     Current image:
-    = image_tag @statement.picture(:original)
+    = image_tag @statement.picture(:thumb)
   .field
     New image (url)
     = f.text_field :picture_from_url, class: "form-control"
