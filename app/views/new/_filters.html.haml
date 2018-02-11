@@ -9,6 +9,10 @@
         %li= link_to "nobel laureates", root_path(@filters.merge(type: "nobel laureates"))
         %li= link_to "influencers with Wikipedia page", root_path(@filters.merge(type: "influencers"))
         %li= link_to "people with no Wikipedia page", root_path(@filters.merge(type: "people"))
+        - if current_user
+          %li= link_to "people I follow", root_path(@filters.merge(type: "people I follow"))
+        - else
+          %li= link_to "people I follow", login_path
   %span#occupation-filter.dropdown.home-filter
     occupation
     = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do

@@ -102,8 +102,8 @@ class StatementsController < ApplicationController
       @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id)
       @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id)
     end
-    @agreements_in_favor = @agreements_in_favor.filter(@filters)
-    @agreements_against = @agreements_against.filter(@filters)
+    @agreements_in_favor = @agreements_in_favor.filter(@filters, current_user)
+    @agreements_against = @agreements_against.filter(@filters, current_user)
     supporters_count = @agreements_in_favor.size
     detractors_count = @agreements_against.size
     @agreements_count = supporters_count + detractors_count

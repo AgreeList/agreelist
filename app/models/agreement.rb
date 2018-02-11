@@ -49,7 +49,7 @@ class Agreement < ActiveRecord::Base
     where("lower(tags2.name) = ?", context_value2.downcase)
   end
 
-  def self.filter(filters)
+  def self.filter(filters, user = nil)
     if filters[:include] == "opinions and votes"
       agreements = self
     elsif filters[:include] == "opinions" || filters[:include].nil?
@@ -74,6 +74,9 @@ class Agreement < ActiveRecord::Base
       agreements = agreements.where("individuals.wikipedia is not null and individuals.wikipedia != ''")
     elsif filters[:type] == "people"
       agreements = agreements.where("individuals.wikipedia is null or individuals.wikipedia = ''")
+    elsif filters[:type] == "people I follow"
+      follow_ids = user.follows_by_type("Individual").map{|f| f.followable_id}
+      agreements = agreements.where(individual_id: follow_ids)
     end
 
     if filters[:statement].present?
