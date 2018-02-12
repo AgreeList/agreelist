@@ -20,11 +20,9 @@
       = link_to "Follow", "#", "data-toggle" => "modal", "data-target" => "#followModal", statement_id: @statement.id, class: "follow"
 - if @statement.description.present?
   .row
-    .col-sm-3
-    .col-sm-6
+    .col-xs-2
+    .col-xs-8
       = @statement.description
-      - if admin?
-        ·
-        = link_to "edit", edit_statement_path(@statement)
+      = link_to "edit", edit_statement_path(@statement) if admin?
 - elsif admin?
   = link_to "Add description", edit_statement_path(@statement)
