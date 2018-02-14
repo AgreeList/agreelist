@@ -55,4 +55,31 @@ describe Individual do
       expect(individual.karma).to eq karma1 + 3
     end
   end
+
+  it "should not let duplicate emails" do
+    individual = Individual.create(email: "hec@hec.com")
+    expect(individual.errors.full_messages).to eq []
+    individual = Individual.create(email: "hec@hec.com")
+    expect(individual.errors.full_messages).to eq ["Email has already been taken"]
+
+  end
+
+  it "should let duplicate nil emails" do
+    individual = Individual.create(email: nil)
+    expect(individual.errors.full_messages).to eq []
+    individual = Individual.create(email: nil)
+    expect(individual.errors.full_messages).to eq []
+  end
+
+  it "should let duplicate blank emails" do
+    individual = Individual.create(email: "")
+    expect(individual.errors.full_messages).to eq []
+    individual = Individual.create(email: "")
+    expect(individual.errors.full_messages).to eq []
+  end
+
+  it "should validate email" do
+    individual = Individual.create(email: "wrongemailcosnoat.com")
+    expect(individual.errors.full_messages).to eq ["Email is invalid"]
+  end
 end
