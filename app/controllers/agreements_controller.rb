@@ -78,7 +78,7 @@ class AgreementsController < ApplicationController
   def find_or_create_voter!
     Voter.new(
       name: params[:name].try(:strip),
-      twitter: params[:twitter].try(:downcase).try(:strip).gsub(/\A@/, ''),
+      twitter: twitter,
       profession_id: params[:profession_id],
       current_user: current_user,
       wikipedia: params[:wikipedia],
@@ -100,16 +100,7 @@ class AgreementsController < ApplicationController
   end
 
   def twitter
-    @twitter ||=
-      if twitter?
-        if params[:name][0] == "@"
-          params[:name].gsub("@", "")
-        else
-          params[:name][20..-1]
-        end
-      else
-        nil
-      end
+    @twitter ||= params[:twitter].try(:downcase).try(:strip).gsub(/\A@/, '')
   end
 
   def check_if_spam
@@ -120,7 +111,7 @@ class AgreementsController < ApplicationController
   end
 
   def spam? # real people have name and surname separated by a space
-    !twitter? && !first_and_surname?
+    current_user.nil? && !twitter? && !first_and_surname?
   end
 
   def twitter?
