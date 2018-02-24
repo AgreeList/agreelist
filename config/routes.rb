@@ -80,6 +80,15 @@ Al::Application.routes.draw do
   end
   get '/test' => 'static_pages#polar'
 
+  resources :agreement_positions, only: [:destroy] do
+    member do
+      post 'top'
+      post 'bottom'
+      post 'higher'
+      post 'lower'
+    end
+  end
+
   get "/auth/failure" => redirect("/")
   post "/touch/:id" => 'agreements#touch', as: :touch
 

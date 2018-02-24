@@ -16,6 +16,8 @@ class Agreement < ActiveRecord::Base
 
   scope :group_by_month, -> { group("date_trunc('month', created_at)") }
 
+  acts_as_list
+
   def short_url
     url.gsub(/.*http:\/\//,'').gsub(/.*www\./,'')[0..15] + "..."
   end
@@ -90,6 +92,14 @@ class Agreement < ActiveRecord::Base
       elsif filters[:v] == "disagree"
         agreements = agreements.where(extent: 0)
       end
+    end
+
+    if filters[:order].present?
+      if filters[:order] == "recent"
+        agreements = agreements.order(updated_at: :desc)
+      end
+    else
+      agreements = agreements.order(position: :asc, upvotes_count: :desc)
     end
     agreements
   end

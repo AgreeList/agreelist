@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180211121522) do
+ActiveRecord::Schema.define(version: 20180224134337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20180211121522) do
     t.integer "reason_category_id"
     t.integer "added_by_id"
     t.integer "upvotes_count", default: 0
+    t.integer "position"
     t.index ["hashed_id"], name: "index_agreements_on_hashed_id"
     t.index ["statement_id", "created_at"], name: "index_agreements_on_statement_id_and_created_at"
   end

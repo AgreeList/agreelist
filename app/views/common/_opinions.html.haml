@@ -11,7 +11,7 @@
             %span= link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
             %span.small>= ", #{individual.bio}"
             %span.small= " · "
-            %span.small= link_to(agreement.updated_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+            %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
           .statement
             %span
               - if agreement.agree?
@@ -30,6 +30,19 @@
               = link_to("delete", agreement_path(agreement), method: :delete, data: { confirm: "You sure?" })
               ·
               = link_to("promote", touch_path(agreement), method: :post)
+              ·
+              order (
+              = link_to("top", top_agreement_position_path(agreement), method: :post)
+              - if agreement.position.present?
+                ,
+                = link_to("higher", higher_agreement_position_path(agreement), method: :post)
+                ,
+                = link_to("lower", lower_agreement_position_path(agreement), method: :post)
+                ,
+                = link_to("bottom", bottom_agreement_position_path(agreement), method: :post)
+                ,
+                = link_to("remove", agreement_position_path(agreement), method: :delete)
+              )
 - if agreements.empty?
   .jumbotron
     No opinions yet. Try

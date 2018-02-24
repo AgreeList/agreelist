@@ -68,3 +68,4 @@ gem 'graphiql-rails', group: :development
 gem 'meta-tags', '~> 2.6.0'
 gem 'ionicons-rails', '~> 2.0.0'
 gem "recaptcha", require: "recaptcha/rails"
+gem 'acts_as_list', '~> 0.9.10'

@@ -13,6 +13,7 @@ class NewController < ApplicationController
     @filters[:occupation] = params[:occupation] == "any" ? nil : params[:occupation]
     @filters[:min_count] = params[:min_count] == default_min_count.to_s ? nil : params[:min_count]
     @filters[:statement] = params[:statement] == "any" ? nil : params[:statement]
+    @filters[:order] = params[:order] == "top" ? nil : params[:order]
     if @filters[:statement]
       s = Statement.find_by_content(@filters[:statement])
       redirect_to statement_path(s)
@@ -20,7 +21,7 @@ class NewController < ApplicationController
     @filters[:v] = params[:v] == "agree & disagree" || params[:v] == "agree+%26+disagree" ? nil : params[:v]
     @statement_filters = Statement.order(opinions_count: :desc).limit(12)
     load_occupations_and_schools(number: 7, min_count: @filters[:min_count] || default_min_count)
-    @agreements = Agreement.filter(@filters, current_user).order(updated_at: :desc).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
+    @agreements = Agreement.filter(@filters, current_user).page(params[:page] || 1).per(50).includes(:statement).includes(:individual)
     @new_user = Individual.new unless current_user
     @statement = Statement.new
   end
