@@ -6,9 +6,4 @@
 
   %p The heart of Agreelist are controversial topics, where influencers do not agree on what the right answer is. We want to gather all opinions in one place and classify them based on whether their authors agree or disagree with a statement embodying the issue at stake. Our platform therefore provides immediate clarity on the position of influencers and shifts (at least part of) the focus to their underpinning arguments. Agreelist will allow you to look at what the people you respect think, inform yourself on unfamiliar opinions and soundly shape your own opinions.
 
-  .text-center
-    - if current_user
-      = link_to "Create a topic or statement", new_statement_path, class: "btn btn-primary btn-lg"
-    - else
-      %h2= link_to "Join", signup_path, class: "btn btn-primary btn-lg"
 %br
