@@ -6,18 +6,9 @@ class AgreementsController < ApplicationController
 
   def new
     @statement = Statement.find_by_url(params[:s])
-    if params[:opinion] || params[:name]
-      @step = 2
-      @individual = Individual.where(name: params[:name]).first || Individual.new(name: params[:name].strip)
-      @opinion, @source = params[:opinion].scan(/\A(.*)(http[^\ ]*\Z)/).first || [params[:opinion].strip, nil]
-      notify('pre_new_opinion', statement: @statement.content, name: params[:name], opinion: params[:opinion])
-    else
-      @step = 1 # sometimes we skip step 1 because we come from the statements page
-      if session[:added_voter].present?
-        @just_added_voter = Individual.find_by_hashed_id(session[:added_voter])
-      end
-      @shortened_url_without_params = Rails.env.test? ? request.url : Shortener.new(full_url: request.base_url + statement_path(@statement), object: @statement).get
-    end
+    @individual = Individual.where(name: params[:name]).first || Individual.new(name: params[:name].strip)
+    @opinion, @source = params[:opinion].scan(/\A(.*)(http[^\ ]*\Z)/).first || [params[:opinion].strip, nil]
+    notify('pre_new_opinion', statement: @statement.content, name: params[:name], opinion: params[:opinion])
   end
 
   def create
@@ -28,7 +19,7 @@ class AgreementsController < ApplicationController
     notify('new_opinion', agreement_id: agreement.id) if agreement.reason.present?
     expire_fragment "brexit_board" if @statement.brexit?
     session[:added_voter] = voter.hashed_id if voter.twitter.present?
-    redirect_to new_agreement_path(s: @statement.to_param), notice: "The opinion has been added"
+    redirect_to statement_path(@statement, type: "all", order: "recent"), notice: "The opinion has been added"
   end
 
   def upvote

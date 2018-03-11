@@ -89,7 +89,6 @@ feature 'add opinion from influencer', js: true do
       click_button "Add opinion"
       fill_in 'biography', with: "bla"
       expect{ click_button "She/he agrees" }.to change{ Agreement.count }.by(1)
-      click_link "back"
       expect(page).to have_text("Barack Obama")
       expect(page).to have_text('bla')
     end

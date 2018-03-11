@@ -92,7 +92,8 @@ class StatementsController < ApplicationController
     else
       @filters[:v] = params[:v]
     end
-    @statement_filters = Statement.order(opinions_count: :desc).limit(12)
+    @filters[:order] = params[:order] || "upvotes"
+    @statement_filters = Statement.limit(12)
 
     if params[:c] == "Others"
       @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized)
@@ -127,6 +128,8 @@ class StatementsController < ApplicationController
     load_occupations_and_schools(statement: @statement, number: 7, min_count: 1)
     @dropdown_occupations = OccupationsCache.new(statement: @statement).read.first(11)
 
+    @just_added_voter = Individual.find_by_hashed_id(session[:added_voter]) if session[:added_voter].present?
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @statement }
@@ -137,6 +140,7 @@ class StatementsController < ApplicationController
   # GET /statements/new.json
   def new
     @statement = Statement.new
+    @hide_footer = true
 
     respond_to do |format|
       format.html # new.html.erb

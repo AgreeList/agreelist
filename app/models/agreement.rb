@@ -96,7 +96,9 @@ class Agreement < ActiveRecord::Base
 
     if filters[:order].present?
       if filters[:order] == "recent"
-        agreements = agreements.order(updated_at: :desc)
+        agreements = agreements.order(created_at: :desc)
+      elsif filters[:order] == "upvotes"
+        agreements = agreements.order(upvotes_count: :desc)
       end
     else
       agreements = agreements.order(position: :asc, upvotes_count: :desc)

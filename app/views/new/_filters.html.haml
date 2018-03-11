@@ -20,6 +20,7 @@
       %b.caret
       %ul{class: "dropdown-menu"}
         %li= link_to "top", root_path(@filters.delete("recent"))
+        %li= link_to "upvotes", root_path(@filters.merge(order: "upvotes"))
         %li= link_to "recent", root_path(@filters.merge(order: "recent"))
   %span#occupation-filter.dropdown.home-filter
     occupation

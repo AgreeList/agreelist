@@ -5,8 +5,7 @@
       .col-md-6
         .form-group
           %h3 New topic or statement:
-          = f.text_area :content, placeholder: "E.g. Climate change is real", class: "form-control", maxlength: Statement::MAXIMUM_LENGTH
-          = "- Do you agree?"
+          = f.text_area :content, placeholder: "E.g. Basic Income", class: "form-control", maxlength: Statement::MAXIMUM_LENGTH
         .form-group
           = f.submit "Create", class: "btn btn-primary"
           or

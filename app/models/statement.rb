@@ -109,8 +109,8 @@ class Statement < ActiveRecord::Base
     a = a.where(reason_category_id: args[:category_id]) if args[:category_id]
     a = a.where(reason_category_id: nil) if args[:filter_by] == :non_categorized
     a = a.includes(:agreement_comments)
-    if args[:order ] == "date"
-      a = a.order("created_at DESC")
+    if args[:order ] == "date" || args[:order] == "recent"
+      a = a.order("agreements.created_at DESC")
     else
       a = a.order("agreements.upvotes_count DESC")
       a = a.order("case when (agreements.reason is not null and agreements.reason != '') THEN 1 END ASC, case when agreements.reason is null THEN 0 END ASC")
