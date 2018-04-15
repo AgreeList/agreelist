@@ -93,7 +93,7 @@ class StatementsController < ApplicationController
       @filters[:v] = params[:v]
     end
     @filters[:order] = params[:order] || "upvotes"
-    @statement_filters = Statement.limit(12)
+    @statement_filters = Statement.order(opinions_count: :desc).limit(12)
 
     if params[:c] == "Others"
       @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized)
