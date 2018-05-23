@@ -18,6 +18,7 @@
   %body
     = render partial: 'layouts/gtm_body'
     %section.main-container
+      = render 'layouts/cookie_consent'
       = render 'layouts/header'
       - flash.each do |key, value|
         - if key == "notice"
