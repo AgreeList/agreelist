@@ -9,7 +9,8 @@ gem 'nokogiri', '~> 1.8.1'
 gem "twitter", '~> 6.1.0'
 gem "haml-rails", '~> 1.0.0'
 gem 'kaminari', '~> 1.0.1'
-
+gem 'rails-html-sanitizer', '~> 1.0.4'
+gem 'loofah', '~> 2.2.1'
 gem "omniauth-twitter", '~> 1.4.0'
 
 group :development, :test do
