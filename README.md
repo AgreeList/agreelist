@@ -1,8 +1,8 @@
 AgreeList
 =============
-[![Slack Status](http://slack.agreelist.org/badge.svg)](https://slack.agreelist.org)
+ZWNhMDYxOWIyODM3NGE5YjM1MjlhNTU)
 [![Code Climate](https://codeclimate.com/github/hectorperez/agreelist/badges/gpa.svg)](https://codeclimate.com/github/hectorperez/agreelist)
-[![Build Status](https://travis-ci.org/hectorperez/agreelist.svg?branch=master)](https://travis-ci.org/hectorperez/agreelist)
+[![Build Status](https://travis-ci.org/agreelist/agreelist.svg?branch=master)](https://travis-ci.org/agreelist/agreelist)
 
 Agreelist is a non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues.
 
@@ -109,7 +109,7 @@ Get in touch
 -------
 - Twitter: [@arpahector](https://twitter.com/arpahector)
 - Email: hector@agreelist.org
-- [![Slack Status](http://slack.agreelist.org/badge.svg)](https://slack.agreelist.org)
+- Chat: [Slack](https://join.slack.com/t/agreelist/shared_invite/enQtMzQ3NjQ5NTY1MDI0LTg2ZmVmZWI2MzFlNDNjM2M2NDA5MjM4ZTA5NDYxYmVhMzAyNGZlNjE4ZWNhMDYxOWIyODM3NGE5YjM1MjlhNTU)
 
 License:
 -------
