@@ -24,7 +24,7 @@ describe Voter do
 
   it "find user by name" do
     create(:individual, name: "Barack Obama")
-    voter = Voter.new(name: "Obama", current_user: create(:individual), name: "Barack Obama")
+    voter = Voter.new(current_user: create(:individual), name: "Barack Obama")
     expect{voter.find_or_create!}.not_to change{Individual.count}
   end
 end
