@@ -12,6 +12,7 @@ feature 'spam filter' do
     # real people tend to have name and surname separated by a space
     visit statement_path(statement)
     fill_in 'name', with: "Spammer"
+    fill_in 'opinion', with: "whatever"
     click_button "Add opinion"
     click_button "She/he agrees"
     expect(page).to have_text "Your message has to be approved because it seemed spam."

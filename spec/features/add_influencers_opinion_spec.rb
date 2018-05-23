@@ -15,6 +15,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds reason category' do
       fill_in 'name', with: "Cesar Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       select "Politics", from: "reason_category_id"
       click_button "She/he agrees"
@@ -23,6 +24,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds profession' do
       fill_in 'name', with: "Cesar Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       select "Politician", from: "profession_id"
       click_button "She/he agrees"
@@ -32,6 +34,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'should open share on twitter modal window' do
       fill_in 'name', with: "Barack Obama"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'twitter', with: "barackobama"
       click_button "She/he agrees"
@@ -40,6 +43,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds someone who disagrees' do
       fill_in 'name', with: 'Hector Perez'
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       click_button "She/he disagree"
       expect(Agreement.last.disagree?).to eq(true)
@@ -47,6 +51,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds someone who disagrees with its twitter username' do
       fill_in 'name', with: "Hector Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'twitter', with: "@arpahector"
       click_button "She/he disagree"
@@ -55,6 +60,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds someone who disagrees with its twitter url' do
       fill_in 'name', with: "Hector Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'twitter', with: "https://twitter.com/arpahector"
       click_button "She/he disagree"
@@ -70,6 +76,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds someone who disagrees' do
       fill_in 'name', with: 'Hector Perez'
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       click_button "She/he disagree"
       expect(Agreement.last.disagree?).to eq(true)
@@ -95,6 +102,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'should create two users when adding someone else' do
       fill_in 'name', with: 'Hector Perez'
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'source', with: 'http://...'
       fill_in 'email', with: 'hhh@jjj.com'
@@ -103,6 +111,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds someone who disagrees with its twitter username' do
       fill_in 'name', with: "Hector Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'twitter', with: "arpahector"
       click_button "She/he disagree"
@@ -111,6 +120,7 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds someone who disagrees with @ + its twitter username' do
       fill_in 'name', with: "Hector Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'twitter', with: "@arpahector"
       click_button "She/he disagree"
@@ -119,11 +129,13 @@ feature 'add opinion from influencer', js: true do
 
     scenario 'adds two times the same @user' do
       fill_in 'name', with: "Hector Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       fill_in 'twitter', with: "@arpahector"
       click_button "She/he agrees"
       click_link "Back" # modal window asking to twit
       fill_in 'name', with: "Hector Perez"
+      fill_in 'opinion', with: "whatever"
       click_button "Add opinion"
       click_button "She/he agrees"
       expect(Individual.all.order(:twitter).map(&:twitter)).to eq %w(arpahector whatever_seed)
@@ -144,4 +156,3 @@ feature 'add opinion from influencer', js: true do
     visit "/auth/twitter"
   end
 end
-
