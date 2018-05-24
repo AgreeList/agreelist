@@ -52,6 +52,9 @@
             %span.red disagreed
           by
           = @individual.name
+          %span.small= " · "
+          %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+
 
         - if agreement.reason.present?
           .profile-reason
