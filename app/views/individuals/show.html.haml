@@ -55,7 +55,7 @@
 
         - if agreement.reason.present?
           .profile-reason
-          = render partial: "common/reason", locals: { agreement: agreement }
+          = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
 
   - if current_user
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|

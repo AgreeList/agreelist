@@ -5,3 +5,4 @@
   - else
     %span{id: "reason_#{agreement.id}", full_reason: reason}= "#{reason[0..(Agreement::SHORTENED_REASON_MAX_SIZE - 1)]}..."
     = link_to "See More", "#", agreement_id: agreement.id, class: "see_more_reason", remote: true
+  %span.small= link_to "source", agreement.url if display_url

@@ -11,7 +11,7 @@
           = individual.visible_bio
           - if admin?
             = link_to "edit", edit_individual_path(individual)
-      %i= render partial: "common/reason", locals: { agreement: agreement }
+      %i= render partial: "common/reason", locals: { agreement: agreement, display_url: false }
       - if individual == current_user || admin?
         %span.small
           - if agreement.reason.present?

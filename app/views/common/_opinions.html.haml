@@ -18,7 +18,7 @@
                 %span.red disagrees
             = link_to(statement.content, statement_path(statement))
           %span.reason
-            = render partial: "common/reason", locals: { agreement: agreement }
+            = render partial: "common/reason", locals: { agreement: agreement, display_url: false }
           %span.small
             - if admin?
               = link_to "edit", edit_reason_path(agreement)
