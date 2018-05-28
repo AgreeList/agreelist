@@ -183,10 +183,6 @@ class Individual < ActiveRecord::Base
     ""
   end
 
-  def karma
-    agreements.size + agreements_added_from_others_without_reason.size * 2 + agreements_added_from_others_with_reason.size * 3
-  end
-
   def mini_picture_url
     self.picture(:mini)
   end

@@ -79,7 +79,7 @@ feature 'voting', js: true do
         fill_in :agreement_reason, with: "because..."
         click_button "Save"
         expect(page).to have_content "because..."
-        expect(page).to have_content("bla (1)")
+        expect(page).to have_content("bla")
         expect(page).to have_content("Agree 100%")
       end
 
@@ -94,7 +94,7 @@ feature 'voting', js: true do
         click_button "Save"
         expect(page).to have_content "because..."
         expect(page).to have_content "because..."
-        expect(page).to have_content("bla (1)")
+        expect(page).to have_content("bla")
         expect(page).to have_content("Agree 50%")
       end
     end
@@ -106,4 +106,3 @@ feature 'voting', js: true do
     visit "/auth/twitter"
   end
 end
-

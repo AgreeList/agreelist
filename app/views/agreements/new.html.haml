@@ -2,10 +2,10 @@
   #gather.jumbotron.textcenter
     .small
       Topic or statement:
-      = link_to @statement.content, statement_path(@statement)
+      = link_to @statement.content, expect(page).to have_content("bla")_path(@statement)
     - unless current_user
       = link_to "Log in", login_path(back_url: request.url)
-      first if you want karma! - optional
+      first to be able to edit it afterwards - optional
     = form_tag("/ag", :method => "post") do
       .supporter_fields
         Opinion:

@@ -13,7 +13,6 @@
               = link_to "Follow", follows_path(individual_id: @individual.id), method: :post
 
       = link_to("Edit Profile", edit_individual_path, class: "btn btn-primary") if admin? || current_user == @individual
-      = "Karma: #{@individual.karma}" if @individual.email.present?
 
       %p
         = @individual.visible_bio
