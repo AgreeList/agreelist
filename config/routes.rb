@@ -21,6 +21,7 @@ Al::Application.routes.draw do
   post '/results' => 'home#save_email'
   get "/all" => 'statements#index', as: :all
   get "/s/:title_and_hashed_id" => "statements#deprecated_show" # deprecated
+  get "/slack" => redirect("https://join.slack.com/t/agreelist/shared_invite/enQtMzQ3NjQ5NTY1MDI0LTg2ZmVmZWI2MzFlNDNjM2M2NDA5MjM4ZTA5NDYxYmVhMzAyNGZlNjE4ZWNhMDYxOWIyODM3NGE5YjM1MjlhNTU")
   resources :kpis, only: :index
   resources :statements, path: "a" do
     collection do
