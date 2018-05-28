@@ -37,13 +37,7 @@ class StaticPagesController < ApplicationController
   end
 
   def about
-    if Rails.env == "test"
-      @hector = Individual.first
-      @emilie = Individual.first
-    else
-      @hector = Individual.where(twitter: "arpahector").first
-      @emilie = Individual.where(hashed_id: "657249273").first
-    end
+    redirect_to "https://opencollective.com/agreelist"
   end
 
   def create_statement_from_homepage
