@@ -36,6 +36,7 @@ Al::Application.routes.draw do
   get "/donors" => "static_pages#donors"
   post "/contact" => "static_pages#contact_send_email"
   resources :follows, only: [:index, :create, :destroy]
+  resources :timeline, only: :index
   resources :agreement_comments, only: :create
   resources :comments, only: :create
   resources :votes, only: :create

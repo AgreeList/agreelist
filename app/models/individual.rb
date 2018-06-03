@@ -42,6 +42,13 @@ class Individual < ActiveRecord::Base
   before_save :update_profile_from_twitter, if: :twitter_changed?
   before_save :downcase_email
 
+  def follow_people_followed_on_twitter
+    twitters = Friends::Finder.new(twitter).find
+    Individual.where(twitter: twitters).each do |individual|
+      self.follow(individual)
+    end
+  end
+
   def can_access_sidekiq?
     self.twitter == "arpahector"
   end

@@ -27,8 +27,6 @@
               ·
               = link_to("delete", agreement_path(agreement), method: :delete, data: { confirm: "You sure?" })
               ·
-              = link_to("promote", touch_path(agreement), method: :post)
-              ·
               order (
               = link_to("top", top_agreement_position_path(agreement), method: :post)
               - if agreement.position.present?
