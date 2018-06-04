@@ -2,7 +2,7 @@
   #gather.jumbotron.textcenter
     .small
       Topic or statement:
-      = link_to @statement.content, expect(page).to have_content("bla")_path(@statement)
+      = link_to @statement.content, statement_path(@statement)
     - unless current_user
       = link_to "Log in", login_path(back_url: request.url)
       first to be able to edit it afterwards - optional
