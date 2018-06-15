@@ -66,6 +66,7 @@ Al::Application.routes.draw do
   get '/faq' => 'static_pages#faq'
 
   match "/auth/twitter/callback" => 'sessions#create_with_twitter', via: [:get, :post]
+  match "/auth/twitter/callback2" => 'sessions#create_with_twitter', via: [:get, :post]
   get "/login" => "sessions#new", as: :login
   get "/signout" => "sessions#destroy", as: :signout
   resources :reset_password, only: [:new, :create, :edit, :update]
