@@ -1,12 +1,5 @@
 .container
-  %h5 Do you have a Twitter account?
-  %p
-    = radio_button_tag :login_with, "twitter"
-    = "Yes, log in with Twitter"
-    = link_to image_tag("twitter-login.png"), "/auth/twitter", id: "twitter-login"
-  %p
-    = radio_button_tag :login_with, "email"
-    = "No, log in with your email account:"
+  = link_to image_tag("twitter-login.png"), "/auth/twitter", id: "twitter-login"
   = form_for @individual do |f|
     .field
       = f.label :email
@@ -23,7 +16,5 @@
     %p
       .actions
         = invisible_recaptcha_tags text: 'Sign up', class: "btn btn-primary"
-    %h3
-      Already a user?
-      = link_to "Log in", login_path, class: "btn btn-primary"
-
+        Already a user?
+        = link_to "Log in", login_path
