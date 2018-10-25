@@ -15,7 +15,6 @@ gem "omniauth-twitter", '~> 1.4.0'
 
 group :development, :test do
   gem 'rspec-rails'
-  # gem 'guard-rspec'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'pry'
