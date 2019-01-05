@@ -5,20 +5,6 @@ class StaticPagesController < ApplicationController
   def donors
   end
 
-  def contact
-    if current_user && params[:body] =~ /donate/
-      statement = Statement.find_by_hashed_id(params['statement'])
-      notify("clicked_on_donate_100_for_topic", statement_content: statement.try(:content))
-    end
-  end
-
-  def contact_send_email
-    notify("contact_form", name: params[:name], email: params[:email], body: params[:body])
-    ContactMailer.contact(current_user, params).deliver
-    flash[:notice] = "Done. We'll reply soon. If not, you can email us directly to hello@agreelist.org or via Twitter at @arpahector"
-    redirect_to get_and_delete_back_url || root_path
-  end
-
   def join
     @individual = current_user
   end
