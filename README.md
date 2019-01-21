@@ -1,4 +1,4 @@
-AgreeList
+Agreelist
 =============
 [![Code Climate](https://codeclimate.com/github/hectorperez/agreelist/badges/gpa.svg)](https://codeclimate.com/github/hectorperez/agreelist)
 [![Build Status](https://travis-ci.org/agreelist/agreelist.svg?branch=master)](https://travis-ci.org/agreelist/agreelist)
