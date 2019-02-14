@@ -12,7 +12,6 @@ class AgreementsController < ApplicationController
     else
       @individual = Individual.where(name: params[:name]).first || Individual.new(name: params[:name].strip)
       @opinion, @source = params[:opinion].scan(/\A(.*)(http[^\ ]*\Z)/).first || [params[:opinion].strip, nil]
-      notify('pre_new_opinion', statement: @statement.content, name: params[:name], opinion: params[:opinion])
     end
   end
 
