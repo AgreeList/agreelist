@@ -238,6 +238,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
     pg (0.20.0)
+    phantomjs (2.1.1.0)
     poltergeist (1.15.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -431,6 +432,7 @@ DEPENDENCIES
   omniauth-twitter (~> 1.4.0)
   paperclip (~> 5.2.0)
   pg (~> 0.20.0)
+  phantomjs
   poltergeist (~> 1.15.0)
   pry
   rack-mini-profiler
@@ -455,4 +457,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.14.6
+   1.16.2

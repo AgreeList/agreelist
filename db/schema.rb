@@ -56,13 +56,6 @@ ActiveRecord::Schema.define(version: 20180224134337) do
     t.string "source", limit: 255
   end
 
-  create_table "delegations", id: :serial, force: :cascade do |t|
-    t.integer "representative_id"
-    t.integer "represented_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "follows", id: :serial, force: :cascade do |t|
     t.integer "followable_id", null: false
     t.string "followable_type", limit: 255, null: false
@@ -127,13 +120,6 @@ ActiveRecord::Schema.define(version: 20180224134337) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "relationships", id: :serial, force: :cascade do |t|
-    t.integer "follower_id"
-    t.integer "followed_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "statements", id: :serial, force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -180,13 +166,6 @@ ActiveRecord::Schema.define(version: 20180224134337) do
   create_table "upvotes", id: :serial, force: :cascade do |t|
     t.integer "individual_id", null: false
     t.integer "agreement_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "via", id: :serial, force: :cascade do |t|
-    t.integer "agreement_id"
-    t.integer "individual_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -46,6 +46,7 @@ group :test do
   gem 'webmock'
   gem "fakeredis"
   gem 'capybara-screenshot'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
 
 gem 'pg', '~> 0.20.0'
