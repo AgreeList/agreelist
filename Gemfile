@@ -5,7 +5,7 @@ gem 'rails', '>= 5.1.1'
 gem 'bootstrap-sass', '~> 3.3.7'
 gem 'paperclip', "~> 5.2.0"
 gem 'aws-sdk', '~> 2.3'
-gem 'nokogiri', '~> 1.8.1'
+gem 'nokogiri', '~> 1.10.4'
 gem "twitter", '~> 6.1.0'
 gem "haml-rails", '~> 1.0.0'
 gem 'kaminari', '~> 1.0.1'
