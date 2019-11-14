@@ -13,6 +13,14 @@ feature 'statements' do
       expect(page).to have_content("#{@statement.content}")
       expect(page).to have_content("2")
     end
+
+    scenario "can sign up only with email" do
+      15.times{ create(:agreement, statement: @statement, individual: create(:individual), reason: "blabla", extent: 100)}
+      visit statement_path(@statement)
+      fill_in :individual_email, with: "hec@hec.com"
+      expect{ click_button "Sign up" }.to change{ Individual.count }.by(1)
+      expect(Individual.last.email).to eq "hec@hec.com"
+    end
   end
 
   context "logged in as hector" do

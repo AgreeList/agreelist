@@ -10,7 +10,7 @@
       = text_area_tag :opinion, "", class: "form-control", placeholder: "Opinion - please add link to source at the end"
       = hidden_field_tag :s, @statement.to_param
       %span
-        = submit_tag "Add opinion", class: "btn btn-primary"
+        = submit_tag "Add opinion", class: "btn btn-default"
         - if params[:s]
           or
           = link_to "back", statement_path(@statement)

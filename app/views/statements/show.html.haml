@@ -1,9 +1,6 @@
 .container
   = render partial: "header"
   = render partial: "opinions"
-  .text-center
-    .pagination
-      = paginate (@agreements_in_favor.size >= @agreements_against.size ? @agreements_in_favor : @agreements_against)
   = render partial: "common/add_opinion"
   =# render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
 
