@@ -1,0 +1,17 @@
+.media.opinion.dynamic_width{class: dynamic_class}
+  = form_for Individual.new do |f|
+    %p
+      Sign up to see
+      %span.red= "#{@agreements_count} opinions"
+      on this topic:
+    %p= f.text_field(:email, class: "form-control", placeholder: "your@email.com")
+    %p.small
+      = "By clicking Sign up, you agree to our"
+      = link_to "Terms.", terms_path
+      = 'You may receive sporadic notifications from us and can opt out any time.'
+    = f.hidden_field :is_user, value: true
+    %p
+      .actions
+        = invisible_recaptcha_tags text: "Sign up", class: "btn btn-primary"
+        or
+        = link_to "Log in", login_path

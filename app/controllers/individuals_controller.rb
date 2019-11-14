@@ -27,7 +27,7 @@ class IndividualsController < ApplicationController
       if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
         upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))
       else
-        redirect_to edit_individual_path(@individual)
+        redirect_to(get_and_delete_back_url || root_path, notice: "Welcome to Agreelist!")
       end
     else
       flash[:error] = @individual.errors.full_messages.join(". ")

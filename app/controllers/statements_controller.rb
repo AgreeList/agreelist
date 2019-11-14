@@ -113,6 +113,10 @@ class StatementsController < ApplicationController
     @agreements_in_favor = @agreements_in_favor.page(params[:page]).per(30)
     @agreements_against = @agreements_against.page(params[:page] || 1).per(30)
 
+    unless current_user
+      @agreements_in_favor = @agreements_in_favor.limit(7)
+      @agreements_against = @agreements_against.limit(7)
+    end
 
     @comment = Comment.new
     @comments = {}
