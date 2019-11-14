@@ -1,10 +1,13 @@
 #add
   .ui-widget
     %h3
-      Add an opinion leader
+      - if @agreements_count > 0
+        Biased? Please add more opinions
+      - else
+        Please add opinions
       %span.small
         or
-        = link_to "donate £50 and we'll find 30 influencers on the topic you choose", donate_path
+        = link_to "donate £50 and we'll find 30 opinions from people with Wikipedia page", donate_path
     = form_tag "/ag/new" do
       = text_field_tag :name, "", id: "name-field", class: "form-control"
       = text_area_tag :opinion, "", class: "form-control", placeholder: "Opinion - please add link to source at the end"

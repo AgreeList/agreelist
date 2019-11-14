@@ -71,7 +71,6 @@ feature 'add opinion from influencer', js: true do
   context 'non logged user' do
     before do
       visit statement_path(statement)
-      click_link "add opinions"
     end
 
     scenario 'adds someone who disagrees' do
