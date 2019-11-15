@@ -5,10 +5,7 @@
       %span.red= "#{@agreements_count} opinions"
       on this topic:
     %p= f.text_field(:email, class: "form-control", placeholder: "your@email.com")
-    %p.small
-      = "By clicking Sign up, you agree to our"
-      = link_to "Terms.", terms_path
-      = 'You may receive sporadic notifications from us and can opt out any time.'
+    %p.small= render partial: "common/sign_up_clause"
     = f.hidden_field :is_user, value: true
     %p
       .actions

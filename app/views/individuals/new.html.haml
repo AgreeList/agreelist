@@ -13,6 +13,7 @@
     = f.hidden_field :is_user, value: true
     = hidden_field_tag :task, params[:task] || params[:individual].try(:[], :task)
     = hidden_field_tag :agreement_id, params[:agreement_id] || params[:individual].try(:[], :agreement_id)
+    %p.small= render partial: "common/sign_up_clause"
     %p
       .actions
         = invisible_recaptcha_tags text: 'Sign up', class: "btn btn-primary"
