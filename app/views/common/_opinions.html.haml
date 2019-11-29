@@ -8,17 +8,17 @@
           = image_tag(individual.picture.url(:mini), class: "picture media-object")
         .media-body
           %h4.media-heading
-            %span.name= link_to(statement.content, statement_path(statement))
-            %span.small
-              - if agreement.agree?
-                %span.green agreed
-              - else
-                %span.red disagreed
-              by
-            = link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
+            %span= link_to(individual.name || individual.twitter || 'user-' + individual.hashed_id, individual_path(individual))
             %span.small>= ", #{individual.bio}"
+          .statement
+            %span
+              - if agreement.agree?
+                %span.green agrees
+              - else
+                %span.red disagrees
+            = link_to(statement.content, statement_path(statement))
           %span.reason
-            = render partial: "common/reason", locals: { agreement: agreement }
+            = render partial: "common/reason", locals: { agreement: agreement, display_url: false }
           %span.small
             - if admin?
               = link_to "edit", edit_reason_path(agreement)
@@ -28,5 +28,22 @@
               = link_to("delete", agreement_path(agreement), method: :delete, data: { confirm: "You sure?" })
               ·
               = link_to("promote", touch_path(agreement), method: :post)
+              ·
+              order (
+              = link_to("top", top_agreement_position_path(agreement), method: :post)
+              - if agreement.position.present?
+                ,
+                = link_to("higher", higher_agreement_position_path(agreement), method: :post)
+                ,
+                = link_to("lower", lower_agreement_position_path(agreement), method: :post)
+                ,
+                = link_to("bottom", bottom_agreement_position_path(agreement), method: :post)
+                ,
+                = link_to("remove", agreement_position_path(agreement), method: :delete)
+              )
+- if agreements.empty?
+  .jumbotron
+    No opinions yet. Try
+    = link_to "removing filters", root_path
 .text-center
   = paginate agreements

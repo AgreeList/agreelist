@@ -1,4 +1,10 @@
 .container
-  - @schools.each do |school|
-    %p= link_to "#{school.name} (#{school.taggings_count} alumni)", school_path(school.name.downcase.gsub(" ", "-"))
+  %table.table
+    %thead
+      %tr
+        %th Alma mater
+    %tbody
+      - @schools.each do |school|
+        %tr
+          %td= link_to "#{school.name} (#{school.taggings_count} alumni)", school_path(school.name.downcase.gsub(" ", "-"))
   = render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2

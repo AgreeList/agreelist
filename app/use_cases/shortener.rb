@@ -10,8 +10,10 @@ class Shortener
     if cached_shortened_url
       cached_shortened_url
     else
-      $redis.set(key, shorten_url)
-      shorten_url
+      # TODO: Replace shortener gem. It stopped working and it doesn't seem that it will be fixed.
+      # $redis.set(key, shorten_url)
+      # shorten_url
+      full_url
     end
   end
 

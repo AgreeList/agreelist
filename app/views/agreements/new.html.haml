@@ -1,65 +1,50 @@
 .container
   #gather.jumbotron.textcenter
-    = react_component('HelloMessage', name: 'Hec')
     .small
       Topic or statement:
       = link_to @statement.content, statement_path(@statement)
-    %h3
-      Add an opinion leader
-      - if (@statement.agreements.size) < 50
-        %span.small
-          or
-          = link_to "donate $100 and we'll find 50 influencers", donate_path(@statement)
     - unless current_user
       = link_to "Log in", login_path(back_url: request.url)
-      first if you want karma! - optional
-    = form_tag(agreements_path, :method => "post") do
+      first to be able to edit it afterwards - optional
+    = form_tag("/ag", :method => "post") do
       .supporter_fields
-        %p= text_field_tag(:name,"", class: "form-control", placeholder: "Name or @twitter. E.g. @barackobama")
-        %p= text_field_tag(:wikipedia,"", class: "form-control", placeholder: "Wikipedia page of her/him")
-        %p= hidden_field_tag :agg, 'someone_else'
-        %p= text_field_tag(:comment, "", class: "form-control", placeholder: "Quote or reason why the person you are adding agrees/disagrees (optional)", maxlength: 1000)
+        Opinion:
+        %p= text_area_tag(:comment, @opinion, class: "form-control", placeholder: "Quote or reason why the person you are adding agrees/disagrees (optional)", maxlength: 1000)
         #source_box
-          %p= text_field_tag(:source, "", class: "form-control", placeholder: "URL/source where the opinion comes from (mandatory)")
+          Source:
+          %p= text_field_tag(:source, @source, class: "form-control", placeholder: "URL/source where the opinion comes from (mandatory)")
+        Name:
+        %p= text_field_tag(:name,@individual.name, class: "form-control", placeholder: "Name or @twitter. E.g. @barackobama")
+
+        Wikipedia url:
+        %p= text_field_tag(:wikipedia,@individual.wikipedia, class: "form-control", placeholder: "Wikipedia page of her/him")
+
+        Twitter username:
+        %p= text_field_tag(:twitter,@individual.twitter, class: "form-control", placeholder: "E.g. @barackobama")
+
+        %p= hidden_field_tag :agg, 'someone_else'
+
         = hidden_field_tag(:statement_id, @statement.id)
         - if board? && has_admin_category_rights?
           %p
             Category:
             = select_tag :reason_category_id, options_from_collection_for_select(ReasonCategory.all, "id", "name"), include_blank: true
             = link_to "Edit categories", reason_categories_path
-        %p= text_field_tag(:biography, "", class: "form-control", placeholder: "Short biography (taken from Twitter if used)", maxlength: 100)
+        Bio:
+        %p= text_field_tag(:biography, @individual.bio, class: "form-control", placeholder: "Short biography", maxlength: 100)
         - if board? && has_profession_rights?
           %p
             Profession:
             = select_tag :profession_id, options_from_collection_for_select(Profession.all, "id", "name"), include_blank: true
             = link_to "Edit professions", professions_path
-        %p= text_field_tag(:picture_from_url, "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
-        %p= text_field_tag(:email, "", class: "form-control", placeholder: "Your email") unless current_user.try(:email)
+        Picture url:
+        %p= text_field_tag(:picture_from_url, @individual.picture? ? @individual.picture.url : "", class: "form-control", placeholder: "Photo url (taken from Twitter if used)", maxlength: 254)
+        - unless current_user.try(:email)
+          Your email:
+          %p= text_field_tag(:email, "", class: "form-control", placeholder: "whatever@whatever.com")
       %p
         = submit_tag("She/he agrees", class: "btn btn-primary")
         = submit_tag("She/he disagrees", class: "btn btn-primary")
         %span.medium
           or
           = link_to "back", statement_path(@statement)
-
-- if session[:added_voter]
-  #tweetModal.modal.fade{role: "dialog"}
-    .modal-dialog
-      .modal-content
-        .modal-header.text-center
-          %h3= "Wanna tweet you added @#{@just_added_voter.twitter}?"
-        .modal-body.text-center
-          You'll be able to change the tweet and confirm or cancel in the next window
-
-          %br
-          %br
-          = link_to "Yes, share on Twitter", "https://twitter.com/intent/tweet?url=&text=@#{@just_added_voter.try(:twitter)} I added you to the list of who does / does not support '#{@statement.shortened_content(35)}' #{@shortened_url_without_params}", class: "btn btn-primary", id: "tweet-supporter-added-2", "data-dismiss" => "modal"
-          or
-          = link_to "Back", "#", "data-dismiss" => "modal"
-= link_to "Tweet supporter added", "#", "data-toggle" => "modal", "data-target" => "#tweetModal", statement_id: @statement.id, class: "vote hidden", id: "tweet-supporter-added"
-
-- if session[:added_voter]
-  - session.delete(:added_voter)
-  :javascript
-    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-    $("#tweet-supporter-added").click();

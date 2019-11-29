@@ -10,15 +10,18 @@
     Title
     = f.text_field :content, class: "form-control"
   .field
+    Description
+    = f.text_area :description, class: "form-control"
+  .field
     Tags (comma separated):
-    = f.text_field :tag_list, class: "form-control"
+    = f.text_field :tag_list, value: f.object.tag_list.to_s, class: "form-control"
   URL (avoid to change this because external links might break):
   .field
     agreelist.org/a/
     = f.text_field :url, class: "form-control"
   .field
     Current image:
-    = image_tag @statement.picture(:original)
+    = image_tag @statement.picture(:thumb)
   .field
     New image (url)
     = f.text_field :picture_from_url, class: "form-control"

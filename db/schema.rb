@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171104121944) do
+ActiveRecord::Schema.define(version: 20180224134337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20171104121944) do
     t.integer "reason_category_id"
     t.integer "added_by_id"
     t.integer "upvotes_count", default: 0
+    t.integer "position"
     t.index ["hashed_id"], name: "index_agreements_on_hashed_id"
     t.index ["statement_id", "created_at"], name: "index_agreements_on_statement_id_and_created_at"
   end
@@ -53,13 +54,6 @@ ActiveRecord::Schema.define(version: 20171104121944) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "source", limit: 255
-  end
-
-  create_table "delegations", id: :serial, force: :cascade do |t|
-    t.integer "representative_id"
-    t.integer "represented_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "follows", id: :serial, force: :cascade do |t|
@@ -103,6 +97,8 @@ ActiveRecord::Schema.define(version: 20171104121944) do
     t.string "wikidata_id", limit: 255
     t.string "bio_link", limit: 255
     t.integer "opinions_count", default: 0
+    t.boolean "nobel_laureate", default: false, null: false
+    t.boolean "admin", default: false
   end
 
   create_table "old_statement_urls", force: :cascade do |t|
@@ -124,13 +120,6 @@ ActiveRecord::Schema.define(version: 20171104121944) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "relationships", id: :serial, force: :cascade do |t|
-    t.integer "follower_id"
-    t.integer "followed_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "statements", id: :serial, force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -145,6 +134,7 @@ ActiveRecord::Schema.define(version: 20171104121944) do
     t.string "picture_content_type"
     t.integer "picture_file_size"
     t.datetime "picture_updated_at"
+    t.text "description"
     t.index ["hashed_id"], name: "index_statements_on_hashed_id"
   end
 
@@ -176,13 +166,6 @@ ActiveRecord::Schema.define(version: 20171104121944) do
   create_table "upvotes", id: :serial, force: :cascade do |t|
     t.integer "individual_id", null: false
     t.integer "agreement_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "via", id: :serial, force: :cascade do |t|
-    t.integer "agreement_id"
-    t.integer "individual_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

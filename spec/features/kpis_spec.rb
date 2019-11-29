@@ -4,6 +4,7 @@ feature 'kpis', js: true do
   before do
     create(:individual)
     visit "/auth/twitter"
+    Individual.last.update_attributes(admin: true)
   end
 
   it "basic individuals_count" do

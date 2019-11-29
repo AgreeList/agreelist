@@ -1,12 +1,5 @@
 .container
-  %h5 Do you have a Twitter account?
-  %p
-    = radio_button_tag :login_with, "twitter"
-    = "Yes, log in with Twitter"
-    = link_to image_tag("twitter-login.png"), "/auth/twitter", id: "twitter-login"
-  %p
-    = radio_button_tag :login_with, "email"
-    = "No, log in with my email account:"
+  = link_to image_tag("twitter-login.png"), "/auth/twitter", id: "twitter-login"
   = form_tag sessions_path do
     .field
       = label_tag :email
@@ -23,6 +16,5 @@
     %p
       .actions
         = submit_tag "Log in", class: "btn btn-primary"
-    %h3
-      New to Agreelist?
-      = link_to "Sign up!", signup_path(task: params[:task], agreement_id: params[:agreement_id]), class: "btn btn-primary"
+        New to Agreelist?
+        = link_to "Sign up!", signup_path(task: params[:task], agreement_id: params[:agreement_id])

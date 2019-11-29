@@ -1,9 +1,8 @@
 class StatementsController < ApplicationController
-  before_action :login_required, only: [:index, :new, :create, :create_and_vote]
+  before_action :login_required, only: [:new, :create, :create_and_vote]
   before_action :admin_required, only: [:edit, :update, :destroy]
-  before_action :find_statement, only: [:show, :destroy, :update, :edit, :occupations, :educated_at]
+  before_action :find_statement, only: [:show, :destroy, :update, :edit, :occupations, :schools]
   before_action :find_related_statements, only: :show
-  before_action :set_percentage_and_count, only: [:show, :occupations, :educated_at]
   before_action :redirect_to_statement_url, only: :show
   before_action :set_back_url_to_current_page, only: [:show, :index]
 
@@ -52,7 +51,9 @@ class StatementsController < ApplicationController
   def index
     @statements = Statement.select("statements.id, statements.content, statements.url, count(agreements.id) as agreements_count").where("agreements.reason is not null and agreements.reason != ''").joins("left join agreements on statements.id=agreements.statement_id").group("statements.id").order("agreements_count DESC, statements.created_at ASC")
     @statements = @statements + Statement.select("id, content, url, 0 as agreements_count").where("id not in (select distinct statement_id from agreements)")
-
+    if params[:order] == "followers"
+      @statements = @statements.sort_by{|s| - s.followers.size}
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @statements }
@@ -77,14 +78,46 @@ class StatementsController < ApplicationController
       description: "List of who does and who does not agree",
       picture_object: @statement
     })
+
+    @filters = {}
+    @filters[:include] = params[:include] || "opinions"
+    @filters[:type] = params[:type] == "influencers" ? nil : params[:type]
+    if params[:type] == nil && @statement.agreements.filter(@filters).size == 0
+      @filters[:type] = "all"
+    end
+    @filters[:school] = params[:school] == "any" ? nil : params[:school]
+    @filters[:occupation] = params[:occupation] == "any" ? nil : params[:occupation]
+    if params[:v] == "agree & disagree" || params[:v] == "agree+%26+disagree"
+      @filters[:v] = nil
+    else
+      @filters[:v] = params[:v]
+    end
+    @filters[:order] = params[:order] || "upvotes"
+    @statement_filters = Statement.order(opinions_count: :desc).limit(12)
+
     if params[:c] == "Others"
-      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
-      @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
+      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], filter_by: :non_categorized)
+      @agreements_against = @statement.agreements_against(order: params[:order], filter_by: :non_categorized)
     else
       category_id = ReasonCategory.find_by_name(params[:c]).try(:id)
-      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
-      @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id, profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at], page: params[:page])
+      @agreements_in_favor = @statement.agreements_in_favor(order: params[:order], category_id: category_id)
+      @agreements_against = @statement.agreements_against(order: params[:order], category_id: category_id)
     end
+    @agreements_in_favor = @agreements_in_favor.filter(@filters, current_user)
+    @agreements_against = @agreements_against.filter(@filters, current_user)
+    supporters_count = @agreements_in_favor.size
+    detractors_count = @agreements_against.size
+    @agreements_count = supporters_count + detractors_count
+    @percentage_in_favor = (supporters_count * 100.0 / @agreements_count).round if @agreements_count > 0
+
+    @agreements_in_favor = @agreements_in_favor.page(params[:page]).per(30)
+    @agreements_against = @agreements_against.page(params[:page] || 1).per(30)
+
+    unless current_user
+      @agreements_in_favor = @agreements_in_favor.limit(7)
+      @agreements_against = @agreements_against.limit(7)
+    end
+
     @comment = Comment.new
     @comments = {}
     @statement.comments.each{|comment| @comments[comment.individual.id] = comment}
@@ -99,6 +132,8 @@ class StatementsController < ApplicationController
     load_occupations_and_schools(statement: @statement, number: 7, min_count: 1)
     @dropdown_occupations = OccupationsCache.new(statement: @statement).read.first(11)
 
+    @just_added_voter = Individual.find_by_hashed_id(session[:added_voter]) if session[:added_voter].present?
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @statement }
@@ -109,6 +144,7 @@ class StatementsController < ApplicationController
   # GET /statements/new.json
   def new
     @statement = Statement.new
+    @hide_footer = true
 
     respond_to do |format|
       format.html # new.html.erb
@@ -123,7 +159,7 @@ class StatementsController < ApplicationController
   # POST /statements
   # POST /statements.json
   def create
-    @statement = Statement.new(params.require(:statement).permit(:content))
+    @statement = Statement.new(params.require(:statement).permit(:content).merge(individual_id: current_user.id))
 
     if @statement.save
       notify("new_statement", statement_id: @statement.id)
@@ -137,7 +173,7 @@ class StatementsController < ApplicationController
   # PUT /statements/1.json
   def update
     respond_to do |format|
-      if @statement.update_attributes(params.require(:statement).permit(:content, :url, :tag_list, :picture_from_url))
+      if @statement.update_attributes(params.require(:statement).permit(:content, :description, :url, :tag_list, :picture_from_url))
         format.html { redirect_to(get_and_delete_back_url || statements_path, notice: 'Statement was successfully updated.') }
         format.json { head :no_content }
       else
@@ -163,7 +199,7 @@ class StatementsController < ApplicationController
     @occupations_count = OccupationsTable.new(statement: @statement, min_count: @min_count).table
   end
 
-  def educated_at
+  def schools
     @min_count = (params[:min] || 1).to_i
     @schools_count = SchoolsTable.new(statement: @statement, min_count: @min_count).table
   end
@@ -177,13 +213,6 @@ class StatementsController < ApplicationController
 
   def redirect_to_statement_url
     redirect_to statement_path(@statement) if params[:id] != @statement.to_param
-  end
-
-  def set_percentage_and_count
-    supporters_count = @statement.supporters_count(profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at])
-    detractors_count = @statement.detractors_count(profession: params[:profession], occupation: params[:occupation], educated_at: params[:educated_at])
-    @agreements_count = supporters_count + detractors_count
-    @percentage_in_favor = (supporters_count * 100.0 / @agreements_count).round if @agreements_count > 0
   end
 
   def find_related_statements

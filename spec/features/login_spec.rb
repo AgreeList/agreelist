@@ -16,12 +16,15 @@ feature 'signup' do
 
   scenario 'should log in with twitter from login page' do
     visit '/login'
-    click_link "twitter-login"
+    within ".container" do
+      click_link "twitter-login"
+    end
     expect(page).to have_content("Sign Out")
   end
 
   scenario 'should log in with twitter from home page' do
     visit '/'
+    click_link "Sign in"
     click_link "twitter-login"
     expect(page).to have_content("Sign Out")
   end

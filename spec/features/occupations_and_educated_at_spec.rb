@@ -34,7 +34,7 @@ feature "Educated at" do
 
   scenario "should list universities" do
     SchoolsTable.any_instance.stub(:min_count).and_return(1)
-    visit educated_at_statement_path(@statement)
+    visit schools_statement_path(@statement)
     expect(page).to have_content("Stanford 50% 2 Mit 100% 1 Harvard 0% 1")
   end
 

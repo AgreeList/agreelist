@@ -7,7 +7,7 @@ class Individual < ActiveRecord::Base
   acts_as_followable
 
   nilify_blanks only: [:twitter]
-  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", :default_url => 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', styles: {
+  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", default_url: 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', s3_protocol: 'https', styles: {
     mini: "50x50#",
     thumb: '100x100#',
     square: '200x200#',
@@ -29,8 +29,8 @@ class Individual < ActiveRecord::Base
   validates :password, length: { minimum: 6, if: :password_is_present? }
 
   validates_presence_of :email, on: :create, if: :is_user
-  validates_uniqueness_of :email, if: :is_user
-  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, if: :is_user
+  validates_uniqueness_of :email, allow_blank: true
+  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
 
   acts_as_taggable_on :occupations, :schools
 
@@ -110,7 +110,7 @@ class Individual < ActiveRecord::Base
         self.description = user.description
         self.followers_count = user.followers_count
         url = user.profile_image_url_https(:original)
-        self.picture = open(url) if self.update_picture
+        self.picture = open(url) if self.update_picture && (!self.picture_file_name_changed? || self.picture.blank?)
       rescue => e
         if e.message.scan(/User has been suspended/).any?
           LogMailer.log_email("twitter @#{self.twitter} has been suspended").deliver
@@ -183,8 +183,8 @@ class Individual < ActiveRecord::Base
     ""
   end
 
-  def karma
-    agreements.size + agreements_added_from_others_without_reason.size * 2 + agreements_added_from_others_with_reason.size * 3
+  def mini_picture_url
+    self.picture(:mini)
   end
 
   private

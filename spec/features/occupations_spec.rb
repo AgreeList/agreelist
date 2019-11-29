@@ -9,7 +9,6 @@ feature 'schools#show' do
   scenario "user profile should link to user profile" do
     visit individual_path(@elon)
     click_link "A"
-    screenshot_and_save_page
     expect(page).to have_link "Elon Musk"
   end
 

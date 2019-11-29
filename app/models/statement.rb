@@ -2,7 +2,7 @@ class Statement < ActiveRecord::Base
   MAXIMUM_LENGTH = 500
   acts_as_followable
 
-  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", :default_url => 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', styles: {
+  has_attached_file :picture, s3_host_name: "s3-eu-west-1.amazonaws.com", :default_url => 'https://s3-eu-west-1.amazonaws.com/agreelist/missing-:style.jpg', s3_protocol: 'https', styles: {
     mini: "50x50#",
     thumb: '100x100#',
     square: '200x200#',
@@ -21,6 +21,7 @@ class Statement < ActiveRecord::Base
 
   before_create :generate_hashed_id, :set_none_tag
   before_create :set_url, if: :blank_url?
+  after_create :follow_topic
   before_update :store_old_url_if_changed
 
 
@@ -88,24 +89,13 @@ class Statement < ActiveRecord::Base
 
   private
 
-  def filtered_agreements_count(agree_or_disagree, args)
-    a = agreements.where(extent: (agree_or_disagree == :agree ? 100 : 0)).where("reason is not null and reason != ''")
-    a = a.joins("left outer join individuals on agreements.individual_id = individuals.id").joins("left outer join professions p on p.id = individuals.profession_id").where("p.name = ?", args[:profession]) if args[:profession]
-    a = tag_filters(a, args)
-    a.count
+  def follow_topic
+    individual.follow(self) if individual
   end
 
-  def tag_filters(a, args)
-    tag = args[:occupation] || args[:educated_at]
-    if tag
-      context = args[:occupation] ? 'occupations' : 'schools'
-      a = tag_joins(a)
-      a = a.where("taggings.taggable_type = 'Individual'")
-      a = a.where(tags: { name: tag })
-      a = a.where(taggings: { context: context })
-    else
-      a
-    end
+  def filtered_agreements_count(agree_or_disagree, args)
+    a = agreements.where(extent: (agree_or_disagree == :agree ? 100 : 0)).where("reason is not null and reason != ''")
+    a.count
   end
 
   def tag_joins(a)
@@ -118,24 +108,15 @@ class Statement < ActiveRecord::Base
     a = agreements.where(extent: (agree_or_disagree == :agree ? 100 : 0)).includes(:individual).includes(:upvotes)
     a = a.where(reason_category_id: args[:category_id]) if args[:category_id]
     a = a.where(reason_category_id: nil) if args[:filter_by] == :non_categorized
-    a = a.joins("left outer join individuals on agreements.individual_id = individuals.id").joins("left outer join professions p on p.id = individuals.profession_id").where("p.name = ?", args[:profession]) if args[:profession]
-    a = tag_filters(a, args)
     a = a.includes(:agreement_comments)
-    # if args[:order] == "date"
-    #   a.sort_by{ |a| - a.created_at.to_i }
-    # else
-    #   a.sort_by{ |a| [- a.upvotes.size, a.individual.email.present? ? 1 : 0, a.reason.present? ? 0 : 1, - ranking(a)] }
-    # end
-    # a = a.order("count(select upvotes.id from upvotes where agreement_id=agreements.id)")
-    if args[:order ] == "date"
-      a = a.order("created_at DESC")
+    if args[:order ] == "date" || args[:order] == "recent"
+      a = a.order("agreements.created_at DESC")
     else
       a = a.order("agreements.upvotes_count DESC")
-      a = a.order("case when agreements.reason is not null THEN 1 END ASC, case when agreements.reason is null THEN 0 END ASC")
-      a = a.order("case when individuals.wikipedia is not null THEN 1 END ASC, case when individuals.wikipedia is null THEN 0 END ASC")
+      a = a.order("case when (agreements.reason is not null and agreements.reason != '') THEN 1 END ASC, case when agreements.reason is null THEN 0 END ASC")
+      a = a.order("case when individuals.wikipedia is not null and left(individuals.wikipedia, 11) = 'https://en.' THEN 1 END ASC, case when individuals.wikipedia is null THEN 0 END ASC")
       a = a.order("individuals.followers_count DESC")
     end
-    a = a.page(args[:page]).per(30)
   end
 
   def ranking(agreement)

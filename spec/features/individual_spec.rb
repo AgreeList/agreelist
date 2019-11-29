@@ -23,16 +23,10 @@ feature 'create statement from individual profile' do
     expect(page).to have_content("We should go to Mars")
   end
 
-  scenario "should show user's karma if user has email" do
-    @hector.update_attributes(email: "bla@bla.com")
-    visit "/#{@hector.to_param}"
-    expect(page).to have_content("Karma: #{@hector.karma}")
-  end
-
   context "non-existent individual" do
     scenario "should return an error page" do
       visit "/non-existent-page"
-      expect(page).to have_content("AgreeList does not have a page for non-existent-page")
+      expect(page).to have_content("Agreelist does not have a page for non-existent-page")
     end
   end
 end

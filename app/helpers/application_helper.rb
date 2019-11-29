@@ -15,7 +15,7 @@ module ApplicationHelper
     Rails.env.test? ? request.url : Shortener.new(full_url: request.base_url + request.path, object: statement).get
   end
 
-  def donate_path(statement)
-    contact_path(statement: statement.hashed_id, subject: "Help me to find influencers", body: "Hi,\n\nI'd like to donate $100 so you can help me to find 50 influencers for the topic or statement: #{statement.content}\n\nCheers")
+  def donate_path
+    "https://opencollective.com/agreelist"
   end
 end

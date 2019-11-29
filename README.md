@@ -1,19 +1,23 @@
-AgreeList
+Agreelist
 =============
-[![Slack Status](http://slack.agreelist.org/badge.svg)](https://slack.agreelist.org)
 [![Code Climate](https://codeclimate.com/github/hectorperez/agreelist/badges/gpa.svg)](https://codeclimate.com/github/hectorperez/agreelist)
-[![Build Status](https://travis-ci.org/hectorperez/agreelist.svg?branch=master)](https://travis-ci.org/hectorperez/agreelist)
+[![Build Status](https://travis-ci.org/agreelist/agreelist.svg?branch=master)](https://travis-ci.org/agreelist/agreelist)
 
 Agreelist is a non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues.
 
-http://www.agreelist.org - Tracking influencers' opinions
+https://agreelist.org - Tracking influencers' opinions
+
+Example of topic:
+-------
+![topic example](https://s3-eu-west-1.amazonaws.com/agreelist/basic+income+for+github.png)
+
 
 API
 -------
-GraphQL API http://www.agreelist.org/api/v1
+GraphQL API https://agreelist.org/api/v1
 
 Example of use:
-http://www.agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,extent,individual{name,twitter,wikipedia},statement{content}}}
+https://agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,extent,individual{name,twitter,wikipedia},statement{content}}}
 
 ```
 {
@@ -42,7 +46,7 @@ http://www.agreelist.org/api/v1?query={agreements(after:8000,limit:3){id,reason,
 - id: Integer
 - name: String
 - twitter: String
-- wikidata: String
+- wikidata_id: String
 - wikipedia: String
 
 3. statements (limit: Int = 10, after: Int = 1) - Topic or statement which can be agreed or disagreed
@@ -98,7 +102,7 @@ Get in touch
 -------
 - Twitter: [@arpahector](https://twitter.com/arpahector)
 - Email: hector@agreelist.org
-- [![Slack Status](http://slack.agreelist.org/badge.svg)](https://slack.agreelist.org)
+- Chat: [Slack](https://join.slack.com/t/agreelist/shared_invite/enQtMzQ3NjQ5NTY1MDI0LTg2ZmVmZWI2MzFlNDNjM2M2NDA5MjM4ZTA5NDYxYmVhMzAyNGZlNjE4ZWNhMDYxOWIyODM3NGE5YjM1MjlhNTU)
 
 License:
 -------

@@ -1,10 +1,18 @@
 .opinions
   .row
-    .kky-left.col-sm-6
-      #agree.hide_for_mobile
-        %h3 Agree:
-      = render partial: "whoagree", locals: { agreements: @agreements_in_favor, side: :left }
-    .kky-right.col-sm-6
-      #disagree.hide_for_mobile
-        %h3 Disagree:
-      = render partial: "whoagree", locals: { agreements: @agreements_against, side: :right }
+    .col-sm-6.kky-left
+      - if @agreements_in_favor.size > 0
+        #agree.hide_for_mobile
+          %h3 Agree:
+        = render partial: "whoagree", locals: { agreements: @agreements_in_favor, side: :left }
+    .col-sm-6.kky-left
+      - if @agreements_against.size > 0
+        #disagree.hide_for_mobile
+          %h3 Disagree:
+        = render partial: "whoagree", locals: { agreements: @agreements_against, side: :right }
+- if @agreements_count == 0
+  .jumbotron
+    No opinions yet.
+    - if any_filter?
+      Try
+      = link_to "removing filters", statement_path(@statement)

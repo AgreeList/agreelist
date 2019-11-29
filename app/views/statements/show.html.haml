@@ -1,18 +1,34 @@
 .container
   = render partial: "header"
-  = render partial: "filters"
   = render partial: "opinions"
-  .text-center
-    .pagination
-      = paginate (@agreements_in_favor.size >= @agreements_against.size ? @agreements_in_favor : @agreements_against)
-  = render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
+  = render partial: "common/add_opinion"
+  =# render partial: "common/pies" if @occupations_count.size > 2 && @schools_count.size > 2
 
 .container
   #comments
     - if @comments.size > 0 && @statement.id != 7 # brexit
       %h3 Comments:
       = render template: "comments/index"
-      -#= render template: "comments/new"
-  = render partial: "common/subscribe", locals: { statement_id: @statement.id } unless current_user
   = render partial: "related_statements"
 = render partial: "modal_windows"
+- if session[:added_voter]
+  #tweetModal.modal.fade{role: "dialog"}
+    .modal-dialog
+      .modal-content
+        .modal-header.text-center
+          %h3= "Wanna tweet you added @#{@just_added_voter.twitter}?"
+        .modal-body.text-center
+          You'll be able to change the tweet and confirm or cancel in the next window
+
+          %br
+          %br
+          = link_to "Yes, share on Twitter", "https://twitter.com/intent/tweet?url=&text=@#{@just_added_voter.try(:twitter)} I added you to the list of who does / does not support '#{@statement.shortened_content(35)}' #{@shortened_url_without_params}", class: "btn btn-primary", id: "tweet-supporter-added-2", "data-dismiss" => "modal"
+          or
+          = link_to "Back", "#", "data-dismiss" => "modal"
+= link_to "Tweet supporter added", "#", "data-toggle" => "modal", "data-target" => "#tweetModal", statement_id: @statement.id, class: "vote hidden", id: "tweet-supporter-added"
+
+- if session[:added_voter]
+  - session.delete(:added_voter)
+  :javascript
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    $("#tweet-supporter-added").click();

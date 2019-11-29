@@ -9,12 +9,13 @@ feature 'reason', js: true do
   context "as admin" do
     before do
       visit "/auth/twitter"
-      Agreement.create(individual: @individual, statement: @statement, extent: 100)
+      Individual.last.update_attributes(admin: true)
+      Agreement.create(individual: @individual, statement: @statement, extent: 100, reason: "kkk")
     end
 
     scenario 'edit reason as admin' do
       visit statement_path(@statement)
-      click_link "Add a reason"
+      find(:xpath, "(//a[text()='edit'])[2]").click # 2nd edit (the 1st one is for the person)
       fill_in :agreement_reason, with: "Because..."
       fill_in :agreement_url, with: "http://..."
       click_button "Save"
@@ -39,9 +40,9 @@ feature 'reason', js: true do
     end
 
     scenario "should allow me to edit the reason of my own agreement" do
-      Agreement.create(individual: @new_user, statement: @statement, extent: 100)
+      Agreement.create(individual: @new_user, statement: @statement, extent: 100, reason: "whatever")
       visit statement_path(@statement)
-      click_link "Add a reason"
+      click_link "edit"
       fill_in :agreement_reason, with: "Because..."
       click_button "Save"
       expect(Agreement.last.reason).to eq "Because..."

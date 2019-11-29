@@ -21,6 +21,7 @@ Al::Application.routes.draw do
   post '/results' => 'home#save_email'
   get "/all" => 'statements#index', as: :all
   get "/s/:title_and_hashed_id" => "statements#deprecated_show" # deprecated
+  get "/slack" => redirect("https://join.slack.com/t/agreelist/shared_invite/enQtMzQ3NjQ5NTY1MDI0LTg2ZmVmZWI2MzFlNDNjM2M2NDA5MjM4ZTA5NDYxYmVhMzAyNGZlNjE4ZWNhMDYxOWIyODM3NGE5YjM1MjlhNTU")
   resources :kpis, only: :index
   resources :statements, path: "a" do
     collection do
@@ -28,7 +29,7 @@ Al::Application.routes.draw do
     end
     member do
       get 'occupations'
-      get 'educated_at'
+      get 'schools'
     end
   end
   get "/contact" => "static_pages#contact"
@@ -52,6 +53,7 @@ Al::Application.routes.draw do
   resources :individuals, only: [:edit, :update, :destroy, :create], path: "" do
     member do
       get :activation
+      get :search
     end
   end
   get 'signup', to: 'individuals#new', as: :signup
@@ -64,6 +66,7 @@ Al::Application.routes.draw do
   get '/faq' => 'static_pages#faq'
 
   match "/auth/twitter/callback" => 'sessions#create_with_twitter', via: [:get, :post]
+  match "/auth/twitter/callback2" => 'sessions#create_with_twitter', via: [:get, :post]
   get "/login" => "sessions#new", as: :login
   get "/signout" => "sessions#destroy", as: :signout
   resources :reset_password, only: [:new, :create, :edit, :update]
@@ -72,8 +75,21 @@ Al::Application.routes.draw do
     member do
       post 'upvote'
     end
+
+    collection do
+      post 'new'
+    end
   end
   get '/test' => 'static_pages#polar'
+
+  resources :agreement_positions, only: [:destroy] do
+    member do
+      post 'top'
+      post 'bottom'
+      post 'higher'
+      post 'lower'
+    end
+  end
 
   get "/auth/failure" => redirect("/")
   post "/touch/:id" => 'agreements#touch', as: :touch

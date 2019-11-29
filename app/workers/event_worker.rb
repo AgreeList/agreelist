@@ -3,8 +3,13 @@ class EventWorker
 
   def perform(args)
     event = args["event"]
-    c = Individual.find(args["current_user_id"])
     arguments = args.map{|k,v| "#{k}: #{v}"}.join(", ")
-    LogMailer.log_email("#{event}, #{c.name} (@#{c.twitter}, #{c.email}), #{arguments}").deliver
+    if args["current_user_id"].present?
+      c = Individual.find(args["current_user_id"])
+      user_data = "#{c.name} (@#{c.twitter}, #{c.email})"
+    else
+      user_data = ""
+    end
+    LogMailer.log_email("#{event}, #{user_data}, #{arguments}").deliver
   end
 end

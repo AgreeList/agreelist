@@ -5,27 +5,31 @@ feature 'statement' do
 
   before do
     seed_data
-  end
-
-  scenario "filter per profession" do
-    create(:agreement, statement: @statement, individual: create(:individual), extent: 100)
-    create(:agreement, statement: @statement, individual: create(:individual, profession: @profession), extent: 100)
-    visit statement_path(@statement) + "?profession=#{@profession.name}"
-    expect(page).to have_content("100%")
-    expect(page).to have_content("1 influencer")
+    visit root_path
   end
 
   scenario "new issue or statement" do
-    visit root_path
     click_link "+"
-    click_link "twitter-login"
+    within ".container" do
+      click_link "twitter-login"
+    end
     fill_in :statement_content, with: "We should do more to tackle global warming"
     click_button "Create"
     expect(page).to have_content("Statement was successfully created")
   end
 
+  scenario "should add description" do
+    click_link "Sign in"
+    click_link "twitter-login"
+    Individual.last.update_attributes(admin: true)
+    visit edit_statement_path(@statement)
+    fill_in :statement_description, with: "My description"
+    click_button "Update"
+    visit statement_path(@statement)
+    expect(page).to have_content("My description")
+  end
+
   def seed_data
     @statement = create(:statement)
-    @profession = create(:profession, name: "Economist")
   end
 end

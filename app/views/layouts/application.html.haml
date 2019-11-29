@@ -13,9 +13,12 @@
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
     = javascript_include_tag "https://www.gstatic.com/charts/loader.js" #, async: true - In order to load it asynchronously, we need to load the pie charts after loader.js is loaded (use callback?). Otherwise we get ReferenceError: google is not defined
+    = javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.js"
+    = stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.css"
   %body
     = render partial: 'layouts/gtm_body'
     %section.main-container
+      = render 'layouts/cookie_consent'
       = render 'layouts/header'
       - flash.each do |key, value|
         - if key == "notice"

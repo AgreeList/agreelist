@@ -13,7 +13,6 @@
               = link_to "Follow", follows_path(individual_id: @individual.id), method: :post
 
       = link_to("Edit Profile", edit_individual_path, class: "btn btn-primary") if admin? || current_user == @individual
-      = "Karma: #{@individual.karma}" if @individual.email.present?
 
       %p
         = @individual.visible_bio
@@ -52,10 +51,13 @@
             %span.red disagreed
           by
           = @individual.name
+          %span.small= " · "
+          %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+
 
         - if agreement.reason.present?
           .profile-reason
-          = render partial: "common/reason", locals: { agreement: agreement }
+          = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
 
   - if current_user
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|

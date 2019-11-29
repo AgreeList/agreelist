@@ -1,6 +1,7 @@
+- dynamic_class = side == :right ? 'float_right' : ''
 - agreements.each do |agreement|
   - individual = agreement.individual
-  .media.opinion.dynamic_width{class: "#{side == :right ? 'float_right' : ''}"}
+  .media.opinion.dynamic_width{class: dynamic_class}
     .media-left
       = image_tag(individual.picture.url(:thumb), class: "picture media-object")
     .media-body
@@ -11,7 +12,7 @@
           = individual.visible_bio
           - if admin?
             = link_to "edit", edit_individual_path(individual)
-      %i= render partial: "common/reason", locals: { agreement: agreement }
+      %i= render partial: "common/reason", locals: { agreement: agreement, display_url: false }
       - if individual == current_user || admin?
         %span.small
           - if agreement.reason.present?
@@ -50,3 +51,8 @@
           ·
           = link_to("delete", agreement, method: :delete, data: { confirm: "You sure?" })
         = render partial: "reason_category_select", locals: { agreement: agreement } if board?
+- if current_user
+  = render partial: "pagination", locals: { dynamic_class: dynamic_class }
+- else
+  - if @agreements_count > 14
+    = render partial: "email_signup", locals: { dynamic_class: dynamic_class }

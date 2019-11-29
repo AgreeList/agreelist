@@ -29,5 +29,6 @@ feature "follow_individual", js: true do
   def login
     visit root_path
     visit "/auth/twitter"
+    Individual.last.update_attributes(admin: true)
   end
 end

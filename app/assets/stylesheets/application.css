@@ -10,8 +10,12 @@
  *
  *= require_self
  *= require_tree .
+ *= require jquery-ui
  */
 
+a.black{
+  color: black;
+}
 .picture {
   padding-right: 5px
 }
@@ -27,6 +31,10 @@ span.source{
 
 span.small{
   font-size: 10px;
+}
+
+.grey{
+  color: grey;
 }
 
 .opinion-links{
@@ -322,3 +330,19 @@ span.medium{
   padding-bottom: 20px;
 }
 
+.subscribe{
+  float: left;
+  width: 40%;
+}
+
+.left{
+  text-align: left;
+}
+
+.home-filter{
+  padding-right: 10px;
+}
+
+.statement-description{
+  margin-left: 25%;
+}

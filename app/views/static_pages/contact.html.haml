@@ -1,16 +1,4 @@
 .container
   %h1 Contact
-  = form_tag do
-    Name:
-    %p= text_field_tag :name, current_user.try(:name), class: "form-control"
-    Email:
-    %p= text_field_tag :email, current_user.try(:email), class: "form-control"
-    = hidden_field_tag :subject, "contact form"
-    Comments:
-    %p= text_area_tag :body, params["body"], class: "form-control", rows: 7
-    = hidden_field_tag :back_url, params["back_url"]
-    = submit_tag "Send", class: "btn btn-primary"
-    or
-    = link_to "Back", back_url || root_path
-    = "- You can also contact us at"
-    = link_to "hello@agreelist.org", "mailto://hello@agreelist.org"
+  You can contact us at
+  = link_to "hello@agreelist.org", "mailto://hello@agreelist.org"

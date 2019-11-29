@@ -1,0 +1,62 @@
+.home-page-agreement-container
+  %span#type-filter.dropdown.home-filter
+    Opinions from
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:type].present? ? @filters[:type] : "influencers"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "all", root_path(@filters.merge(type: "all"))
+        %li= link_to "nobel laureates", root_path(@filters.merge(type: "nobel laureates"))
+        %li= link_to "influencers with Wikipedia page", root_path(@filters.merge(type: "influencers"))
+        %li= link_to "people with no Wikipedia page", root_path(@filters.merge(type: "people"))
+        - if current_user
+          %li= link_to "people I follow", root_path(@filters.merge(type: "people I follow"))
+        - else
+          %li= link_to "people I follow", login_path
+  %span#order-filter.dropdown.home-filter
+    order
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:order].present? ? @filters[:order] : "top"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "top", root_path(@filters.delete("recent"))
+        %li= link_to "upvotes", root_path(@filters.merge(order: "upvotes"))
+        %li= link_to "recent", root_path(@filters.merge(order: "recent"))
+  %span#occupation-filter.dropdown.home-filter
+    occupation
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:occupation] || "any"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "any", root_path(@filters.merge(occupation: "any"))
+        - @occupations_count.map(&:first).each do |occupation|
+          %li= link_to occupation, root_path(@filters.merge(occupation: occupation))
+        %li= link_to "...", occupations_path
+  %span#school-filter.dropdown.home-filter
+    alma mater
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:school] || "any"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "any", root_path(@filters.merge(school: "any"))
+        - @schools_count.map(&:first).each do |school|
+          %li= link_to school, root_path(@filters.merge(school: school))
+        %li= link_to "...", schools_path
+  %span#topic-filter.dropdown.home-filter
+    topic
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:statement] || "any"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "any", root_path(@filters.merge(statement: "any"))
+        - @statement_filters.each do |statement|
+          %li= link_to statement.content, root_path(@filters.merge(statement: statement.content))
+        %li= link_to "...", statements_path
+  %span#agree-disagree-filter.dropdown.home-filter
+    = link_to "#", "data-toggle" => "dropdown", class: "dropdown-toggle" do
+      = @filters[:v] || "agree & disagree"
+      %b.caret
+      %ul{class: "dropdown-menu"}
+        %li= link_to "agree & disagree", root_path(@filters.merge(v: "agree & disagree"))
+        %li= link_to "agree", root_path(@filters.merge(v: "agree"))
+        %li= link_to "disagree", root_path(@filters.merge(v: "disagree"))
