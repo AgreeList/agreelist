@@ -1,6 +1,5 @@
 .container
   #home-header.text-center
-    = react_component('HelloMessage', name: 'Hec')
     %p= render partial: "common/back_or_sponsor_us_button"
   = render partial: "filters"
   = render partial: "common/opinions", locals: { agreements: @agreements }

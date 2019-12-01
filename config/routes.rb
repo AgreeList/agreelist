@@ -15,6 +15,7 @@ Al::Application.routes.draw do
   end
 
   root to: "new#index"
+  resources :game, only: :index
   get "/new", to: "new#index", as: :new
   get "/brexit", to: "boards#brexit", as: :brexit_board
   get "/boards/brexit" => redirect("/brexit")
