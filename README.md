@@ -102,7 +102,6 @@ Get in touch
 -------
 - Twitter: [@arpahector](https://twitter.com/arpahector)
 - Email: hector@agreelist.org
-- Chat: [Slack](https://join.slack.com/t/agreelist/shared_invite/enQtMzQ3NjQ5NTY1MDI0LTg2ZmVmZWI2MzFlNDNjM2M2NDA5MjM4ZTA5NDYxYmVhMzAyNGZlNjE4ZWNhMDYxOWIyODM3NGE5YjM1MjlhNTU)
 
 License:
 -------
