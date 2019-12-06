@@ -70,6 +70,7 @@ class StatementsController < ApplicationController
     end
   end
 
+  MAX_AGREEMENTS_FOR_NON_LOGGED_USERS = 3
   # GET /statements/1
   # GET /statements/1.json
   def show
@@ -114,8 +115,8 @@ class StatementsController < ApplicationController
     @agreements_against = @agreements_against.page(params[:page] || 1).per(30)
 
     unless current_user
-      @agreements_in_favor = @agreements_in_favor.limit(7)
-      @agreements_against = @agreements_against.limit(7)
+      @agreements_in_favor = @agreements_in_favor.limit(MAX_AGREEMENTS_FOR_NON_LOGGED_USERS)
+      @agreements_against = @agreements_against.limit(MAX_AGREEMENTS_FOR_NON_LOGGED_USERS)
     end
 
     @comment = Comment.new
