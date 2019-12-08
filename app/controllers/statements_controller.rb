@@ -1,4 +1,6 @@
 class StatementsController < ApplicationController
+  MAX_AGREEMENTS_FOR_NON_LOGGED_USERS = 3
+
   before_action :login_required, only: [:new, :create, :create_and_vote]
   before_action :admin_required, only: [:edit, :update, :destroy]
   before_action :find_statement, only: [:show, :destroy, :update, :edit, :occupations, :schools]
@@ -70,7 +72,6 @@ class StatementsController < ApplicationController
     end
   end
 
-  MAX_AGREEMENTS_FOR_NON_LOGGED_USERS = 3
   # GET /statements/1
   # GET /statements/1.json
   def show

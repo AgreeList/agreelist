@@ -54,5 +54,5 @@
 - if current_user
   = render partial: "pagination", locals: { dynamic_class: dynamic_class }
 - else
-  - if @agreements_count > 14
+  - if @agreements_count > 2 * StatementsController::MAX_AGREEMENTS_FOR_NON_LOGGED_USERS
     = render partial: "email_signup", locals: { dynamic_class: dynamic_class }
