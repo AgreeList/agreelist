@@ -3,7 +3,7 @@ Agreelist
 [![Code Climate](https://codeclimate.com/github/hectorperez/agreelist/badges/gpa.svg)](https://codeclimate.com/github/hectorperez/agreelist)
 [![Build Status](https://travis-ci.org/agreelist/agreelist.svg?branch=master)](https://travis-ci.org/agreelist/agreelist)
 
-Agreelist is a non-profit aiming to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues.
+Agreelist aims to fight misinformation and improve the quality of debates by showing what people think and why, on both sides of key issues.
 
 https://agreelist.org - Tracking influencers' opinions
 
