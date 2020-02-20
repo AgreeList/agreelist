@@ -1,5 +1,5 @@
 class StatementsController < ApplicationController
-  MAX_AGREEMENTS_FOR_NON_LOGGED_USERS = 3
+  MAX_AGREEMENTS_FOR_NON_LOGGED_USERS = 10
 
   before_action :login_required, only: [:new, :create, :create_and_vote]
   before_action :admin_required, only: [:edit, :update, :destroy]
