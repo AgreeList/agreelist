@@ -1,9 +1,11 @@
 class GameController < ApplicationController
   def index
-    @agreements = {}
+    @agreements = []
     Agreement.includes(:individual).order(upvotes_count: :desc).limit(3).each do |agreement|
-      @agreements[:id] = agreement.id
-      @agreements[:individual] = { name: agreement.individual.name }
+      @agreements << {
+        id: agreement.id,
+        individual: { name: agreement.individual.name }
+      }
     end
   end
 end
