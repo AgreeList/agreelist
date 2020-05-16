@@ -70,3 +70,5 @@ gem 'meta-tags', '~> 2.6.0'
 gem 'ionicons-rails', '~> 2.0.0'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'acts_as_list', '~> 0.9.10'
+gem 'webpacker', '>= 4.0.2'
+gem 'react-rails', '~> 2.6.1'
