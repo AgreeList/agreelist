@@ -1,24 +1,19 @@
 import * as React from 'react'
 
-interface Individual {
-  name: String
-}
-
-interface Agreement {
+interface Statement {
   id: number,
-  individual: Individual
+  content: string
 }
 
-interface AgreementsProps {
-  agreements: Agreement[]
+interface GameProps {
+  statements: Statement[]
 }
 
-export class GameComponent extends React.Component<AgreementsProps>{
+export class GameComponent extends React.Component<GameProps>{
   render() {
     return (
       <div>
-        <p>Hi {this.props.agreements[0].individual.name}!</p>
-        <p>Hi {this.props.agreements[1].individual.name}!</p>
+        <p>Hi {this.props.statements[0].content}!</p>
         <a href="/ddd" className="btn btn-primary">Agree</a>
         <a href="/ddd" className="btn btn-primary">Disagree</a>
       </div>

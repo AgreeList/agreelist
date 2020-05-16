@@ -1,10 +1,10 @@
 class GameController < ApplicationController
   def index
-    @agreements = []
-    Agreement.includes(:individual).order(upvotes_count: :desc).limit(3).each do |agreement|
-      @agreements << {
-        id: agreement.id,
-        individual: { name: agreement.individual.name }
+    @statements = []
+    Statement.order(opinions_count: :desc).limit(10).each do |statement|
+      @statements << {
+        id: statement.id,
+        content: statement.content
       }
     end
   end
