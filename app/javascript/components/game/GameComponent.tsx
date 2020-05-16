@@ -8,7 +8,8 @@ interface Statement {
 
 interface Individual {
   id: number,
-  name: string
+  name: string,
+  picture_url: string
 }
 
 interface GameProps {
@@ -43,7 +44,14 @@ export class GameComponent extends React.Component<GameProps, GameState>{
 
     return (
       <div>
-        <h1>How much do you agree with {individual.name}?</h1>
+        <div>
+          <div>
+            <img src={individual.picture_url} alt={`${individual.name} photo`} />
+          </div>
+          <div>
+            <h1>How much do you agree with {individual.name}?</h1>
+          </div>
+        </div>
         <h5>Vote {statements.length} statements to find out! At the end we'll let you know which statements {individual.name} agrees.</h2>
         <h2>{statements[currentQuestion].content}</h2>
         <p>Do you agree?</p>

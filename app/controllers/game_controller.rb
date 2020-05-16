@@ -9,6 +9,8 @@ class GameController < ApplicationController
         content: statement.content
       }
     end
+    @individual_attributes = @individual.attributes.slice("id", "name")
+    @individual_attributes[:picture_url] = @individual.picture.url(:square)
   end
 
   private
