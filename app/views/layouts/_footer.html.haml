@@ -1,6 +1,4 @@
 .text-center
-  = render partial: "common/back_or_sponsor_us_button" unless @hide_footer
-
   .social-media-links
     Follow us:
     .row
@@ -19,10 +17,6 @@
     = link_to "Open Source", "https://github.com/agreelist/agreelist"
     ·
     = link_to "API", "https://github.com/hectorperez/agreelist/blob/master/README.md#api"
-    ·
-    Open Data
-    ·
-    Non-profit
     ·
     = link_to "Chat", slack_path
     ·
