@@ -314,6 +314,7 @@ span.medium{
 }
 
 .footer-line{
+  margin-top: 60px;
   padding-bottom: 20px;
 }
 
@@ -322,12 +323,13 @@ span.medium{
 }
 
 .social-media-icons{
-  font-size: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 20px;
 }
 
 .social-media-links{
-  padding-top: 60px;
-  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
 .subscribe{
