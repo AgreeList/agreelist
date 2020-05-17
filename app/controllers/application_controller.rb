@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
     session[:ga_events] << event # we use the session in case we redirect
     arguments = { event: event, current_user_id: current_user.try(:id), ip: request.try(:remote_ip) }.merge(args)
     EventNotifier.new(arguments).notify
+    Analytics.track(
+        user_id: session[:user_id],
+        anonymous_id: anonymous_id,
+        event: event)
   end
 
   def current_user
