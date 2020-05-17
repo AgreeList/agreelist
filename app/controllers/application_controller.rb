@@ -22,7 +22,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= Individual.find(session[:user_id]) if session[:user_id]
+    @current_user ||= user_from_session
+  end
+
+  def user_from_session
+    Individual.find(session[:user_id]) if session[:user_id]
   end
 
   def signed_in?
