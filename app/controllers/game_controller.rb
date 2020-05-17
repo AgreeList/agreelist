@@ -11,6 +11,7 @@ class GameController < ApplicationController
     end
     @individual_attributes = @individual.attributes.slice("id", "name")
     @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
+    session[:visitor_id] = SecureRandom.urlsafe_base64
   end
 
   private

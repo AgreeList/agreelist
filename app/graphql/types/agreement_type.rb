@@ -1,14 +1,10 @@
-Types::AgreementType = GraphQL::ObjectType.define do
-  name 'Agreement'
-
-  field :id, !types.ID
-  field :reason, types.String
-  field :extent, types.Int
-  field :url, types.String
-  field :statement, Types::StatementType do
-    resolve -> (obj, args, ctx) { obj.statement }
-  end
-  field :individual, Types::IndividualType do
-    resolve -> (obj, args, ctx) { obj.individual }
+module Types
+  class AgreementType < Types::BaseObject
+    field :id, Integer, null: false
+    field :reason, String, null: true
+    field :extent, Integer, null: false
+    field :url, String, null: true
+    field :statement, Types::StatementType, null: false
+    field :individual, Types::IndividualType, null: false
   end
 end
