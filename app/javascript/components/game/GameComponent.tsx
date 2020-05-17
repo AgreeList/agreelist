@@ -42,20 +42,21 @@ export class GameComponent extends React.Component<GameProps, GameState>{
     const { statements, individual } = this.props
     const { currentQuestion } = this.state
 
+    const count = statements.length
     return (
       <div>
-        <div>
-          <div>
+        <div className="game-wrap">
+          <div className="game-picture">
             <img src={individual.picture_url} alt={`${individual.name} photo`} />
           </div>
-          <div>
-            <h1>How much do you agree with {individual.name}?</h1>
+          <div className="game-question">
+            <h1>Do you agree with {individual.name}?</h1>
           </div>
         </div>
-        <h5>Vote {statements.length} statements to find out! At the end we'll let you know which statements {individual.name} agrees.</h2>
-        <h2>{statements[currentQuestion].content}</h2>
+        <h5>Vote {count} statements to find out! At the end we'll let you know which statements {individual.name} agrees and why.</h5>
+        <h2>{currentQuestion + 1}. {statements[currentQuestion].content}</h2>
         <p>Do you agree?</p>
-        <Button variant="success" onClick={() => this.vote(100)}>Agree</Button>
+        <Button variant="success" className="game-agree" onClick={() => this.vote(100)}>Agree</Button>
         <Button variant="danger" onClick={() => this.vote(0)}>Disagree</Button>
         <Button variant="link" onClick={() => this.vote(50)}>Skip</Button>
       </div>

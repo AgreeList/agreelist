@@ -10,7 +10,7 @@ class GameController < ApplicationController
       }
     end
     @individual_attributes = @individual.attributes.slice("id", "name")
-    @individual_attributes[:picture_url] = @individual.picture.url(:square)
+    @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
   end
 
   private
