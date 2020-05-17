@@ -3,10 +3,19 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :signed_in?, :admin?, :can_delete_statements?, :has_admin_category_rights?, :main_statement, :has_profession_rights?, :has_update_individual_rights?, :board?, :back_url, :google_analytics_events
   before_action :set_page_type
   before_action :redirect_www
+  before_action :set_anoymous_id, if: -> { current_user.nil? && anonymous_id.nil? }
 
   attr_reader :google_analytics_events
 
   private
+
+  def set_anoymous_id
+    session[:anonymous_id] = SecureRandom.urlsafe_base64
+  end
+
+  def anonymous_id
+    session[:anonymous_id]
+  end
 
   def redirect_www
     if request.host == 'www.agreelist.org'
@@ -22,7 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= user_from_session
+    user_from_session
   end
 
   def user_from_session
