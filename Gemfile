@@ -63,7 +63,7 @@ gem "acts_as_follower", '~> 0.2.1'
 gem "chart", '~> 0.1.4.9'
 gem 'newrelic_rpm', '~> 4.4.0.336'
 gem 'sidekiq', '~> 5.0.4'
-gem 'graphql', '~> 1.7.4'
+gem 'graphql', '~> 1.10.9'
 
 gem 'graphiql-rails', group: :development
 gem 'meta-tags', '~> 2.6.0'

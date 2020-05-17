@@ -1,18 +1,33 @@
-Types::QueryType = GraphQL::ObjectType.define do
-  name "Query"
+module Types
+  class QueryType < Types::BaseObject
+    field :statements, [Types::StatementType], null: false do
+      description "Topic or statement which can be agreed or disagreed"
+      argument :limit, Integer, required: false, default_value: 10, prepare: -> (limit, ctx) { [limit, 100].min }
+      argument :after, Integer, required: false, default_value: 0
+    end
 
-  def field_template(field_name, class_name, type_class, desc)
-    field field_name, types[type_class] do
-      description desc
-      argument :limit, types.Int, default_value: 10, prepare: -> (limit) { [limit, 100].min }
-      argument :after, types.Int, default_value: 0, prepare: -> (after) { after }
-      resolve ->(obj, args, ctx) {
-        class_name.where(["id > ?", args[:after]]).order(id: :asc).limit(args[:limit])
-      }
+    field :agreements, [Types::AgreementType], null: false do
+      description "Votes from individuals and organizations on statements or topics; extent=100 (agree), extent=0 (disagree)"
+      argument :limit, Integer, required: false, default_value: 10, prepare: -> (limit, ctx) { [limit, 100].min }
+      argument :after, Integer, required: false, default_value: 0
+    end
+
+    field :individuals, [Types::IndividualType], null: false do
+      description "Person or organization who agrees or disagrees"
+      argument :limit, Integer, required: false, default_value: 10, prepare: -> (limit, ctx) { [limit, 100].min }
+      argument :after, Integer, required: false, default_value: 0
+    end
+
+    def statements(limit:, after:)
+      Statement.limit(limit).where("id > ?", after)
+    end
+
+    def individuals(limit:, after:)
+      Individual.limit(limit).where("id > ?", after)
+    end
+
+    def agreements(limit:, after:)
+      Agreement.limit(limit).where("id > ?", after)
     end
   end
-
-  field_template(:agreements, Agreement, Types::AgreementType, "Votes from individuals and organizations on statements or topics; extent=100 (agree), extent=0 (disagree)")
-  field_template(:statements, Statement, Types::StatementType, "Topic or statement which can be agreed or disagreed")
-  field_template(:individuals, Individual, Types::IndividualType, "Person or organization who agrees or disagrees")
 end
