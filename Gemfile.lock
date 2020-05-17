@@ -53,6 +53,7 @@ GEM
     airbrake (6.1.0)
       airbrake-ruby (~> 2.2, >= 2.2.3)
     airbrake-ruby (2.2.3)
+    analytics-ruby (2.0.13)
     arel (8.0.0)
     autoprefixer-rails (7.0.1)
       execjs
@@ -418,6 +419,7 @@ DEPENDENCIES
   acts_as_follower (~> 0.2.1)
   acts_as_list (~> 0.9.10)
   airbrake (~> 6.1.0)
+  analytics-ruby (~> 2.0.0)
   aws-sdk (~> 2.3)
   bcrypt-ruby (~> 3.1.5)
   better_errors
