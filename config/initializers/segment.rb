@@ -1,6 +1,6 @@
 require 'segment/analytics'
 
 Analytics = Segment::Analytics.new({
-    write_key: 'YOUR_WRITE_KEY',
-    on_error: Proc.new { |status, msg| print msg }
+    write_key: ENV['SEGMENT_WRITE_KEY'],
+    on_error: Proc.new { |status, msg| Rails.logger.error msg }
 })

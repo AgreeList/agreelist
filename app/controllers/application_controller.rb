@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
 
   def set_anoymous_id
     session[:anonymous_id] = SecureRandom.urlsafe_base64
+    Analytics.identify(
+      anonymous_id: anonymous_id
+    )
   end
 
   def anonymous_id
