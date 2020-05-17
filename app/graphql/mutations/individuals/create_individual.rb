@@ -1,7 +1,5 @@
 module Mutations
   class Individuals::CreateIndividual < ::Mutations::BaseMutation
-
-
     argument :email, String, required: true
 
     # define what this field will return
