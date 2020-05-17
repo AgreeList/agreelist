@@ -1,5 +1,5 @@
 class GraphqlController < ApplicationController
-  before_action :return_unauthorized, if: -> { current_user.nil? }
+  before_action :return_unauthorized, if: -> { current_user.nil? && anonymous_id.nil? }
 
   def execute
     variables = ensure_hash(params[:variables])

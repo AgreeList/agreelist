@@ -74,3 +74,4 @@ gem 'webpacker', '>= 4.0.2'
 gem 'react-rails', '~> 2.6.1'
 
 gem "graphql-guard", "~> 2.0"
+gem 'analytics-ruby', '~> 2.0.0', :require => 'segment/analytics'

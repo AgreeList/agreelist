@@ -1,5 +1,8 @@
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
+import axios from 'axios';
+import { AxiosResponse } from 'axios';
+import AxiosHelper from '../utils/AxiosHelper'
 
 interface Statement {
   id: number,
@@ -34,8 +37,17 @@ export class GameComponent extends React.Component<GameProps, GameState>{
 
   vote = (answer: number) => {
     const { answers, currentQuestion } = this.state
+    const { individual, statements } = this.props
     answers[currentQuestion] = answer
     this.setState({ answers: answers, currentQuestion: currentQuestion + 1 })
+    const event_args = {
+      name: "vote",
+      statement_id: statements[currentQuestion].id,
+      game_individual_id: individual.id,
+      extent: answer
+    }
+    AxiosHelper()
+    axios.post('/api/v2/events', event_args)
   }
 
   render() {
