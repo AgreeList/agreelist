@@ -1,11 +1,13 @@
-class Mutations::Statements::CreateStatement < GraphQL::Function
-  argument :content, String
+module Mutations
+  class Statements::CreateStatement < ::Mutations::BaseMutation
+    argument :content, String, required: true
 
-  # define what this field will return
-  type Types::StatementType
+    # define what this field will return
+    type Types::StatementType
 
-  # resolve the field's response
-  def self.call(obj, args, ctx)
-    Statement.create!(content: args[:content])
+    # resolve the field's response
+    def resolve(content:)
+      Statement.create!(content: content)
+    end
   end
 end

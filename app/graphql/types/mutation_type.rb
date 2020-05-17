@@ -1,6 +1,6 @@
 module Types
   class MutationType < Types::BaseObject
-    # field :createStatement, function: Mutations::Statements::CreateStatement
-    # field :createIndividual, function: Mutations::Individuals::CreateIndividual
+    field :create_statement, mutation: Mutations::Statements::CreateStatement
+    field :create_individual, mutation: Mutations::Individuals::CreateIndividual
   end
 end

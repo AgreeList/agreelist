@@ -8,4 +8,6 @@ class AlSchema < GraphQL::Schema
 
   # Add built-in connections for pagination
   # use GraphQL::Pagination::Connections
+
+  # use GraphQL::Guard.new
 end
