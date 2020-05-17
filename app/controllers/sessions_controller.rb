@@ -32,16 +32,17 @@ class SessionsController < ApplicationController
   def create_with_twitter
     auth = request.env["omniauth.auth"]
     user = Individual.find_by_twitter(auth["info"]["nickname"].downcase)
-    session[:user_id] = user.id
-    session[:ga_events] = ["login", "login_twitter"]
     if user
+      session[:user_id] = user.id
       notify("login", current_user_id: user.id)
       notify("login_twitter", current_user_id: user.id)
     else
       user = Individual.create_with_omniauth(auth)
+      session[:user_id] = user.id
       notify("sign_up", current_user_id: user.id)
       notify("sign_up_twitter", current_user_id: user.id)
     end
+    session[:ga_events] = ["login", "login_twitter"]
     if params["task"] == "voting"
       vote(user)
     elsif params["task"] == "post"
