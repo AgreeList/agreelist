@@ -6,4 +6,5 @@ Types::IndividualType = GraphQL::ObjectType.define do
   field :twitter, types.String
   field :wikipedia, types.String
   field :wikidata, types.String
+  # field :email, types.String
 end
