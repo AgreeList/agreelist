@@ -45,6 +45,8 @@ export class GameComponent extends React.Component<GameProps, GameState>{
       game_individual_id: individual.id,
       extent: answer
     }
+    const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
     axios.post('/api/v2/events', event_args)
   }
 

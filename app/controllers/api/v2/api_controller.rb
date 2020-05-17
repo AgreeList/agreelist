@@ -1,9 +1,14 @@
+# Internal API. Requires a session.
 module Api::V2
   class ApiController < ActionController::Base
-
-    before_action :return_unauthorized, if: -> { current_user&.nil? }
+    protect_from_forgery
+    before_action :authenticate
 
     private
+
+    def authenticate
+      return_unauthorized if current_user.nil? && anonymous_id.nil?
+    end
 
     def current_user
       @current_user ||= Individual.find(session[:user_id]) if session[:user_id]
@@ -14,7 +19,7 @@ module Api::V2
     end
 
     def return_unauthorized
-      render(status: :unauthorized, json: { errors: ['Wrong or missing API key'] })
+      head :unauthorized
     end
   end
 end
