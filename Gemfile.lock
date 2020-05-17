@@ -143,6 +143,8 @@ GEM
     graphiql-rails (1.4.5)
       rails
     graphql (1.10.9)
+    graphql-guard (2.0.0)
+      graphql (>= 1.10.0, < 2)
     haml (5.0.1)
       temple (>= 0.8.0)
       tilt
@@ -434,6 +436,7 @@ DEPENDENCIES
   google_url_shortener (~> 1.1.0)
   graphiql-rails
   graphql (~> 1.10.9)
+  graphql-guard (~> 2.0)
   haml-rails (~> 1.0.0)
   ionicons-rails (~> 2.0.0)
   jquery-rails (~> 4.3.1)
