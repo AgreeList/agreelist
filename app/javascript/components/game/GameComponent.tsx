@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Button } from 'react-bootstrap'
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
+import AxiosHelper from '../utils/AxiosHelper'
 
 interface Statement {
   id: number,
@@ -45,8 +46,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
       game_individual_id: individual.id,
       extent: answer
     }
-    const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+    AxiosHelper()
     axios.post('/api/v2/events', event_args)
   }
 
