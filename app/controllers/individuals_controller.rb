@@ -55,7 +55,7 @@ class IndividualsController < ApplicationController
       })
       @school_list = @individual.school_list
       @occupation_list = @individual.occupation_list
-      @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc")
+      prepare_game
     else
       render action: "missing"
     end
@@ -102,5 +102,18 @@ class IndividualsController < ApplicationController
 
   def individual?
     @individual.present?
+  end
+
+  def prepare_game
+    @statements = []
+    @individual.statements.order('RANDOM()').limit(10).each do |statement|
+      @statements << {
+        id: statement.id,
+        content: statement.content
+      }
+    end
+    @individual_attributes = @individual.attributes.slice("id", "name")
+    @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
+    session[:visitor_id] = SecureRandom.urlsafe_base64
   end
 end

@@ -23,7 +23,6 @@ Al::Application.routes.draw do
 
   root to: "new#index"
   get "/new", to: "new#index", as: :new
-  get "/:id/game", to: "game#index", as: :game
   get "/brexit", to: "boards#brexit", as: :brexit_board
   get "/boards/brexit" => redirect("/brexit")
   post '/results' => 'home#save_email'

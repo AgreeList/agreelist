@@ -65,7 +65,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
             <h1>Do you agree with {individual.name}?</h1>
           </div>
         </div>
-        <h5>Vote {count} statements to find out! At the end we'll let you know which statements {individual.name} agrees and why.</h5>
+        <h5>Vote to see {individual.name}'s opinions:</h5>
         <h2>{currentQuestion + 1}. {statements[currentQuestion].content}</h2>
         <p>Do you agree?</p>
         <Button variant="success" className="game-agree" onClick={() => this.vote(100)}>Agree</Button>
