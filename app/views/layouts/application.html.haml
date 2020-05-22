@@ -6,7 +6,7 @@
     %meta(name="viewport" content="width=device-width, initial-scale=1.0")
     = display_meta_tags
     = render partial: "layouts/data_layer"
-    = render partial: 'layouts/gtm_header'
+    = render partial: 'layouts/gtm_header' if Rails.env.production?
     = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
