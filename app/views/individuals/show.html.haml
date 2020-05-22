@@ -39,9 +39,10 @@
             = "·" unless index == @occupation_list.size - 1
   %br
 
-  = javascript_pack_tag "application"
-  .container.game
-    = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements)
+  - if @agreements.size > 1
+    = javascript_pack_tag "application"
+    .container.game
+      = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements, loggedIn: !!current_user)
 
   - if current_user
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|

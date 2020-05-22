@@ -14,24 +14,28 @@ class IndividualsController < ApplicationController
   end
 
   def create
-    @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
-    if verify_recaptcha(model: @individual) && @individual.save
-      notify("sign_up", current_user_id: @individual.id)
-      @individual.send_activation_email
-      session[:user_id] = @individual.id
-      if params[:task] == "follow"
-        statement_to_follow = Statement.find(params[:statement_id])
-        @individual.follow(statement_to_follow)
-        notify("follow", statement_id: statement_to_follow.id)
-      end
-      if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
-        upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))
-      else
-        redirect_to(get_and_delete_back_url || root_path, notice: "Welcome to Agreelist!")
-      end
+    if params[:source] == 'game'
+      create_from_game
     else
-      flash[:error] = @individual.errors.full_messages.join(". ")
-      render action: :new
+      @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
+      if verify_recaptcha(model: @individual) && @individual.save
+        notify("sign_up", current_user_id: @individual.id)
+        @individual.send_activation_email
+        session[:user_id] = @individual.id
+        if params[:task] == "follow"
+          statement_to_follow = Statement.find(params[:statement_id])
+          @individual.follow(statement_to_follow)
+          notify("follow", statement_id: statement_to_follow.id)
+        end
+        if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
+          upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))
+        else
+          redirect_to(get_and_delete_back_url || root_path, notice: "Welcome to Agreelist!")
+        end
+      else
+        flash[:error] = @individual.errors.full_messages.join(". ")
+        render action: :new
+      end
     end
   end
 
@@ -105,8 +109,10 @@ class IndividualsController < ApplicationController
   end
 
   def prepare_game
+
     @agreements = []
-    @agreements = @individual.agreements.includes(:statement).order('RANDOM()').where("reason is not null and reason != ''")
+    @agreements = @individual.agreements.includes(:statement).order('RANDOM()').
+      where("reason is not null and reason != ''").where.not(id:  current_user.agreements.pluck(:id))
     @agreements = @agreements.map do |agreement|
       {
         id: agreement.id,
@@ -120,5 +126,41 @@ class IndividualsController < ApplicationController
     end
     @individual_attributes = @individual.attributes.slice("id", "name")
     @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
+  end
+
+  def create_from_game
+    individual = Individual.new(email: params[:email])
+    if params[:email].present? && individual.save
+      session[:user_id] = individual.id
+      track(individual)
+      save_agreements(individual)
+      from_individual = Individual.find(params[:from_individual_id])
+      redirect_to individual_path(from_individual)
+    else
+      Rails.logger.debug("Error signing up: #{individual.errors.full_messages.join('. ')}")
+      flash[:error] = "Invalid email"
+      redirect_to signup_path
+    end
+  end
+
+  def save_agreements(individual)
+    agreements = JSON.load(params[:agreements]) if params[:agreements]
+    agreements.each do |agreement|
+      a = individual.agreements.new(statement_id: agreement['statement_id'], extent: agreement['extent'], individual: individual)
+      unless a.save
+        Rails.logger.error("Error saving agreement. Individual id: #{individual.id}. extent: #{agreement.extent}. statement id: #{agreement.statement_id}")
+      end
+    end
+  end
+
+  def track(individual)
+    Analytics.track(
+      user_id: individual.id,
+      anonymous_id: anonymous_id,
+      event: 'Sign up',
+      properties: {
+        source: params[:source]
+      }
+    )
   end
 end
