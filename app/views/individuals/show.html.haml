@@ -41,7 +41,7 @@
 
   = javascript_pack_tag "application"
   .container.game
-    = react_component('game/GameComponent', individual: @individual_attributes, statements: @statements)
+    = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements)
 
   - if current_user
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|

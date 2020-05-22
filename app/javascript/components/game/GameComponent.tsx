@@ -14,14 +14,20 @@ interface Individual {
   name: string,
   picture_url: string
 }
+interface Agreement {
+  id: number,
+  statement: Statement,
+  reason: string,
+  extent: number // 100 agree; 0 disagree
+}
 
 interface GameProps {
-  statements: Statement[],
+  agreements: Agreement[],
   individual: Individual
 }
 
 interface GameState {
-  answers: number[] // 100 agree, 50 skip, 0 disagree
+  answers: number[], // 100 agree, 50 skip, 0 disagree
   currentQuestion: number
 }
 
@@ -37,12 +43,12 @@ export class GameComponent extends React.Component<GameProps, GameState>{
 
   vote = (answer: number) => {
     const { answers, currentQuestion } = this.state
-    const { individual, statements } = this.props
+    const { individual, agreements } = this.props
     answers[currentQuestion] = answer
     this.setState({ answers: answers, currentQuestion: currentQuestion + 1 })
     const event_args = {
       name: "vote",
-      statement_id: statements[currentQuestion].id,
+      statement_id: agreements[currentQuestion].statement.id,
       game_individual_id: individual.id,
       extent: answer
     }
@@ -51,10 +57,10 @@ export class GameComponent extends React.Component<GameProps, GameState>{
   }
 
   render() {
-    const { statements, individual } = this.props
+    const { agreements, individual } = this.props
     const { currentQuestion } = this.state
 
-    const count = statements.length
+    const count = agreements.length
     return (
       <div>
         <div className="game-wrap">
@@ -66,7 +72,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
           </div>
         </div>
         <h5>Vote to see {individual.name}'s opinions:</h5>
-        <h2>{currentQuestion + 1}. {statements[currentQuestion].content}</h2>
+        <h2>{currentQuestion + 1}. {agreements[currentQuestion].statement.content}</h2>
         <p>Do you agree?</p>
         <Button variant="success" className="game-agree" onClick={() => this.vote(100)}>Agree</Button>
         <Button variant="danger" onClick={() => this.vote(0)}>Disagree</Button>

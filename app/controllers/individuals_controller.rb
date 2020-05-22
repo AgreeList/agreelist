@@ -105,15 +105,20 @@ class IndividualsController < ApplicationController
   end
 
   def prepare_game
-    @statements = []
-    @individual.statements.order('RANDOM()').limit(10).each do |statement|
-      @statements << {
-        id: statement.id,
-        content: statement.content
+    @agreements = []
+    @agreements = @individual.agreements.includes(:statement).order('RANDOM()').where("reason is not null and reason != ''")
+    @agreements = @agreements.map do |agreement|
+      {
+        id: agreement.id,
+        extent: agreement.extent,
+        reason: agreement.reason,
+        statement: {
+          id: agreement.statement_id,
+          content: agreement.statement.content
+        }
       }
     end
     @individual_attributes = @individual.attributes.slice("id", "name")
     @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
-    session[:visitor_id] = SecureRandom.urlsafe_base64
   end
 end
