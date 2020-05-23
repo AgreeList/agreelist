@@ -38,6 +38,7 @@ feature 'individual page', js: true do
     end
 
     scenario "should vote" do
+      allow_any_instance_of(ActionController::Base).to receive(:protect_against_forgery?).and_return(true)
       visit "/neil"
       click_button "Agree"
       expect(page).to have_content("Neil Armstrong agrees:")
