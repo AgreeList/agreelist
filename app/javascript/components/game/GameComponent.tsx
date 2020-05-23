@@ -62,13 +62,13 @@ export class GameComponent extends React.Component<GameProps, GameState>{
     answers[currentQuestion] = answer
     this.setState({ answers: answers, currentQuestion: currentQuestion, showAnswer: !showAnswer })
     const event_args = {
-      name: "vote",
       statement_id: agreements[currentQuestion].statement.id,
       game_individual_id: individual.id,
-      extent: answer
+      extent: answer,
+      source: "game"
     }
     AxiosHelper()
-    axios.post('/api/v2/events', event_args)
+    axios.post('/ag', event_args)
   }
 
   renderStatement = () => {
