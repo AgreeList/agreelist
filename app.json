@@ -1,5 +1,14 @@
 {
-  "scripts": {
-    "test-setup": "bin/rails assets:precompile; bin/rails webpacker:compile"
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "bin/rails assets:precompile; bin/rails webpacker:compile"
+      }
+    },
+    "production": {
+      "scripts": {
+        "test-setup": "bin/rails assets:precompile; bin/rails webpacker:compile"
+      }
+    }
   }
 }
