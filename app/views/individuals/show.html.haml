@@ -1,43 +1,44 @@
 .container
-  .media.profile-box
-    .media-left
-      = image_tag @individual.picture.url(:square)
-    .media-body
-      %h1.media-heading
-        = @individual.name
-        %span.small
-          - if current_user
-            - if current_user.following?(@individual)
-              = link_to "Following", follow_path(1, individual_id: @individual.id), method: :delete
-            - else
-              = link_to "Follow", follows_path(individual_id: @individual.id), method: :post
+  - if current_user
+    .media.profile-box
+      .media-left
+        = image_tag @individual.picture.url(:square)
+      .media-body
+        %h1.media-heading
+          = @individual.name
+          %span.small
+            - if current_user
+              - if current_user.following?(@individual)
+                = link_to "Following", follow_path(1, individual_id: @individual.id), method: :delete
+              - else
+                = link_to "Follow", follows_path(individual_id: @individual.id), method: :post
 
-      = link_to("Edit Profile", edit_individual_path, class: "btn btn-primary") if admin? || current_user == @individual
+        = link_to("Edit Profile", edit_individual_path, class: "btn btn-primary") if admin? || current_user == @individual
 
-      %p
-        = @individual.visible_bio
-        - if @individual.wikipedia.present?
-          ·
-          = link_to "wikipedia", @individual.wikipedia, target: :_blank
-        - elsif @individual.bio_link.present?
-          ·
-          = link_to "bio", @individual.bio_link, target: :_blank
-        - if @individual.twitter.present?
-          ·
-          = link_to "twitter", "https://twitter.com/#{@individual.twitter}", target: :_blank
-      - if @school_list.any?
-        Educated at:
         %p
-          - @school_list.each_with_index do |school, index|
-            = link_to school, school_path(school.downcase.gsub(" ", "-"))
-            = "·" unless index == @school_list.size - 1
-      - if @occupation_list.any?
-        Occupations:
-        %p
-          - @occupation_list.each_with_index do |occupation, index|
-            = link_to occupation.titleize, occupation_path(occupation.downcase.gsub(" ", "-"))
-            = "·" unless index == @occupation_list.size - 1
-  %br
+          = @individual.visible_bio
+          - if @individual.wikipedia.present?
+            ·
+            = link_to "wikipedia", @individual.wikipedia, target: :_blank
+          - elsif @individual.bio_link.present?
+            ·
+            = link_to "bio", @individual.bio_link, target: :_blank
+          - if @individual.twitter.present?
+            ·
+            = link_to "twitter", "https://twitter.com/#{@individual.twitter}", target: :_blank
+        - if @school_list.any?
+          Educated at:
+          %p
+            - @school_list.each_with_index do |school, index|
+              = link_to school, school_path(school.downcase.gsub(" ", "-"))
+              = "·" unless index == @school_list.size - 1
+        - if @occupation_list.any?
+          Occupations:
+          %p
+            - @occupation_list.each_with_index do |occupation, index|
+              = link_to occupation.titleize, occupation_path(occupation.downcase.gsub(" ", "-"))
+              = "·" unless index == @occupation_list.size - 1
+    %br
 
   - if @agreements_game.size > 0
     = javascript_pack_tag "application"
@@ -45,7 +46,7 @@
       = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements_game, loggedIn: !!current_user)
   - else
     .profile-agreement-container
-      = link_to "Ask me again", individual_path(@individual, ask_again: true) if current_user && @agreements > 0
+      = link_to "Ask me again", individual_path(@individual, ask_again: true) if current_user && @agreements.size > 0
     - @agreements.each do |agreement|
       - statement = agreement.statement
       .profile-agreement-container

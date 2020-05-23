@@ -85,21 +85,21 @@ export class GameComponent extends React.Component<GameProps, GameState>{
   renderQuestion = () => {
     const { currentQuestion } = this.state
     const { agreements, individual } = this.props
-    const lastQuestion = currentQuestion == agreements.length
+    const end = currentQuestion == agreements.length
     return (
       <>
-        {lastQuestion &&
+        {end &&
           <>
             There are no more questions to vote at the moment.
             &nbsp;
             <a href={individual.url}>See all opinions</a>
           </>
         }
-        {!lastQuestion &&
+        {!end &&
           <>
             {this.renderStatement()}
             <p>Do you agree?</p>
-            <Button variant="success" className="game-agree" onClick={() => this.vote(100)}>Agree</Button>
+            <Button variant="success" onClick={() => this.vote(100)}>Agree</Button>
             <Button variant="danger" onClick={() => this.vote(0)}>Disagree</Button>
             <Button variant="link" onClick={() => this.vote(50)}>Skip</Button>
           </>
@@ -112,7 +112,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
     const { currentQuestion, askEmail, loggedIn } = this.state
     const { agreements } = this.props
 
-    const ask = !loggedIn && ((askEmail && currentQuestion == 3) || currentQuestion == agreements.length - 1)
+    const ask = !loggedIn && ((askEmail && currentQuestion == 3) || currentQuestion == agreements.length)
     return(
       <>
         {ask ? this.renderAskEmail() : this.renderQuestion()}
@@ -157,7 +157,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
           <Button variant="primary" type="submit">
             Sign up and save progress
           </Button>
-          {currentQuestion < agreements.length - 1 &&
+          {currentQuestion < agreements.length &&
             <Button variant="link" className="small" onClick={() => this.setState({askEmail: false})}>or skip and continue voting</Button>
           }
           <Button variant="link" className="small" onClick={() => window.location.replace("/login")}>or log in</Button>
