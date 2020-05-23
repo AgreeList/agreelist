@@ -19,10 +19,17 @@
         %li= link_to(agreement.reason, agreement_path(agreement))
   - else
     .text-center
-      %p Search people, topics, opinions, etc.
-      .form-inline
-        = form_tag search_path do
-          = text_field_tag :search, "", class: "form-control", placeholder: "e.g. Basic Income", autofocus: true
-          = submit_tag "Search", class: "btn btn-primary"
+      .row
+        .col-sm-4
+        .col-sm-4
+          %p Search people, topics, opinions, etc.
+          .form-inline
+            = form_tag search_path do
+              = text_field_tag :search, "", class: "form-control", placeholder: "e.g. Basic Income", autofocus: true
+              .search-button
+                = submit_tag "Search", class: "btn btn-primary"
+                or
+                = link_to "Browse", new_path
+        .col-sm-4
 %br
 %br

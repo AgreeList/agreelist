@@ -16,7 +16,7 @@ Al::Application.routes.draw do
   end
 
   root to: "new#index"
-  get "/new", to: "new#index", as: :new
+  get "/browse", to: "new#index", as: :new
   get "/brexit", to: "boards#brexit", as: :brexit_board
   get "/boards/brexit" => redirect("/brexit")
   post '/results' => 'home#save_email'
