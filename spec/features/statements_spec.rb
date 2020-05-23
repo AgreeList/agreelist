@@ -30,7 +30,9 @@ feature 'statements' do
     scenario "should allow to destroy statement" do
       @statement.agreements.map{|a| a.destroy}
       visit edit_statement_path(@statement)
-      click_link "Delete"
+      accept_alert do
+        click_link "Delete"
+      end
       expect(page).not_to have_content("#{@statement.content} (2 opinions)")
     end
 
