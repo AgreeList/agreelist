@@ -23,6 +23,6 @@ feature "follow_individual", js: true do
 
   def seed_data
     create(:statement)
-    @individual = create(:individual)
+    @individual = create(:individual, twitter: "marie_curie")
   end
 end

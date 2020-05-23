@@ -18,7 +18,7 @@ class IndividualsController < ApplicationController
       create_from_game
     else
       @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
-      if verify_recaptcha(model: @individual) && @individual.save
+      if (Rails.env.test? || verify_recaptcha(model: @individual)) && @individual.save
         notify("sign_up", current_user_id: @individual.id)
         @individual.send_activation_email
         session[:user_id] = @individual.id
@@ -43,9 +43,10 @@ class IndividualsController < ApplicationController
     @individual = Individual.find_by_activation_digest(params[:id])
     if @individual
       @individual.activate
+      session[:user_id] = @individual.id
       redirect_to root_path, notice: "Your account has been activated"
     else
-      flash[:notice] = "Error activating your account"
+      flash[:error] = "Error activating your account"
       redirect_to current_user ? root_path : login_path
     end
   end

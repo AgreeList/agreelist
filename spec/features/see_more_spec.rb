@@ -15,7 +15,7 @@ feature 'see more', js: true do
   scenario "should display full reason after clicking on See More" do
     visit statement_path(@statement)
     click_link "See More"
-    expect(page).to have_content("aaaa "*250)
+    expect(page).to have_content(("aaaa "*250).strip)
   end
 
   def seed_data

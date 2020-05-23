@@ -5,7 +5,7 @@ gem 'rails', '>= 5.1.1'
 gem 'bootstrap-sass', '~> 3.3.7'
 gem 'paperclip', "~> 5.2.0"
 gem 'aws-sdk', '~> 2.3'
-gem 'nokogiri', '~> 1.8.1'
+gem 'nokogiri'
 gem "twitter", '~> 6.1.0'
 gem "haml-rails", '~> 1.0.0'
 gem 'kaminari', '~> 1.0.1'
@@ -38,7 +38,8 @@ gem 'jquery-rails', '~> 4.3.1'
 gem 'jquery-ui-rails', '~> 6.0.1'
 
 group :test do
-  gem 'capybara'
+  gem 'puma' # required by capybara
+  gem 'capybara', '~> 3.32.2'
   gem 'database_cleaner', '~> 1.6.1'
   gem 'webdrivers'
   gem 'capybara-selenium'
