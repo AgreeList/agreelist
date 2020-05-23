@@ -99,10 +99,4 @@ feature 'voting', js: true do
       end
     end
   end
-
-  private
-
-  def login
-    visit "/auth/twitter"
-  end
 end

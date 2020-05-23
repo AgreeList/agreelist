@@ -16,6 +16,10 @@
     %p.small= render partial: "common/sign_up_clause"
     %p
       .actions
-        = invisible_recaptcha_tags text: 'Sign up', class: "btn btn-primary"
+        - if Rails.env.test?
+          = f.submit 'Sign up', class: 'btn btn-primary'
+        - else
+          = invisible_recaptcha_tags text: 'Sign up', class: "btn btn-primary"
+
         Already a user?
         = link_to "Log in", login_path

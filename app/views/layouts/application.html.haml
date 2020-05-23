@@ -5,7 +5,7 @@
     %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
     %meta(name="viewport" content="width=device-width, initial-scale=1.0")
     = display_meta_tags
-    = render partial: "layouts/data_layer"
+    = render partial: "layouts/data_layer" if Rails.env.production?
     = render partial: 'layouts/gtm_header' if Rails.env.production?
     = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
@@ -15,8 +15,21 @@
     = javascript_include_tag "https://www.gstatic.com/charts/loader.js" #, async: true - In order to load it asynchronously, we need to load the pie charts after loader.js is loaded (use callback?). Otherwise we get ReferenceError: google is not defined
     = javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.js"
     = stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/easy-autocomplete.css"
+    -# Segment code:
+    - if Rails.env.production?
+      %script
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var t=analytics.methods[e];analytics[t]=analytics.factory(t)}analytics.load=function(e,t){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+e+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=t};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("erOchxXT6chUUmsqG8IDkZbVyYuWQBLR");
+        analytics.page();
+        }}();
+    - elsif Rails.env.development?
+      %script
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var t=analytics.methods[e];analytics[t]=analytics.factory(t)}analytics.load=function(e,t){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+e+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=t};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("8v57InypYn6WgrUrSsR0MuqyIhEEJHrq");
+        analytics.page();
+        }}();
   %body
-    = render partial: 'layouts/gtm_body'
+    = render partial: 'layouts/gtm_body' if Rails.env.production?
     %section.main-container
       = render 'layouts/cookie_consent'
       = render 'layouts/header'

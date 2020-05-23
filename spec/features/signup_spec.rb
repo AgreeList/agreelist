@@ -10,11 +10,10 @@ feature 'signup' do
     fill_in :individual_email, with: 'my@email.com'
     fill_in :individual_password, with: 'password'
     fill_in :individual_password_confirmation, with: 'password'
-    click_button "Sign up"
-    expect(page).to have_content("Sign Out")
-
+    expect { click_button "Sign up" }.to change { Individual.count }.by(1)
+    click_link "Sign Out"
     expect(ActionMailer::Base.deliveries.last).not_to be nil
-    activation_link = ActionMailer::Base.deliveries.last.body.raw_source.scan(/http.*activation/).first
+    activation_link = ActionMailer::Base.deliveries.last.body.raw_source.scan(/http.*activation/).first.gsub('http://www.localhost:3000', '')
     visit activation_link
     expect(page).to have_content("Your account has been activated")
   end
@@ -24,7 +23,7 @@ feature 'signup' do
     fill_in :individual_email, with: 'my@email.com'
     fill_in :individual_password, with: 'password'
     fill_in :individual_password_confirmation, with: 'password2'
-    click_button "Sign up"
+    expect { click_button "Sign up" }.not_to change { Individual.count }
     expect(page).to have_content("Password confirmation doesn't match")
   end
 
@@ -33,7 +32,7 @@ feature 'signup' do
     fill_in :individual_email, with: 'whatever.com'
     fill_in :individual_password, with: 'password'
     fill_in :individual_password_confirmation, with: 'password'
-    click_button "Sign up"
+    expect { click_button "Sign up" }.not_to change { Individual.count }
     expect(page).to have_content("Email is invalid")
   end
 end

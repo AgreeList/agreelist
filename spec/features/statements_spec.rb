@@ -13,14 +13,6 @@ feature 'statements' do
       expect(page).to have_content("#{@statement.content}")
       expect(page).to have_content("2")
     end
-
-    scenario "can sign up only with email" do
-      15.times{ create(:agreement, statement: @statement, individual: create(:individual), reason: "blabla", extent: 100)}
-      visit statement_path(@statement)
-      fill_in :individual_email, with: "hec@hec.com"
-      expect{ click_button "Sign up" }.to change{ Individual.count }.by(1)
-      expect(Individual.last.email).to eq "hec@hec.com"
-    end
   end
 
   context "logged in as hector" do
@@ -38,7 +30,9 @@ feature 'statements' do
     scenario "should allow to destroy statement" do
       @statement.agreements.map{|a| a.destroy}
       visit edit_statement_path(@statement)
-      click_link "Delete"
+      accept_alert do
+        click_link "Delete"
+      end
       expect(page).not_to have_content("#{@statement.content} (2 opinions)")
     end
 

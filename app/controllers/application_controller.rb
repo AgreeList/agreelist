@@ -3,10 +3,22 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :signed_in?, :admin?, :can_delete_statements?, :has_admin_category_rights?, :main_statement, :has_profession_rights?, :has_update_individual_rights?, :board?, :back_url, :google_analytics_events
   before_action :set_page_type
   before_action :redirect_www
+  before_action :set_anoymous_id, if: -> { current_user.nil? && anonymous_id.nil? }
 
   attr_reader :google_analytics_events
 
   private
+
+  def set_anoymous_id
+    session[:anonymous_id] = SecureRandom.urlsafe_base64
+    Analytics.identify(
+      anonymous_id: anonymous_id
+    )
+  end
+
+  def anonymous_id
+    session[:anonymous_id]
+  end
 
   def redirect_www
     if request.host == 'www.agreelist.org'
@@ -19,10 +31,18 @@ class ApplicationController < ActionController::Base
     session[:ga_events] << event # we use the session in case we redirect
     arguments = { event: event, current_user_id: current_user.try(:id), ip: request.try(:remote_ip) }.merge(args)
     EventNotifier.new(arguments).notify
+    Analytics.track(
+        user_id: session[:user_id],
+        anonymous_id: anonymous_id,
+        event: event)
   end
 
   def current_user
-    @current_user ||= Individual.find(session[:user_id]) if session[:user_id]
+    user_from_session
+  end
+
+  def user_from_session
+    @user_from_session ||= Individual.find(session[:user_id]) if session[:user_id]
   end
 
   def signed_in?
@@ -38,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def has_admin_category_rights?
-    %w(emilie_esposito arpahector ryryanryanry).include?(current_user.try(:twitter).try(:downcase))
+    %w(emilie_esposito arpahector).include?(current_user.try(:twitter).try(:downcase))
   end
 
   def has_profession_rights?

@@ -1,6 +1,6 @@
-Types::StatementType = GraphQL::ObjectType.define do
-  name 'Statement'
-
-  field :id, !types.ID
-  field :content, !types.String
+module Types
+  class StatementType < Types::BaseObject
+    field :id, Integer, null: false
+    field :content, String, null: false
+  end
 end

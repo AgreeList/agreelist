@@ -9,7 +9,7 @@ feature "reason categories", js: true do
 
   context "non logged user" do
     before do
-      login
+      login_as_admin
       visit statement_path(statement)
     end
 
@@ -24,10 +24,5 @@ feature "reason categories", js: true do
     create(:agreement, statement: @statement, individual: create(:individual), reason: "blablabla", extent: 100)
     ReasonCategory.create(name: "Economy")
     ReasonCategory.create(name: "Science")
-  end
-
-  def login
-    visit "/auth/twitter"
-    Individual.last.update_attributes(admin: true)
   end
 end

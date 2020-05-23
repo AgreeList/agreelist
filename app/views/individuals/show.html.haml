@@ -1,69 +1,75 @@
 .container
-  .media.profile-box
-    .media-left
-      = image_tag @individual.picture.url(:square)
-    .media-body
-      %h1.media-heading
-        = @individual.name
-        %span.small
-          - if current_user
-            - if current_user.following?(@individual)
-              = link_to "Following", follow_path(1, individual_id: @individual.id), method: :delete
-            - else
-              = link_to "Follow", follows_path(individual_id: @individual.id), method: :post
-
-      = link_to("Edit Profile", edit_individual_path, class: "btn btn-primary") if admin? || current_user == @individual
-
-      %p
-        = @individual.visible_bio
-        - if @individual.wikipedia.present?
-          ·
-          = link_to "wikipedia", @individual.wikipedia, target: :_blank
-        - elsif @individual.bio_link.present?
-          ·
-          = link_to "bio", @individual.bio_link, target: :_blank
-        - if @individual.twitter.present?
-          ·
-          = link_to "twitter", "https://twitter.com/#{@individual.twitter}", target: :_blank
-      - if @school_list.any?
-        Educated at:
-        %p
-          - @school_list.each_with_index do |school, index|
-            = link_to school, school_path(school.downcase.gsub(" ", "-"))
-            = "·" unless index == @school_list.size - 1
-      - if @occupation_list.any?
-        Occupations:
-        %p
-          - @occupation_list.each_with_index do |occupation, index|
-            = link_to occupation.titleize, occupation_path(occupation.downcase.gsub(" ", "-"))
-            = "·" unless index == @occupation_list.size - 1
-  %br
-
-  - @agreements.each do |agreement|
-    - statement = agreement.statement
-    .profile-agreement-container
-      .profile-agreement
-        = link_to(statement.content, statement_path(statement))
-        %span.small
-          - if agreement.agree?
-            %span.green agreed
-          - else
-            %span.red disagreed
-          by
+  - if params[:all] || (current_user && @agreements_game.size == 0)
+    .media.profile-box
+      .media-left
+        = image_tag @individual.picture.url(:square)
+      .media-body
+        %h1.media-heading
           = @individual.name
-          %span.small= " · "
-          %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+          %span.small
+            - if current_user
+              - if current_user.following?(@individual)
+                = link_to "Following", follow_path(1, individual_id: @individual.id), method: :delete
+              - else
+                = link_to "Follow", follows_path(individual_id: @individual.id), method: :post
 
+        = link_to("Edit Profile", edit_individual_path, class: "btn btn-primary") if admin? || current_user == @individual
 
-        - if agreement.reason.present?
-          .profile-reason
-          = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
+        %p
+          = @individual.visible_bio
+          - if @individual.wikipedia.present?
+            ·
+            = link_to "wikipedia", @individual.wikipedia, target: :_blank
+          - elsif @individual.bio_link.present?
+            ·
+            = link_to "bio", @individual.bio_link, target: :_blank
+          - if @individual.twitter.present?
+            ·
+            = link_to "twitter", "https://twitter.com/#{@individual.twitter}", target: :_blank
+        - if @school_list.any?
+          Educated at:
+          %p
+            - @school_list.each_with_index do |school, index|
+              = link_to school, school_path(school.downcase.gsub(" ", "-"))
+              = "·" unless index == @school_list.size - 1
+        - if @occupation_list.any?
+          Occupations:
+          %p
+            - @occupation_list.each_with_index do |occupation, index|
+              = link_to occupation.titleize, occupation_path(occupation.downcase.gsub(" ", "-"))
+              = "·" unless index == @occupation_list.size - 1
+    %br
 
-  - if current_user
+  - if !params[:all] && @agreements_game.size > 0
+    = javascript_pack_tag "application"
+    .container.game
+      = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements_game, loggedIn: !!current_user)
+  - else
+    .profile-agreement-container
+      = link_to "Ask me again", individual_path(@individual, ask_again: true) if current_user && @agreements.size > 0
+    - @agreements.each do |agreement|
+      - statement = agreement.statement
+      .profile-agreement-container
+        .profile-agreement
+          = link_to(statement.content, statement_path(statement))
+          %span.small
+            - if agreement.agree?
+              %span.green agreed
+            - else
+              %span.red disagreed
+            by
+            = @individual.name
+            %span.small= " · "
+            %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+          - if agreement.reason.present?
+            .profile-reason
+            = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
+
+  - if current_user && (params[:all] || @agreements_game.size == 0)
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|
       .form-group
         %h3.text-center
-          Write an opinion from
+          Add an opinion from
           = @individual.name || @individual.to_param
         .col-sm-1
         .col-sm-10
@@ -75,7 +81,7 @@
       .text-center
         = submit_tag("She/he agrees", class: "btn btn-primary")
         = submit_tag("She/he disagrees", class: "btn btn-primary")
-  - else
+  - if current_user.nil? && params[:all]
     .profile-box
       = link_to "Log in", login_path
       to add an opinion from

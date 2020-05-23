@@ -43,8 +43,4 @@ feature "brexit board" do
                      reason: "blablabla",
                      reason_category: science)
   end
-
-  def login
-    visit "/auth/twitter"
-  end
 end

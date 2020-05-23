@@ -8,7 +8,9 @@ feature "Occupations" do
   scenario "should list occupations" do
     OccupationsTable.any_instance.stub(:min_count).and_return(1)
     visit occupations_statement_path(@statement)
-    expect(page).to have_content("Economist 50% 2 Politician 100% 1 Journalist 0%")
+    expect(page).to have_content("Economist 50% 2")
+    expect(page).to have_content("Politician 100% 1")
+    expect(page).to have_content("Journalist 0% 1")
   end
 
   private
@@ -35,7 +37,9 @@ feature "Educated at" do
   scenario "should list universities" do
     SchoolsTable.any_instance.stub(:min_count).and_return(1)
     visit schools_statement_path(@statement)
-    expect(page).to have_content("Stanford 50% 2 Mit 100% 1 Harvard 0% 1")
+    expect(page).to have_content("Stanford 50% 2")
+    expect(page).to have_content("Mit 100% 1")
+    expect(page).to have_content("Harvard 0% 1")
   end
 
   private

@@ -1,33 +1,14 @@
 .text-center
-  = render partial: "common/back_or_sponsor_us_button" unless @hide_footer
-
-  .social-media-links
-    Follow us:
-    .row
-      .col-xs-4
-      .col-xs-2.facebook-icon
-        = link_to "https://www.facebook.com/Agreelist" do
-          %i.ion.ion-social-facebook.social-media-icons
-      .col-xs-2.twitter-icon
-        = link_to "https://www.twitter.com/arpahector" do
-          %i.ion.ion-social-twitter.social-media-icons
-    .row
-      .col-xs-4
-      .col-xs-2= link_to "Facebook", "https://www.facebook.com/Agreelist"
-      .col-xs-2= link_to "Twitter", "https://www.twitter.com/arpahector"
   .footer-line
-    = link_to "Open Source", "https://github.com/agreelist/agreelist"
-    ·
     = link_to "API", "https://github.com/hectorperez/agreelist/blob/master/README.md#api"
-    ·
-    Open Data
-    ·
-    Non-profit
-    ·
-    = link_to "Chat", slack_path
     ·
     = link_to "Privacy", privacy_path
     ·
     = link_to "Terms", terms_path
-    ·
-    = link_to "Contact", contact_path
+    .social-media-links
+      = link_to "https://www.twitter.com/arpahector" do
+        %i.ion.ion-social-twitter.social-media-icons
+      = link_to "https://www.facebook.com/Agreelist" do
+        %i.ion.ion-social-facebook.social-media-icons
+      = link_to "https://www.github.com/agreelist/agreelist" do
+        %i.ion.ion-social-github.social-media-icons
