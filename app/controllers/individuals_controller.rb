@@ -62,6 +62,7 @@ class IndividualsController < ApplicationController
       @occupation_list = @individual.occupation_list
       prepare_game unless params[:all]
       @agreements = params[:all] || @agreements_game.empty? ? @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc") : []
+      @disable_jquery = true
     else
       render action: "missing"
     end
