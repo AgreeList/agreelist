@@ -112,7 +112,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
     const { currentQuestion, askEmail, loggedIn } = this.state
     const { agreements } = this.props
 
-    const ask = !loggedIn && ((askEmail && currentQuestion == 3) || currentQuestion == agreements.length)
+    const ask = !loggedIn && ((askEmail && currentQuestion == 5) || currentQuestion == agreements.length)
     return(
       <>
         {ask ? this.renderAskEmail() : this.renderQuestion()}
