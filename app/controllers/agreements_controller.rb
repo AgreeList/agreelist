@@ -16,14 +16,18 @@ class AgreementsController < ApplicationController
   end
 
   def create
-    @statement = Statement.find(params[:statement_id])
-    voter = find_or_create_voter!
-    agreement = cast_vote(voter)
-    notify('new_agreement', agreement_id: agreement.id)
-    notify('new_opinion', agreement_id: agreement.id) if agreement.reason.present?
-    expire_fragment "brexit_board" if @statement.brexit?
-    session[:added_voter] = voter.hashed_id if voter.twitter.present?
-    redirect_to statement_path(@statement, type: "all", order: "recent"), notice: "The opinion has been added"
+    if params[:source] == "game"
+      create_from_game
+    else
+      @statement = Statement.find(params[:statement_id])
+      voter = find_or_create_voter!
+      agreement = cast_vote(voter)
+      notify('new_agreement', agreement_id: agreement.id)
+      notify('new_opinion', agreement_id: agreement.id) if agreement.reason.present?
+      expire_fragment "brexit_board" if @statement.brexit?
+      session[:added_voter] = voter.hashed_id if voter.twitter.present?
+      redirect_to statement_path(@statement, type: "all", order: "recent"), notice: "The opinion has been added"
+    end
   end
 
   def upvote
@@ -99,7 +103,7 @@ class AgreementsController < ApplicationController
   end
 
   def check_if_spam
-    if spam?
+    if params[:source] != "game" && spam?
       render status: 401, plain: "Your message has to be approved because it seemed spam. Sorry for the inconvenience."
       LogMailer.log_email("spam? params: #{params.inspect}").deliver #unless statement_used_by_spammers?
     end
@@ -131,5 +135,34 @@ class AgreementsController < ApplicationController
     elsif email.present?
       Individual.find_by_email(email) || Individual.create(email: email)
     end
+  end
+
+  def create_from_game
+    Rails.logger.info "event:#{params[:name]} - #{current_user&.id} | #{anonymous_id} statement id: #{params[:statement_id]} extent: #{params[:extent]} --------------------"
+    vote_from_game if current_user.present?
+    track_vote_from_game
+    head :ok
+  end
+
+  def vote_from_game
+    agreement = Agreement.new(statement_id: params[:statement_id], individual: current_user, extent: params[:extent])
+    unless agreement.save
+      Rails.logger.error "Error saving agreement statement_id: #{params[:statement_id]}, individual: #{current_user.id}, extent: #{params[:extent]}"
+    end
+  end
+
+  def track_vote_from_game
+    statement = Statement.find_by(id: params[:statement_id])
+    game_individual = Individual.find_by(id: params[:game_individual_id])
+    Analytics.track(
+      user_id: current_user&.id,
+      anonymous_id: anonymous_id,
+      event: "vote",
+      properties: {
+        statement: statement&.content,
+        game_individual: game_individual&.visible_name,
+        extent: params[:extent]
+      }
+    )
   end
 end

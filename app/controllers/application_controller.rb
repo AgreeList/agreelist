@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def has_admin_category_rights?
-    %w(emilie_esposito arpahector ryryanryanry).include?(current_user.try(:twitter).try(:downcase))
+    %w(emilie_esposito arpahector).include?(current_user.try(:twitter).try(:downcase))
   end
 
   def has_profession_rights?

@@ -14,24 +14,28 @@ class IndividualsController < ApplicationController
   end
 
   def create
-    @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
-    if verify_recaptcha(model: @individual) && @individual.save
-      notify("sign_up", current_user_id: @individual.id)
-      @individual.send_activation_email
-      session[:user_id] = @individual.id
-      if params[:task] == "follow"
-        statement_to_follow = Statement.find(params[:statement_id])
-        @individual.follow(statement_to_follow)
-        notify("follow", statement_id: statement_to_follow.id)
-      end
-      if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
-        upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))
-      else
-        redirect_to(get_and_delete_back_url || root_path, notice: "Welcome to Agreelist!")
-      end
+    if params[:source] == 'game'
+      create_from_game
     else
-      flash[:error] = @individual.errors.full_messages.join(". ")
-      render action: :new
+      @individual = Individual.new(params.require(:individual).permit(:email, :password, :password_confirmation, :is_user))
+      if (Rails.env.test? || verify_recaptcha(model: @individual)) && @individual.save
+        notify("sign_up", current_user_id: @individual.id)
+        @individual.send_activation_email
+        session[:user_id] = @individual.id
+        if params[:task] == "follow"
+          statement_to_follow = Statement.find(params[:statement_id])
+          @individual.follow(statement_to_follow)
+          notify("follow", statement_id: statement_to_follow.id)
+        end
+        if params[:task] == "upvote" || params[:individual].try(:[], :task) == "upvote"
+          upvote(redirect_to: edit_individual_path(@individual), agreement_id: params[:agreement_id] || params[:individual].try(:[], :agreement_id))
+        else
+          redirect_to(get_and_delete_back_url || root_path, notice: "Welcome to Agreelist!")
+        end
+      else
+        flash[:error] = @individual.errors.full_messages.join(". ")
+        render action: :new
+      end
     end
   end
 
@@ -39,9 +43,10 @@ class IndividualsController < ApplicationController
     @individual = Individual.find_by_activation_digest(params[:id])
     if @individual
       @individual.activate
+      session[:user_id] = @individual.id
       redirect_to root_path, notice: "Your account has been activated"
     else
-      flash[:notice] = "Error activating your account"
+      flash[:error] = "Error activating your account"
       redirect_to current_user ? root_path : login_path
     end
   end
@@ -55,7 +60,8 @@ class IndividualsController < ApplicationController
       })
       @school_list = @individual.school_list
       @occupation_list = @individual.occupation_list
-      @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc")
+      prepare_game unless params[:all]
+      @agreements = params[:all] || @agreements_game.empty? ? @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc") : []
     else
       render action: "missing"
     end
@@ -102,5 +108,65 @@ class IndividualsController < ApplicationController
 
   def individual?
     @individual.present?
+  end
+
+  def prepare_game
+    @agreements_game = prepare_agreements_game
+    @individual_attributes = @individual.attributes.slice("id", "name")
+    @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
+    @individual_attributes[:url] = individual_path(@individual)
+  end
+
+  def prepare_agreements_game
+    agreements = @individual.agreements.includes(:statement).order('RANDOM()').
+      where("reason is not null and reason != ''")
+    agreements = agreements.where.not(statement_id: current_user.agreements.pluck(:statement_id)) if current_user && params[:ask_again] != "true"
+    agreements = agreements.map do |agreement|
+      {
+        id: agreement.id,
+        extent: agreement.extent,
+        reason: agreement.reason,
+        statement: {
+          id: agreement.statement_id,
+          content: agreement.statement.content
+        }
+      }
+    end
+  end
+
+  def create_from_game
+    individual = Individual.new(email: params[:email])
+    if params[:email].present? && individual.save
+      session[:user_id] = individual.id
+      track(individual)
+      save_agreements(individual)
+      from_individual = Individual.find(params[:from_individual_id])
+      redirect_to individual_path(from_individual)
+    else
+      Rails.logger.debug("Error signing up: #{individual.errors.full_messages.join('. ')}")
+      flash[:error] = "Invalid email"
+      redirect_to signup_path
+    end
+  end
+
+  def save_agreements(individual)
+    agreements = JSON.load(params[:agreements]) if params[:agreements]
+    agreements.each do |agreement|
+      a = individual.agreements.new(statement_id: agreement['statement_id'], extent: agreement['extent'], individual: individual)
+      unless a.save
+        Rails.logger.error("Error saving agreement. Individual id: #{individual.id}. extent: #{agreement.extent}. statement id: #{agreement.statement_id}")
+      end
+    end
+  end
+
+  def track(individual)
+    Analytics.track(
+      user_id: individual.id,
+      anonymous_id: anonymous_id,
+      event: 'Sign up',
+      properties: {
+        source: params[:source]
+      }
+    )
   end
 end

@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 feature 'upvote', js: true do
+  let(:statement) { create(:statement, content: "the sky is blue") }
+
   before do
-    @statement = create(:statement)
-    @agreement = create(:agreement, statement: @statement, individual: create(:individual), extent: 100)
+    create(:agreement, statement: statement, individual: create(:individual), extent: 100, reason: "I checked")
   end
 
   context 'logged user' do
     before do
-      visit statement_path(@statement)
+      login_as_admin
+      visit statement_path(statement)
     end
 
     scenario "should change text to upvoted! (1)" do
       click_link "You?"
       click_link "I agree"
-      click_link "vote-twitter-login"
-      Individual.last.update_attributes(admin: true)
       fill_in "agreement_reason", with: "hmmm..."
       click_button "Save"
       expect(page).not_to have_content("upvoted! (1)")
@@ -26,7 +26,6 @@ feature 'upvote', js: true do
     scenario "should change upvotes_count" do
       click_link "You?"
       click_link "I agree"
-      click_link "vote-twitter-login"
       fill_in "agreement_reason", with: "hmmm..."
       click_button "Save"
       before_counter = Agreement.last.upvotes_count
@@ -39,8 +38,6 @@ feature 'upvote', js: true do
       scenario "should destroy the upvote" do
         click_link "You?"
         click_link "I agree"
-        click_link "vote-twitter-login"
-        Individual.last.update_attributes(admin: true)
         fill_in "agreement_reason", with: "hmmm..."
         click_button "Save"
         click_upvote
@@ -51,14 +48,14 @@ feature 'upvote', js: true do
 
   context 'non logged user' do
     before do
-      visit statement_path(@statement)
+      visit statement_path(statement)
     end
 
     context 'sign in with twitter' do
       scenario "upvote" do
         click_link "upvote"
         click_link "upvote-twitter-login"
-        expect(page).to have_content("upvoted!")
+        expect(page).to have_content("Upvoted!")
       end
     end
 
@@ -70,7 +67,7 @@ feature 'upvote', js: true do
         fill_in :individual_email, with: "whatever@email.com"
         fill_in :individual_password, with: "whatever-password"
         fill_in :individual_password_confirmation, with: "whatever-password"
-        click_button "Sign up"
+        expect { click_button "Sign up" }.to change { Individual.count }.by(1)
         expect(page).to have_content("Upvoted!")
       end
     end

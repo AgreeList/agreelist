@@ -5,7 +5,7 @@ gem 'rails', '>= 5.1.1'
 gem 'bootstrap-sass', '~> 3.3.7'
 gem 'paperclip', "~> 5.2.0"
 gem 'aws-sdk', '~> 2.3'
-gem 'nokogiri', '~> 1.8.1'
+gem 'nokogiri'
 gem "twitter", '~> 6.1.0'
 gem "haml-rails", '~> 1.0.0'
 gem 'kaminari', '~> 1.0.1'
@@ -38,15 +38,16 @@ gem 'jquery-rails', '~> 4.3.1'
 gem 'jquery-ui-rails', '~> 6.0.1'
 
 group :test do
-  gem 'capybara', '~> 2.14.0'
+  gem 'puma' # required by capybara
+  gem 'capybara', '~> 3.32.2'
   gem 'database_cleaner', '~> 1.6.1'
-  gem 'poltergeist', '~> 1.15.0'
+  gem 'webdrivers'
+  gem 'capybara-selenium'
   gem 'rack_session_access'
   gem 'vcr'
   gem 'webmock'
   gem "fakeredis"
   gem 'capybara-screenshot'
-  gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
 
 gem 'pg', '~> 0.20.0'

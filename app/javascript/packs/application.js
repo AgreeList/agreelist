@@ -23,8 +23,7 @@ import ReactRailsUJS from 'react_ujs'
 var componentRequireContext = require.context("components", true)
 // var ReactRailsUJS = require("react_ujs");
 // => prints ["./PerformanceRow.jsx"] in Chrome console
-console.log(componentRequireContext.keys());
+// console.log(componentRequireContext.keys());
 ReactRailsUJS.useContext(componentRequireContext)
 window.componentRequireContext = componentRequireContext
 // import 'components/game/GameComponent'
-console.log('Hello World from Webpacker h')

@@ -9,12 +9,6 @@ Al::Application.routes.draw do
   post "/api/v1", to: "graphql#execute"
   get "/api" => redirect("https://github.com/hectorperez/agreelist/#api")
 
-  namespace :api do
-    namespace :v2 do
-      resources :events, only: :create
-    end
-  end
-
   extend SidekiqWebContraint
 
   constraints sidekiq_web_constraint do
@@ -23,7 +17,6 @@ Al::Application.routes.draw do
 
   root to: "new#index"
   get "/new", to: "new#index", as: :new
-  get "/:id/game", to: "game#index", as: :game
   get "/brexit", to: "boards#brexit", as: :brexit_board
   get "/boards/brexit" => redirect("/brexit")
   post '/results' => 'home#save_email'
