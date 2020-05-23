@@ -2,7 +2,8 @@
   "name": "Agreelist",
   "private": true,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test-setup": "bin/rails assets:precompile"
   },
   "dependencies": {
     "@babel/preset-react": "^7.9.4",
