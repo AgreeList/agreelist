@@ -6,7 +6,7 @@
       = @statement.content
       %b.caret
       %ul{class: "dropdown-menu"}
-        %li= link_to "Any", root_path
+        %li= link_to "Any", new_path
         - @statement_filters.each do |statement|
           %li= link_to statement.content, statement_path(statement)
         %li= link_to "...", statements_path

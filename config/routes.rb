@@ -15,7 +15,7 @@ Al::Application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  root to: "new#index"
+  root to: "home#index"
   get "/browse", to: "new#index", as: :new
   get "/brexit", to: "boards#brexit", as: :brexit_board
   get "/boards/brexit" => redirect("/brexit")

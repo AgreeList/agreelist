@@ -1,0 +1,10 @@
+.container
+  .row
+    .col-sm-6
+      %h1 Example of statements:
+      - @statements.each do |statement|
+        %p= link_to statement.content, statement_path(statement)
+    .col-sm-6
+      %h1 Example of influencers:
+      - @individuals.each do |individual|
+        = image_tag(individual.picture.url(:thumb), class: "picture")

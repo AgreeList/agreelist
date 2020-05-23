@@ -12,7 +12,7 @@ feature "new", js: true do
   context "non logged in" do
     scenario "loads" do
       create(:statement)
-      visit "/"
+      visit new_path
       expect(page).to have_content("+")
     end
   end
@@ -28,7 +28,7 @@ feature "new", js: true do
 
       not_on_wp = create(:individual, name: "Someone")
       create(:agreement, individual: not_on_wp, statement: s, extent: 100)
-      visit "/?min_count=1"
+      visit new_path(min_count: 1)
     end
 
     scenario "should include only influencers (with Wikipedia page) by default" do
@@ -72,7 +72,8 @@ feature "new", js: true do
       create(:agreement, individual: branson, statement: s, extent: 100)
     end
 
-    visit "/?min_count=1"
+    visit new_path(min_count: 1)
+
     expect(page).to have_content("Stephen Hawking")
     expect(page).to have_content("Richard Branson")
 
@@ -99,7 +100,8 @@ feature "new", js: true do
       create(:agreement, individual: branson, statement: s, extent: 100)
     end
 
-    visit "/?min_count=1"
+    visit new_path(min_count: 1)
+
     expect(page).to have_content("Stephen Hawking")
     expect(page).to have_content("Richard Branson")
 
