@@ -12,7 +12,7 @@ feature 'individual page', js: true do
     end
 
     scenario "should add the creator" do
-      visit "/elonmusk"
+      visit "/elonmusk?all=1"
       fill_in :content, with: "We should go to Mars"
       click_button "She/he agrees"
       expect(Statement.last.individual.name).to eq "Hector Perez"
