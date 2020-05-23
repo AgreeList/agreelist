@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'create statement from individual profile' do
+feature 'create statement from individual profile', js: true do
   before do
     login
     i = create(:individual, name: "Elon Musk", twitter: "elonmusk")
@@ -21,6 +21,24 @@ feature 'create statement from individual profile' do
     scenario "should return an error page" do
       visit "/non-existent-page"
       expect(page).to have_content("Agreelist does not have a page for non-existent-page")
+    end
+  end
+
+  context "game" do
+    before do
+      i = create(:individual, name: "Neil Armstrong", twitter: "neil")
+      s1 = create(:statement, content: "The sky is blue")
+      s2 = create(:statement, content: "Mars is red")
+      s3 = create(:statement, content: "The Moon is yellow")
+      create(:agreement, statement: s1, individual: i, extent: 100)
+      create(:agreement, statement: s2, individual: i, extent: 100)
+      create(:agreement, statement: s3, individual: i, extent: 100)
+    end
+
+    scenario "should vote" do
+      visit "/neil"
+      click_button "Agree"
+      expect(page).to have_content("Neil Armstrong agrees:")
     end
   end
 end

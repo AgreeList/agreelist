@@ -4,14 +4,32 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require_relative 'support/wait_for_ajax'
 require 'rspec/autorun'
+require 'capybara/rspec'
 require "rack_session_access/capybara"
-require 'capybara/poltergeist'
+require 'webdrivers'
 require 'capybara-screenshot/rspec'
 require "fakeredis"
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
-Capybara.javascript_driver = :poltergeist
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: {
+      args: %w[headless enable-features=NetworkService,NetworkServiceInProcess]
+    }
+  )
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+Capybara.default_driver = :headless_chrome
+Capybara.javascript_driver = :headless_chrome
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -74,11 +92,22 @@ OmniAuth.config.mock_auth[:twitter] = {
     "name" => 'Hector Perez'
   }
 }
+
+# driver_urls = Webdrivers::Common.subclasses.map { |driver| driver.send(:base_url) }
+# driver_urls = (ObjectSpace.each_object(Webdrivers::Common.singleton_class).to_a - [Webdrivers::Common]).map(&:base_url)
+driver_urls = Webdrivers::Common.subclasses.map do |driver|
+  Addressable::URI.parse(driver.base_url).host
+end
 VCR.configure do |config|
   config.cassette_library_dir = "spec/vcr_cassettes"
   config.hook_into :webmock
-  config.ignore_hosts '127.0.0.1', 'localhost'
+  config.ignore_hosts(
+    '127.0.0.1',
+    'localhost',
+    *driver_urls
+  )
 end
+WebMock.disable_net_connect!(allow_localhost: true, allow: driver_urls)
 
 def login
   visit "/auth/twitter"
