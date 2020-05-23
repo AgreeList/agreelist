@@ -2,7 +2,9 @@
   "name": "Agreelist",
   "private": true,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
+    "heroku-postbuild": "npm run webpack:deploy"
   },
   "dependencies": {
     "@babel/preset-react": "^7.9.4",
