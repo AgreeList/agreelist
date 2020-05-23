@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 feature 'voting', js: true do
   attr_reader :statement
 
@@ -10,7 +11,7 @@ feature 'voting', js: true do
   context 'logged user' do
     it "should add opinion" do
       login
-      visit "/#{@individual.to_param}"
+      visit individual_path(@individual, all: true)
       fill_in :content, with: "climate change is real"
       fill_in :reason, with: "most scientists agree"
       fill_in :url, with: "http://whatever.com"

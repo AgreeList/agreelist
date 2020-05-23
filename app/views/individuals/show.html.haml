@@ -1,5 +1,5 @@
 .container
-  - if current_user
+  - if params[:all] || (current_user && @agreements_game.size == 0)
     .media.profile-box
       .media-left
         = image_tag @individual.picture.url(:square)
@@ -40,7 +40,7 @@
               = "·" unless index == @occupation_list.size - 1
     %br
 
-  - if @agreements_game.size > 0
+  - if !params[:all] && @agreements_game.size > 0
     = javascript_pack_tag "application"
     .container.game
       = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements_game, loggedIn: !!current_user)
@@ -65,7 +65,7 @@
             .profile-reason
             = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
 
-  - if current_user
+  - if current_user && (params[:all] || @agreements_game.size == 0)
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|
       .form-group
         %h3.text-center
@@ -81,3 +81,8 @@
       .text-center
         = submit_tag("She/he agrees", class: "btn btn-primary")
         = submit_tag("She/he disagrees", class: "btn btn-primary")
+  - if current_user.nil? && params[:all]
+    .profile-box
+      = link_to "Log in", login_path
+      to add an opinion from
+      = @individual.visible_name

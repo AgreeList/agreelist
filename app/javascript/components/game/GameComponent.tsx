@@ -90,7 +90,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
       <>
         {end &&
           <>
-            There are no more questions to vote at the moment. kkk
+            There are no more questions to vote at the moment.
             &nbsp;
             <a href={individual.url}>See all opinions</a>
           </>
