@@ -60,6 +60,7 @@ class IndividualsController < ApplicationController
       @school_list = @individual.school_list
       @occupation_list = @individual.occupation_list
       prepare_game
+      @agreements = @agreements_game.empty? ? @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc") : []
     else
       render action: "missing"
     end
@@ -109,11 +110,11 @@ class IndividualsController < ApplicationController
   end
 
   def prepare_game
-
-    @agreements = []
-    @agreements = @individual.agreements.includes(:statement).order('RANDOM()').
-      where("reason is not null and reason != ''").where.not(id:  current_user.agreements.pluck(:id))
-    @agreements = @agreements.map do |agreement|
+    @agreements_game = []
+    @agreements_game = @individual.agreements.includes(:statement).order('RANDOM()').
+      where("reason is not null and reason != ''")
+    @agreements_game = @agreements_game.where.not(statement_id: current_user.agreements.pluck(:statement_id)) if current_user && params[:ask_again] != "true"
+    @agreements_game = @agreements_game.map do |agreement|
       {
         id: agreement.id,
         extent: agreement.extent,
@@ -126,6 +127,7 @@ class IndividualsController < ApplicationController
     end
     @individual_attributes = @individual.attributes.slice("id", "name")
     @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
+    @individual_attributes[:url] = individual_path(@individual)
   end
 
   def create_from_game

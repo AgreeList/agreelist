@@ -12,7 +12,8 @@ interface Statement {
 interface Individual {
   id: number,
   name: string,
-  picture_url: string
+  picture_url: string,
+  url: string
 }
 interface Agreement {
   id: number,
@@ -83,12 +84,16 @@ export class GameComponent extends React.Component<GameProps, GameState>{
 
   renderQuestion = () => {
     const { currentQuestion } = this.state
-    const { agreements } = this.props
-    const lastQuestion = currentQuestion == agreements.length - 1
+    const { agreements, individual } = this.props
+    const lastQuestion = currentQuestion == agreements.length
     return (
       <>
         {lastQuestion &&
-          <>There are no more questions at the moment.</>
+          <>
+            There are no more questions to vote at the moment.
+            &nbsp;
+            <a href={individual.url}>See all opinions</a>
+          </>
         }
         {!lastQuestion &&
           <>

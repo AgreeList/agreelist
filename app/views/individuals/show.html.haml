@@ -39,10 +39,30 @@
             = "·" unless index == @occupation_list.size - 1
   %br
 
-  - if @agreements.size > 1
+  - if @agreements_game.size > 0
     = javascript_pack_tag "application"
     .container.game
-      = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements, loggedIn: !!current_user)
+      = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements_game, loggedIn: !!current_user)
+  - else
+    .profile-agreement-container
+      = link_to "Ask me again", individual_path(@individual, ask_again: true) if current_user && @agreements > 0
+    - @agreements.each do |agreement|
+      - statement = agreement.statement
+      .profile-agreement-container
+        .profile-agreement
+          = link_to(statement.content, statement_path(statement))
+          %span.small
+            - if agreement.agree?
+              %span.green agreed
+            - else
+              %span.red disagreed
+            by
+            = @individual.name
+            %span.small= " · "
+            %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+          - if agreement.reason.present?
+            .profile-reason
+            = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
 
   - if current_user
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|
