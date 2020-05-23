@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "start": "node src/server.js",
+    "postinstall": "tsc",
     "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
     "heroku-postbuild": "npm run webpack:deploy"
   },
