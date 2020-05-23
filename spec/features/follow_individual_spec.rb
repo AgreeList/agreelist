@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "follow_individual", js: true do
   before do
     seed_data
-    login
+    login_as_admin
   end
 
   scenario "should change button to following and back again" do
@@ -24,11 +24,5 @@ feature "follow_individual", js: true do
   def seed_data
     create(:statement)
     @individual = create(:individual)
-  end
-
-  def login
-    visit root_path
-    visit "/auth/twitter"
-    Individual.last.update_attributes(admin: true)
   end
 end

@@ -79,3 +79,12 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.ignore_hosts '127.0.0.1', 'localhost'
 end
+
+def login
+  visit "/auth/twitter"
+end
+
+def login_as_admin
+  login
+  Individual.last.update_attributes(admin: true)
+end

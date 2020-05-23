@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature 'schools#show' do
   before do
+    login
     @elon = create(:individual, name: "Elon Musk", twitter: "elonmusk", school_list: "A, B, C")
     create(:agreement, individual: @elon, reason: "We must go to Mars")
   end

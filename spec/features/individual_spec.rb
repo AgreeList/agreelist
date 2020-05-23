@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature 'create statement from individual profile' do
   before do
+    login
     i = create(:individual, name: "Elon Musk", twitter: "elonmusk")
     s = create(:statement, individual: i)
     visit "/auth/twitter"
@@ -14,13 +15,6 @@ feature 'create statement from individual profile' do
     fill_in :content, with: "We should go to Mars"
     click_button "She/he agrees"
     expect(Statement.last.individual.name).to eq "Hector Perez"
-  end
-
-  scenario "should add the creator" do
-    visit "/elonmusk"
-    fill_in :content, with: "We should go to Mars"
-    click_button "She/he agrees"
-    expect(page).to have_content("We should go to Mars")
   end
 
   context "non-existent individual" do

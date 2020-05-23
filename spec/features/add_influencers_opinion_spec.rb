@@ -150,8 +150,4 @@ feature 'add opinion from influencer', js: true do
     create(:reason_category, name: "Politics")
     create(:profession, name: "Politician")
   end
-
-  def login
-    visit "/auth/twitter"
-  end
 end
