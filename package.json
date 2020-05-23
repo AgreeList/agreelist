@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "test-setup": "bin/rails assets:precompile"
+    "test-setup": "bin/rails assets:precompile; bin/rails webpacker:compile"
   },
   "dependencies": {
     "@babel/preset-react": "^7.9.4",
