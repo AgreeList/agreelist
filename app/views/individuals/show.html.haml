@@ -68,7 +68,7 @@
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|
       .form-group
         %h3.text-center
-          Write an opinion from
+          Add an opinion from
           = @individual.name || @individual.to_param
         .col-sm-1
         .col-sm-10
@@ -80,8 +80,3 @@
       .text-center
         = submit_tag("She/he agrees", class: "btn btn-primary")
         = submit_tag("She/he disagrees", class: "btn btn-primary")
-  - else
-    .profile-box
-      = link_to "Log in", login_path
-      to add an opinion from
-      = @individual.visible_name
