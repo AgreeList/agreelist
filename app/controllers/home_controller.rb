@@ -4,6 +4,5 @@ class HomeController < ApplicationController
     @statements = Statement.where(content: s).order("LENGTH(content) DESC")
     i = ["Bill Gates", "Elon Musk", "Yuval Noah Harari", "Barack Obama", "Donald J. Trump"]
     @individuals = Individual.where(name: i).order(opinions_count: :desc)
-    @disable_jquery = true
   end
 end
