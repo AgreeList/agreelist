@@ -154,7 +154,7 @@ class AgreementsController < ApplicationController
   def track_vote_from_game
     statement = Statement.find_by(id: params[:statement_id])
     game_individual = Individual.find_by(id: params[:game_individual_id])
-    track_on_amplitude("vote", {
+    notify("vote", {
       statement: statement&.content,
       game_individual: game_individual&.visible_name,
       extent: params[:extent]
