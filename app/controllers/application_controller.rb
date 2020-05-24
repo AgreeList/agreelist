@@ -32,21 +32,23 @@ class ApplicationController < ActionController::Base
   end
 
   def track_on_amplitude(event, properties = {})
-    event = AmplitudeAPI::Event.new({
-      user_id: session[:user_id],
-      device_id: anonymous_id,
-      event_type: event,
-      time: Time.now,
-      insert_id: SecureRandom.urlsafe_base64,
-      event_properties: {
-        url: request.url,
-        method: request.method,
-        referrer: request.referrer,
-        ip: request.remote_ip,
-        user_agent: request.user_agent
-      }.merge(properties)
-    })
-    AmplitudeAPI.track(event)
+    unless Rails.env.test?
+      event = AmplitudeAPI::Event.new({
+        user_id: session[:user_id],
+        device_id: anonymous_id,
+        event_type: event,
+        time: Time.now,
+        insert_id: SecureRandom.urlsafe_base64,
+        event_properties: {
+          url: request.url,
+          method: request.method,
+          referrer: request.referrer,
+          ip: request.remote_ip,
+          user_agent: request.user_agent
+        }.merge(properties)
+      })
+      AmplitudeAPI.track(event)
+    end
   end
 
   def current_user
