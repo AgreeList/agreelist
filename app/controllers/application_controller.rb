@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     session[:ga_events] << event # we use the session in case we redirect
     arguments = { event: event, current_user_id: current_user.try(:id), ip: request.try(:remote_ip) }.merge(args)
     EventNotifier.new(arguments).notify
-    track_on_amplitude(event)
+    track_on_amplitude(event, args)
   end
 
   def track_on_amplitude(event, properties = {})

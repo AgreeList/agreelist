@@ -138,9 +138,9 @@ class IndividualsController < ApplicationController
     individual = Individual.new(email: params[:email])
     if params[:email].present? && individual.save
       session[:user_id] = individual.id
-      track_on_amplitude('Sign up', { source: params[:source] })
       save_agreements(individual)
       from_individual = Individual.find(params[:from_individual_id])
+      notify('Sign up', { source: params[:source], from_individual: from_individual.name })
       redirect_to individual_path(from_individual)
     else
       Rails.logger.debug("Error signing up: #{individual.errors.full_messages.join('. ')}")
