@@ -60,6 +60,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
+    session[:anonymous_id] = nil
     redirect_to(get_and_delete_back_url || root_path, :notice => "Thanks for stopping by. See you soon!")
   end
 

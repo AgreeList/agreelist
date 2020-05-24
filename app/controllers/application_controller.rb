@@ -4,32 +4,13 @@ class ApplicationController < ActionController::Base
   before_action :set_page_type
   before_action :redirect_www
   before_action :set_anoymous_id, if: -> { current_user.nil? && anonymous_id.nil? }
-  before_action :track_page
 
   attr_reader :google_analytics_events
 
   private
 
-  # I moved the tracking of pages here instead of from the segment js code so we use the anonymous_id that we'll use in track.
-  def track_page
-    Analytics.page(
-      user_id: current_user&.id,
-      anonymous_id: anonymous_id,
-      name: request.path,
-      properties: {
-        url: request.url,
-        method: request.method,
-        referrer: request.referrer,
-        ip: request.remote_ip,
-        user_agent: request.user_agent
-      })
-  end
-
   def set_anoymous_id
     session[:anonymous_id] = SecureRandom.urlsafe_base64
-    Analytics.identify(
-      anonymous_id: anonymous_id
-    )
   end
 
   def anonymous_id
@@ -47,10 +28,25 @@ class ApplicationController < ActionController::Base
     session[:ga_events] << event # we use the session in case we redirect
     arguments = { event: event, current_user_id: current_user.try(:id), ip: request.try(:remote_ip) }.merge(args)
     EventNotifier.new(arguments).notify
-    Analytics.track(
-        user_id: session[:user_id],
-        anonymous_id: anonymous_id,
-        event: event)
+    track_on_amplitude(event)
+  end
+
+  def track_on_amplitude(event, properties = {})
+    event = AmplitudeAPI::Event.new({
+      user_id: session[:user_id],
+      device_id: anonymous_id,
+      event_type: event,
+      time: Time.now,
+      insert_id: SecureRandom.urlsafe_base64,
+      event_properties: {
+        url: request.url,
+        method: request.method,
+        referrer: request.referrer,
+        ip: request.remote_ip,
+        user_agent: request.user_agent
+      }.merge(properties)
+    })
+    AmplitudeAPI.track(event)
   end
 
   def current_user
