@@ -4,10 +4,26 @@ class ApplicationController < ActionController::Base
   before_action :set_page_type
   before_action :redirect_www
   before_action :set_anoymous_id, if: -> { current_user.nil? && anonymous_id.nil? }
+  before_action :track_page
 
   attr_reader :google_analytics_events
 
   private
+
+  # I moved the tracking of pages here instead of from the segment js code so we use the anonymous_id that we'll use in track.
+  def track_page
+    Analytics.page(
+      user_id: current_user&.id,
+      anonymous_id: anonymous_id,
+      name: request.path,
+      properties: {
+        url: request.url,
+        method: request.method,
+        referrer: request.referrer,
+        ip: request.remote_ip,
+        user_agent: request.user_agent
+      })
+  end
 
   def set_anoymous_id
     session[:anonymous_id] = SecureRandom.urlsafe_base64
