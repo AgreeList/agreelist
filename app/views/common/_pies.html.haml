@@ -1,3 +1,4 @@
+= javascript_include_tag "https://www.gstatic.com/charts/loader.js" unless Rails.env.test? #, async: true - In order to load it asynchronously, we need to load the pie charts after loader.js is loaded (use callback?). Otherwise we get ReferenceError: google is not defined
 .text-center
   Filter by occupation/university by clicking on the pies:
 #stats
