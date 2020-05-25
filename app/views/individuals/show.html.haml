@@ -1,5 +1,5 @@
 .container
-  - if params[:all] || (current_user && @agreements_game.size == 0)
+  - if !mobile?
     .media.profile-box
       .media-left
         = image_tag @individual.picture.url(:square)
