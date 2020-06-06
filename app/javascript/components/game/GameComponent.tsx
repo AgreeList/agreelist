@@ -77,7 +77,7 @@ export class GameComponent extends React.Component<GameProps, GameState>{
     return (
       <>
         <h5>Vote to see {individual.name}'s opinions:</h5>
-        <h2>{currentQuestion + 1}. {agreements[currentQuestion].statement.content}</h2>
+        <h2>{agreements[currentQuestion].statement.content}</h2>
       </>
     )
   }
