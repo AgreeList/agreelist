@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%h1
+  = @list.name
+= link_to @list.url, @list.url
+
+%p
+  %ul
+    - @list.statements.each do |statement|
+      %li
+        = link_to statement.content, statement_path(statement)
+
+- if current_user&.admin?
+  %p
+    = form_tag create_statement_list_path(@list) do
+      .form-group
+        New topic or statement:
+      .form-group
+        = text_field_tag :statement_content, '', class: 'form-control', placeholder: 'e.g. Carbon Tax'
+      .form-group
+        = submit_tag 'Create', class: 'btn btn-primary'
+  = link_to 'Edit', edit_list_path(@list)
+  \|
+  = link_to 'Back', lists_path

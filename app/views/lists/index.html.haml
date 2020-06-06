@@ -1,0 +1,10 @@
+%h1 Lists
+
+%p
+  %ul
+    - @lists.each do |list|
+      %li= link_to list.name, list_path(list)
+
+%br
+
+= link_to 'New List', new_list_path if current_user&.admin?

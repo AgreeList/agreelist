@@ -1,6 +1,11 @@
 require 'faker'
 
 FactoryGirl.define do
+  factory :list do
+    name "MyString"
+    url "MyString"
+  end
+
   factory :reason_category do
     name "MyString"
   end

@@ -16,6 +16,7 @@ class Statement < ActiveRecord::Base
   has_many :individuals, :through => :agreements
   has_many :comments
   belongs_to :individual, optional: true
+  has_and_belongs_to_many :lists
 
   acts_as_taggable
 

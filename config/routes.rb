@@ -1,6 +1,12 @@
 require 'sidekiq/web'
 require 'sidekiq_web_constraint'
 Al::Application.routes.draw do
+  resources :lists do
+    member do
+      post 'create_statement'
+    end
+  end
+
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/api/v1"
   end
