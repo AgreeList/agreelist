@@ -39,33 +39,25 @@
               = link_to occupation.titleize, occupation_path(occupation.downcase.gsub(" ", "-"))
               = "·" unless index == @occupation_list.size - 1
     %br
-
-  - if !params[:all] && @agreements_game.size > 0
-    = javascript_pack_tag "application"
-    .container.game
-      = react_component('game/GameComponent', individual: @individual_attributes, agreements: @agreements_game, loggedIn: !!current_user)
-  - else
+  - @agreements.each do |agreement|
+    - statement = agreement.statement
     .profile-agreement-container
-      = link_to "Ask me again", individual_path(@individual, ask_again: true) if current_user && @agreements.size > 0
-    - @agreements.each do |agreement|
-      - statement = agreement.statement
-      .profile-agreement-container
-        .profile-agreement
-          = link_to(statement.content, statement_path(statement))
-          %span.small
-            - if agreement.agree?
-              %span.green agreed
-            - else
-              %span.red disagreed
-            by
-            = @individual.name
-            %span.small= " · "
-            %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
-          - if agreement.reason.present?
-            .profile-reason
-            = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
+      .profile-agreement
+        = link_to(statement.content, statement_path(statement))
+        %span.small
+          - if agreement.agree?
+            %span.green agreed
+          - else
+            %span.red disagreed
+          by
+          = @individual.name
+          %span.small= " · "
+          %span.small= link_to(agreement.created_at.strftime('%d %b %Y'), agreement_path(agreement), class: "grey")
+        - if agreement.reason.present?
+          .profile-reason
+          = render partial: "common/reason", locals: { agreement: agreement, display_url: true }
 
-  - if current_user && (params[:all] || @agreements_game.size == 0)
+  - if current_user
     = form_tag(create_and_vote_statements_path, class: "form-horizontal") do |f|
       .form-group
         %h3.text-center
@@ -81,7 +73,7 @@
       .text-center
         = submit_tag("She/he agrees", class: "btn btn-primary")
         = submit_tag("She/he disagrees", class: "btn btn-primary")
-  - if current_user.nil? && params[:all]
+  - if current_user.nil?
     .profile-box
       = link_to "Log in", login_path
       to add an opinion from

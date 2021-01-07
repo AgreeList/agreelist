@@ -60,8 +60,7 @@ class IndividualsController < ApplicationController
       })
       @school_list = @individual.school_list
       @occupation_list = @individual.occupation_list
-      prepare_game unless params[:all]
-      @agreements = params[:all] || @agreements_game.empty? ? @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc") : []
+      @agreements = @individual.agreements.joins(:statement).order("statements.opinions_count desc")
     else
       render action: "missing"
     end
@@ -108,54 +107,5 @@ class IndividualsController < ApplicationController
 
   def individual?
     @individual.present?
-  end
-
-  def prepare_game
-    @agreements_game = prepare_agreements_game
-    @individual_attributes = @individual.attributes.slice("id", "name")
-    @individual_attributes[:picture_url] = @individual.picture.url(:thumb)
-    @individual_attributes[:url] = individual_path(@individual)
-  end
-
-  def prepare_agreements_game
-    agreements = @individual.agreements.includes(:statement).order('RANDOM()').
-      where("reason is not null and reason != ''")
-    agreements = agreements.where.not(statement_id: current_user.agreements.pluck(:statement_id)) if current_user && params[:ask_again] != "true"
-    agreements = agreements.map do |agreement|
-      {
-        id: agreement.id,
-        extent: agreement.extent,
-        reason: agreement.reason,
-        statement: {
-          id: agreement.statement_id,
-          content: agreement.statement.content
-        }
-      }
-    end
-  end
-
-  def create_from_game
-    individual = Individual.new(email: params[:email])
-    if params[:email].present? && individual.save
-      session[:user_id] = individual.id
-      save_agreements(individual)
-      from_individual = Individual.find(params[:from_individual_id])
-      notify('Sign up', { source: params[:source], from_individual: from_individual.name })
-      redirect_to individual_path(from_individual)
-    else
-      Rails.logger.debug("Error signing up: #{individual.errors.full_messages.join('. ')}")
-      flash[:error] = "Invalid email"
-      redirect_to signup_path
-    end
-  end
-
-  def save_agreements(individual)
-    agreements = JSON.load(params[:agreements]) if params[:agreements]
-    agreements.each do |agreement|
-      a = individual.agreements.new(statement_id: agreement['statement_id'], extent: agreement['extent'], individual: individual)
-      unless a.save
-        Rails.logger.error("Error saving agreement. Individual id: #{individual.id}. extent: #{agreement.extent}. statement id: #{agreement.statement_id}")
-      end
-    end
   end
 end
