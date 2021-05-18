@@ -38,7 +38,7 @@ gem 'jquery-rails', '~> 4.3.1'
 gem 'jquery-ui-rails', '~> 6.0.1'
 
 group :test do
-  gem 'puma', '~> 5.0' # required by capybara
+  gem 'puma', '~> 5.3' # required by capybara
   gem 'capybara', '~> 3.32.2'
   gem 'database_cleaner', '~> 1.6.1'
   gem 'webdrivers'
